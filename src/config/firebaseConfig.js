@@ -1,0 +1,11 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAmeXmcgOvxw3dgfuQf6bC185mhOoXog4o",
+    authDomain: "jvbergram.firebaseapp.com",
+    projectId: "jvbergram",
+    storageBucket: "jvbergram.appspot.com",
+    messagingSenderId: "750715503765",
+    appId: "1:750715503765:web:7b782f0a55bf745735879c",
+    measurementId: "G-CNCC33MZ0F"
+}
+
+export default firebaseConfig;
