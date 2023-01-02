@@ -14,11 +14,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from 'prop-types'
 import "./DefaultLayout.scss";
 
 function DefaultLayout({ children }) {
   return (
-    <div className="app">
+    <div>
       <aside id="sidebar">
         <div className="sidebar__main-wrapper">
           <div className="flex flex-col justify-between h-full px-3 py-8">
@@ -98,5 +99,6 @@ function DefaultLayout({ children }) {
     </div>
   );
 }
+
 
 export default DefaultLayout;
