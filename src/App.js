@@ -1,18 +1,29 @@
-import { useSelector } from 'react-redux';
-import './App.css';
-import { firebaseSelector } from './redux/selector';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { publicRouter } from "./config/routerConfig";
+import DefaultLayout from "./layouts/DefaultLayout";
 
 function App() {
-  const fb = useSelector(firebaseSelector);
-
-  console.log(typeof fb.FieldValue);
-
   return (
-    <div className="App">
-      <h1 className='font-semibold'>
-        
-      </h1>
-    </div>
+    <Router>
+      <Routes>
+        {publicRouter.map((router, index) => {
+          const Layout = router.layout || DefaultLayout;
+          const Page = router.component;
+
+          return (
+            <Route
+              key={index}
+              path={router.path}
+              element={
+                <Layout>
+                  <Page />
+                </Layout>
+              }
+            />
+          );
+        })}
+      </Routes>
+    </Router>
   );
 }
 
