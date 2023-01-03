@@ -32,9 +32,6 @@ function Login() {
   useEffect(() => {
     document.title = "Jvbergram - Login";
 
-    // return () => {
-    //   second
-    // }
   }, []);
 
   return (

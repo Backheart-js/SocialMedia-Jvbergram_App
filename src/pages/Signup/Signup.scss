@@ -1,0 +1,20 @@
+@use '../Login/Login.scss';
+
+#signup__wrapper {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.signup__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.signup__form {
+    margin-top: 16px;
+}
+
+.login__options-wrapper {
+    margin-top: 20px;
+}
