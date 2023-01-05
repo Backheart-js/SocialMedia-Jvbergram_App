@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { firebaseSelector } from "~/redux/selector";
 import loginImgs from "./images";
 import "./Login.scss";
 
 function Login() {
-  const { firebase, FieldValue } = useSelector(firebaseSelector)
+  const { firebase } = useSelector(firebaseSelector)
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -86,9 +86,9 @@ function Login() {
         </form>
         <div className="signup__option-wrapper flex justify-center text-sm">
           <span className="">Bạn chưa có tài khoản ư?</span>
-          <NavLink to="/signup" className="ml-2 text-blue-600 font-semibold">
+          <Link to="/signup" className="ml-2 text-blue-600 font-semibold">
             Đăng ký
-          </NavLink>
+          </Link>
         </div>
       </div>
     </div>

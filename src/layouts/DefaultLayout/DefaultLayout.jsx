@@ -4,20 +4,50 @@ import {
   faPaperPlane,
   faCompass,
   faCircleUser,
+  faBookmark,
+  faMoon,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBars,
+  faGear,
   faHouse,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types'
 import "./DefaultLayout.scss";
+import { useSelector } from "react-redux";
+import { firebaseSelector } from "~/redux/selector";
+import { useAuthListener } from "~/hooks";
+import Dropdown from "~/components/Dropdown/Dropdown";
 
 function DefaultLayout({ children }) {
+  const { firebase } = useSelector(firebaseSelector);
+  const { user } = useAuthListener();
+  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  const handleToggleDropdown = () => {
+    setToggleDropdown(prev => !prev)
+  }
+  const handleClickoutsideDropdown = () => {
+    setToggleDropdown(false)
+  }
+
+  console.log(user);
+
+  // useEffect(() => {
+  //   first
+  
+  //   return () => {
+  //     second
+  //   }
+  // }, [])
+  
+
   return (
     <div>
       <aside id="sidebar">
@@ -82,13 +112,43 @@ function DefaultLayout({ children }) {
               </ul>
             </div>
             <div className="sidebarMain__more-options">
-              <div className="sidebarMain__item-wrapper">
-                <FontAwesomeIcon
-                  icon={faBars}
-                  className="sidebarMain__item-icon"
-                />
-                <span className="sidebarMain__item-text">Xem thêm</span>
-              </div>
+              <Dropdown
+                className={'more-options-dropdown'}
+                visible={toggleDropdown}
+                onClickOutside={handleClickoutsideDropdown}
+                interactive={true}
+                content={(
+                  <ul className="dropdown__list">
+                    <button className="dropdown__item">
+                      <span className="">Cài đặt</span>
+                      <FontAwesomeIcon icon={faGear} />
+                    </button>
+                    <button className="dropdown__item">
+                      <span className="">Đã lưu</span>
+                      <FontAwesomeIcon icon={faBookmark} />
+                    </button>
+                    <button className="dropdown__item">
+                      <span className="">Chuyển chế độ</span>
+                      <FontAwesomeIcon icon={faMoon} />
+                    </button>
+                    <hr />
+                    <button className="dropdown__item" onClick={() => {
+                      firebase.auth().signOut();
+                      // navigate('/login')
+                    }}>
+                      <span className="">Đăng xuất</span>
+                    </button>
+                  </ul>
+                )}
+              >
+                <div className="sidebarMain__item-wrapper" onClick={handleToggleDropdown}>
+                  <FontAwesomeIcon
+                    icon={faBars}
+                    className="sidebarMain__item-icon"
+                  />
+                  <span className="sidebarMain__item-text">Xem thêm</span>
+                </div>
+              </Dropdown>
             </div>
           </div>
         </div>
@@ -100,5 +160,8 @@ function DefaultLayout({ children }) {
   );
 }
 
+DefaultLayout.propTypes = {
+  children: PropTypes.node.isRequired
+}
 
 export default DefaultLayout;

@@ -1,20 +1,59 @@
-@use '../Login/Login.scss';
+@use "../Login/Login.scss";
 
 #signup__wrapper {
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .signup__logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .signup__form {
-    margin-top: 16px;
+  margin-top: 16px;
+  width: 100%;
 }
 
 .login__options-wrapper {
-    margin-top: 20px;
+  margin-top: 20px;
+}
+
+.signup__input-wrapper {
+    position: relative;
+    width: 100%;
+
+  .signup__input {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+
+    &::placeholder {
+      color: #888;
+      user-select: none;
+    }
+  }
+
+  .signup__input-icon {
+    position: absolute;
+    right: 12px;
+    bottom: 25%;
+    font-size: 22px;
+  }
+
+  .signup__icon-info {
+    color: #0077b6;
+  }
+
+  .signup__icon-invalid {
+    color: rgb(227, 3, 3);
+  }
+
+
+  & + & {
+    margin-top: 12px;
+  }
 }

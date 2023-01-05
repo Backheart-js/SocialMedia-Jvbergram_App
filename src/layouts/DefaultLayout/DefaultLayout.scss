@@ -59,6 +59,32 @@ $sidebar-width: 245px;
 }
 
 
+.dropdown__list {
+    width: 238px;
+}
+.dropdown__item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 12px 16px;
+
+    span {
+        font-size: 16px;
+        font-weight: 500;
+        user-select: none;
+    }
+
+    svg {
+        font-size: 22px;
+        width: 28px;
+        color: #444;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: hwb(0 95% 4%);
+    }
+}
 
 
 #content {
