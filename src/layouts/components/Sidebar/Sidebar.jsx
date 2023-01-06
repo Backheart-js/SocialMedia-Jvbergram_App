@@ -188,7 +188,6 @@ function Sidebar() {
                     className="dropdown__item"
                     onClick={() => {
                       firebase.auth().signOut();
-                      // navigate('/login')
                     }}
                   >
                     <span className="">Đăng xuất</span>

@@ -11,7 +11,6 @@ export default function useAuthListener() {
   useEffect(() => {
     const listener = firebase.auth().onAuthStateChanged((authUser) => { 
       //onAuthStateChanged Xác thực người dùng đang đăng nhập hay không (yes: trả về thông tin User || no: trả về null)
-      console.log(authUser);
       if (authUser) {
         localStorage.setItem("authUser", JSON.stringify(authUser));
         setUser(authUser);

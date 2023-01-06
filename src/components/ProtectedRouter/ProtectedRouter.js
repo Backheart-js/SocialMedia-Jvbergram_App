@@ -1,12 +1,9 @@
-import { useNavigate } from "react-router-dom"
-import { useAuthListener } from "~/hooks"
+import { Navigate } from "react-router-dom"
 
-function ProtectedRouter({ children }) {
-    const { user } = useAuthListener()
-    const navigate = useNavigate();
-
-    if (user === null) {
-        return navigate('/login');
+function ProtectedRouter({ isLogin, children }) {
+    //Chưa Login thì sẽ bị đá ra trang Login
+    if (!isLogin) {
+        return <Navigate to="/login" replace />
     }
     return children
 }

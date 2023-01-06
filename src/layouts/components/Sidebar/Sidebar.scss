@@ -1,4 +1,4 @@
-@import '../../../styles/variable';
+@import '../../../styles/_variable';
 
 // Sidebar
 #sidebar {
@@ -11,7 +11,7 @@
 .sidebar__main-wrapper {
     width: $sidebar-width;
     height: 100%;
-    border-right: 1px solid rgb(219,219,219);
+    border-right: 1px solid $border-color-light-theme;
 }
 
 .sidebarMain__logo-wrapper {
@@ -102,7 +102,7 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     background-color: #fff;
-    border-left: 1px solid rgb(219, 219, 219);
-    border-right: 1px solid rgb(219, 219, 219);
+    border-left: 1px solid $border-color-light-theme;
+    border-right: 1px solid $border-color-light-theme;
     box-shadow: rgba(100, 100, 111, 0.2) 10px 7px 15px -6px;
 }

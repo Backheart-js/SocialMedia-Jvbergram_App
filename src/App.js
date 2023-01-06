@@ -1,16 +1,19 @@
 import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProtectedRouter from "./components/ProtectedRouter";
+import { useAuthListener } from "~/hooks"
 import { publicRouter } from "./config/routerConfig";
 import DefaultLayout from "./layouts/DefaultLayout";
 
 function App() {
+  const { user } = useAuthListener()
+
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {publicRouter.map((router, index) => {
             const Layout = router.layout || DefaultLayout;
+            const ProtectedRoute = router.protect;
             const Page = router.component;
 
             return (
@@ -20,9 +23,9 @@ function App() {
                 element={
                   <Layout>
                     {router.protect ? (
-                      <ProtectedRouter>
+                      <ProtectedRoute isLogin={user}>
                         <Page />
-                      </ProtectedRouter>
+                      </ProtectedRoute>
                     ) : (
                       <Page />
                     )}

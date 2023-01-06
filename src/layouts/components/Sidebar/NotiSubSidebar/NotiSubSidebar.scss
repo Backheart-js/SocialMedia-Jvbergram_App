@@ -1,0 +1,20 @@
+@import '../../../../styles/variable';
+
+.notiSubSidebar__wrapper {
+    padding: 4px 0;
+    overflow-y: overlay;
+}
+
+.notiSubSidebar__title {
+    font-size: 24px;
+    font-weight: 600;
+    padding: 24px;
+}
+
+.notiSubSidebar__section {
+    padding: 8px 24px;
+
+    &+& {
+        border-top: 1px solid $border-color-light-theme;
+    }
+}
