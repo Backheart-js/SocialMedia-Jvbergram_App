@@ -23,7 +23,7 @@ function App() {
                 element={
                   <Layout>
                     {router.protect ? (
-                      <ProtectedRoute isLogin={user}>
+                      <ProtectedRoute user={user}>
                         <Page />
                       </ProtectedRoute>
                     ) : (

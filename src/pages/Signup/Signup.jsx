@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { checkUserNameExist } from "~/services/firebaseServices";
+import { checkUserNameExist, verifyAccout } from "~/services/firebaseServices";
 import { firebase } from "~/lib/firebase";
 import "./Signup.scss";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "~/constants/Regex";
@@ -70,24 +70,20 @@ function Signup() {
         userId: user.uid,
         fullname: info.fullname,
         username: info.username.toLowerCase(),
+        gender: 0, //0: male, 1: female, 2: Không tiết lộ
+        birthday: "",
+        avatarUrl: {
+          default: avatars.default,
+          history: [],
+          current: ""
+        },
         email: email.toLowerCase(),
         dateCreated: Date.now(),
         followers: [],
         following: [],
       });
-      // await firebase
-      //     .firestore()
-      //     .collection('users')
-      //     .add({
-      //       userId: user.uid,
-      //       username: username.toLowerCase(),
-      //       fullName,
-      //       emailAddress: emailAddress.toLowerCase(),
-      //       following: ['2'],
-      //       followers: [],
-      //       dateCreated: Date.now()
-      //     });
-      navigate("/");
+      verifyAccout()
+      navigate("/notify");
 
     } catch (err) {
       setError("Email đã được sử dụng, vui lòng sử dụng email khác!");
