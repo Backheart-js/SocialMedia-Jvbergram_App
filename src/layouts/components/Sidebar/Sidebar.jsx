@@ -16,23 +16,21 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 import { useSelector } from "react-redux";
 import { firebaseSelector } from "~/redux/selector";
-import { useAuthListener } from "~/hooks";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import './Sidebar.scss'
 import SubSidebar from "./SubSidebar";
 
-function Sidebar() {
+function Sidebar({ openModalFunc }) {
   const { firebase } = useSelector(firebaseSelector);
-  const { user } = useAuthListener();
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false)
   const [typeSubSidebar, settypeSubSidebar] = useState('')
-  const navigate = useNavigate();
 
   const handleToggleDropdown = () => {
     setToggleDropdown((prev) => !prev);
@@ -140,7 +138,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Thông báo</span>
                 }
               </li>
-              <NavLink className="sidebarMain__item-wrapper">
+              <li className="sidebarMain__item-wrapper" onClick={openModalFunc}>
                 <FontAwesomeIcon
                   icon={faSquarePlus}
                   className="sidebarMain__item-icon"
@@ -150,7 +148,8 @@ function Sidebar() {
                   <></> :
                   <span className="sidebarMain__item-text">Tạo</span>
 
-                }              </NavLink>
+                }              
+              </li>
               <NavLink to="/profile" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faCircleUser}
@@ -220,6 +219,10 @@ function Sidebar() {
       }
     </aside>
   );
+}
+
+Sidebar.propTypes = {
+  openModalFunc: PropTypes.func
 }
 
 export default Sidebar;

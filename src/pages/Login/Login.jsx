@@ -79,7 +79,7 @@ function Login() {
             <></>
           )}
           <div className="forgot-password mt-3">
-            <a href="/" className="text-sm text-blue-900">
+            <a href="/forgot-password" className="text-sm text-blue-900">
               Quên mật khẩu?
             </a>
           </div>

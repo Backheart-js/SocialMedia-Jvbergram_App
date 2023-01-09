@@ -5,10 +5,9 @@ import 'firebase/compat/firestore';
 import firebaseConfig from '~/config/firebaseConfig';
 // import { seedDatabase } from '~/seed';
 
-
 const firebase = Firebase.initializeApp(firebaseConfig);
 const { FieldValue } = Firebase.firestore;
 
-// seedDatabase(firebase)
+// seedDatabase(firebase)   //Khởi tạo dữ liệu gốc
 
 export { firebase, FieldValue };
