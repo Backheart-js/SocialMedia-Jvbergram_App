@@ -1,7 +1,6 @@
 import { Navigate } from "react-router-dom"
 
 function ProtectedRouter({ user, children }) {
-    console.log(user);
     //Chưa Login hoặc tài khoản chưa verify thì sẽ bị đá ra trang Login
     if (!user) {
         return <Navigate to="/login" replace />
