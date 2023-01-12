@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import { verifyAccout } from '~/services/firebaseServices';
 
 function VerifyAccount() {
+  useEffect(() => {
+    verifyAccout();
+  
+  }, [])
+  
+
   return (
     <div>
         <p className="">Vui lòng xác mình tài khoản rồi đăng nhập lại</p>
@@ -12,7 +19,7 @@ function VerifyAccount() {
             </button>
         </p>
         
-        <a href="/login" className="">Đăng nhập</a>
+        <Link to="/login" className="">Đăng nhập</Link>
     </div>
 
   )

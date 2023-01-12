@@ -1,16 +1,25 @@
-import React from 'react'
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
-function Avatar({ avatarUrl = {} }) {
-  // console.log(avatarUrl);
+function Avatar({ avatarUrl }) {
   const { default: avatarDefault, current } = avatarUrl;
-  return (
-    <img src={current || avatarDefault} alt="" className="rounded-full select-none" />
-  )
+
+  return avatarUrl === {} ? (
+    <SkeletonTheme color="#ccc">
+      <Skeleton circle={true} />
+    </SkeletonTheme>
+  ) : (
+    <img
+      src={current || avatarDefault}
+      alt=""
+      className="rounded-full select-none"
+    />
+  );
 }
 
 Avatar.propTypes = {
-    avatarUrl: PropTypes.object.isRequired
-}
+  avatarUrl: PropTypes.object.isRequired,
+};
 
-export default Avatar
+export default Avatar;

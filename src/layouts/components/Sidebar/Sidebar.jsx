@@ -3,7 +3,6 @@ import {
   faHeart,
   faPaperPlane,
   faCompass,
-  faCircleUser,
   faBookmark,
   faMoon,
 } from "@fortawesome/free-regular-svg-icons";
@@ -15,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -24,18 +23,17 @@ import { firebaseSelector } from "~/redux/selector";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import "./Sidebar.scss";
 import SubSidebar from "./SubSidebar";
-import { useAuthListener } from "~/hooks";
-import { getUserById } from "~/services/firebaseServices";
 import Avatar from "~/components/Avatar";
+import { UserContext } from "~/layouts/DefaultLayout/DefaultLayout";
 
 function Sidebar({ openModalFunc }) {
   const { firebase } = useSelector(firebaseSelector);
-  const { user } = useAuthListener();
+  // const { user } = useAuthListener();
+  const userInfo = useContext(UserContext);
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);
   const [typeSubSidebar, settypeSubSidebar] = useState("");
-  const [userInfo, setUserInfo] = useState({});
 
   const handleToggleDropdown = () => {
     setToggleDropdown((prev) => !prev);
@@ -54,17 +52,6 @@ function Sidebar({ openModalFunc }) {
       setToggleSubSidebar(true);
     }
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      const response = await getUserById(user.uid); //phương thức từ firebaseService
-      const [userObj] = response;
-      setUserInfo(userObj); //1 Object
-    };
-
-    getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <aside id="sidebar">
@@ -177,7 +164,7 @@ function Sidebar({ openModalFunc }) {
               </li>
               <NavLink to="/profile" className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
-                  <Avatar avatarUrl={userInfo?.avatarUrl} />
+                  <Avatar avatarUrl={userInfo?.avatarUrl === undefined ? {} : userInfo.avatarUrl} />
                 </div>
                 {toggleSubSidebar ? (
                   <></>

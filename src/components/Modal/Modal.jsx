@@ -1,27 +1,49 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import "./Modal.scss";
 import { faFileImage } from "@fortawesome/free-regular-svg-icons";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { v4 } from "uuid";
+import { createNewPost } from "~/services/firebaseServices";
+import { useAuthListener } from "~/hooks";
+import Loader from "../Loader";
+import { RotatingLines } from "react-loader-spinner";
 
 function Modal({ close }) {
+  const [imagePreviewLink, setImagePreviewLink] = useState([]);
   const [imageList, setImageList] = useState([]);
   const [captionValue, setCaptionValue] = useState("");
+  const [loadingDisplay, setLoadingDisplay] = useState(false);
+  const { user } = useAuthListener();
 
-  const modalBoxRef = useRef(null);
-
-  const handlePreviewImage = (e) => {
-    const files = Object.values(e.target.files); //Vì input để multi nên trả về 1 Array ảnh
+  const handlePreviewImage = (filesInput) => {
+    const files = Object.values(filesInput); //Vì input để multi nên trả về 1 Array ảnh
     const newFilesWithPreview = files.map((file) => {
-      return (file.preview = URL.createObjectURL(file));
+      return URL.createObjectURL(file);
     });
 
-    setImageList((prev) => [...prev, ...newFilesWithPreview]);
+    setImagePreviewLink((prev) => [...prev, ...newFilesWithPreview]);
+  };
+
+  const handleChange = (e) => {
+    const files = e.target.files;
+    handlePreviewImage(files);
+
+    for (let i = 0; i < files.length; i++) {
+      const newImg = files[i];
+      setImageList((prev) => [...prev, newImg]);
+    }
   };
 
   const handleCloseModal = () => {
-    if (imageList.length > 0 || captionValue.length > 0) {
+    if (imagePreviewLink.length > 0 || captionValue.length > 0) {
       if (window.confirm("Bạn có chắc muốn rời đi không?")) {
         close();
       } else {
@@ -38,30 +60,94 @@ function Modal({ close }) {
     e.target.style.height = e.target.scrollHeight + "px";
   }
 
-  useEffect(() => {
-    modalBoxRef.current.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+  async function uploadFilesToStorage(files) {
+    const storage = getStorage();
+    const promises = [];
+    let urls = [];
+    /** @type {any} */
+    const metadata = {
+      contentType: "image/*",
+    };
 
+    files.forEach((file, index) => {
+      const randomId = v4();
+      const storageRef = ref(storage, `images/${file.name}-${randomId}`);
+      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+      promises.push(uploadTask);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload " + index + " is " + progress + "%");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+          }
+        },
+        (error) => {
+          switch (error.code) {
+            case "storage/unauthorized":
+              break;
+            case "storage/canceled":
+              break;
+            case "storage/unknown":
+              break;
+            default:
+          }
+        }
+      );
+    });
+    // Wait for all upload tasks to complete
+    await Promise.all(promises);
+
+    // Get the download URLs for each storage reference
+    for (const uploadTask of promises) {
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      urls.push(downloadURL);
+    }
+    return urls;
+  }
+
+  const handleUploadImage = async (files, caption) => {
+    setLoadingDisplay(true);
+    try {
+      const fileURLs = await uploadFilesToStorage(files);
+      await createNewPost(fileURLs, user.uid, caption);
+      setLoadingDisplay(false);
+      close();
+    } catch (error) {
+      setLoadingDisplay(false);
+      alert("Lỗi! Vui lòng thử lại");
+    }
+  };
+
+  useEffect(() => {
     return () => {
       // Fix lỗi xóa URL trong local
-      console.log(imageList);
-      imageList.forEach((imageLink) => {
-        URL.revokeObjectURL(imageLink);
-      });
+      // imagePreviewLink.forEach((imageLink) => {
+      //   URL.revokeObjectURL(imageLink);
+      // });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(imageList);
-
   return (
-    <div className={`modal`} onClick={handleCloseModal}>
-      <FontAwesomeIcon className="modal__close-icon" icon={faXmark} />
+    <div className={`modal`}>
+      <FontAwesomeIcon
+        className="modal__close-icon"
+        icon={faXmark}
+        onClick={handleCloseModal}
+      />
       <div
-        ref={modalBoxRef}
         className={`modal__box-wrapper ${
-          imageList.length > 0 ? "w-[550px]" : "w-[500px]"
+          imagePreviewLink.length > 0 ? "w-[550px]" : "w-[500px]"
         }`}
       >
         <div className="modal__title-wrapper">
@@ -83,7 +169,7 @@ function Modal({ close }) {
               }}
             ></textarea>
             <div className="modal__image-area--wrapper">
-              {imageList.length === 0 ? (
+              {imagePreviewLink.length === 0 ? (
                 <div className="modal__image-area--nonImg h-[300px]">
                   <svg
                     aria-label="Biểu tượng thể hiện file phương tiện, chẳng hạn như hình ảnh hoặc video"
@@ -117,7 +203,7 @@ function Modal({ close }) {
                       multiple={true}
                       className="hidden"
                       type="file"
-                      onChange={handlePreviewImage}
+                      onChange={handleChange}
                       accept="image/*"
                     />
                     <label
@@ -130,7 +216,7 @@ function Modal({ close }) {
                 </div>
               ) : (
                 <div className="modal__image-area--haveImage">
-                  {imageList.map((imageLink, index) => (
+                  {imagePreviewLink.map((imageLink, index) => (
                     <img
                       key={index}
                       src={imageLink}
@@ -144,7 +230,7 @@ function Modal({ close }) {
                       multiple={true}
                       className="hidden"
                       type="file"
-                      onChange={handlePreviewImage}
+                      onChange={handleChange}
                       accept="image/*"
                     />
                     <label
@@ -166,10 +252,22 @@ function Modal({ close }) {
             className={`modal__footer-btn ${
               imageList.length === 0 ? "modal__btn-disabled" : ""
             }`}
+            onClick={() => {
+              handleUploadImage(imageList, captionValue);
+            }}
           >
             Đăng
           </button>
         </div>
+        <Loader
+          Type={RotatingLines}
+          display={loadingDisplay}
+          strokeColor="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="96"
+          visible={true}
+        />
       </div>
     </div>
   );

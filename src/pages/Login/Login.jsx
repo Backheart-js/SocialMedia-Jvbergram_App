@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { firebaseSelector } from "~/redux/selector";
+import passwordSlide from "~/redux/slice/passwordSlide";
 import loginImgs from "./images";
 import "./Login.scss";
 
 function Login() {
   const { firebase } = useSelector(firebaseSelector)
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isCheckRemember, setIsCheckRemember] = useState(false)
 
   const isDisable = email === '' || password === '';
+
+  const handleCheckbox = (e) => {
+    if (e.target.checked) {
+      dispatch(passwordSlide.actions.addState(true))
+    }
+    else {
+      dispatch(passwordSlide.actions.addState(false))
+    }
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -64,6 +76,10 @@ function Login() {
               setPassword(e.target.value);
             }}
           />
+          <div className="remember-password w-full flex mt-3">
+            <input type="checkbox" id="remember-checkbox" onClick={handleCheckbox}/>
+            <label className="ml-2 select-none" htmlFor="remember-checkbox">Nhớ mật khẩu</label>
+          </div>
           <button disabled={isDisable} className={`login__submit ${isDisable ? 'opacity-70' : 'hover:bg-[#3dbdd6] hover:cursor-pointer'}`}>Đăng nhập</button>
           <div className="flex justify-between items-center w-full mt-5">
             <div className="login__line"></div>
@@ -86,9 +102,9 @@ function Login() {
         </form>
         <div className="signup__option-wrapper flex justify-center text-sm">
           <span className="">Bạn chưa có tài khoản ư?</span>
-          <Link to="/signup" className="ml-2 text-blue-600 font-semibold">
+          <a href="/signup" className="ml-2 text-blue-600 font-semibold">
             Đăng ký
-          </Link>
+          </a>
         </div>
       </div>
     </div>

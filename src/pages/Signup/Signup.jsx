@@ -77,13 +77,12 @@ function Signup() {
           history: [],
           current: ""
         },
-        email: email.toLowerCase(),
+        emailAdress: email.toLowerCase(),
         dateCreated: Date.now(),
         followers: [],
         following: [],
       });
-      verifyAccout()
-      navigate("/notify");
+      navigate("/notify"); //Move on đến trang thông báo xác thực email
 
     } catch (err) {
       setError("Email đã được sử dụng, vui lòng sử dụng email khác!");
