@@ -162,7 +162,7 @@ function Sidebar({ openModalFunc }) {
                   <span className="sidebarMain__item-text">Tạo</span>
                 )}
               </li>
-              <NavLink to="/profile" className="sidebarMain__item-wrapper">
+              <NavLink to={`/profile/${userInfo?.username}`} className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar avatarUrl={userInfo?.avatarUrl === undefined ? {} : userInfo.avatarUrl} />
                 </div>

@@ -1,0 +1,34 @@
+@import '../../styles/variable';
+
+.post__container {
+    position: relative;
+
+    &+& {
+        margin-top: 26px;
+        padding-top: 26px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 1px;
+            background-color: $border-color-light-theme;
+        }
+    }
+}
+
+.post__option-button {
+    padding: 8px 0 8px 12px;
+
+    svg {
+        font-size: 20px;
+    }
+
+    &:hover {
+        svg {
+            color: #666;
+        }
+    }
+}

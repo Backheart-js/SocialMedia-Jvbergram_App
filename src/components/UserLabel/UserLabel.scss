@@ -1,0 +1,35 @@
+@import '../../styles/variable';
+
+.userComp-medium {
+    height: 56px;
+
+    div+div {
+        margin-left: 16px;
+    }
+}
+.userComp-small {
+    height: 42px;
+
+    div+div {
+        margin-left: 10px;
+    }
+}
+
+.avatar-wrapper {
+    border: 1px solid $border-color-light-theme;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.avatar-medium {
+    height: 56px;
+    width: 56px;
+}
+.avatar-small {
+    height: 42px;
+    width: 42px;
+}
+
+.avatar-img {
+    user-select: none;
+}

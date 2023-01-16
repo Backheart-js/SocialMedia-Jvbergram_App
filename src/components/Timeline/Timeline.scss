@@ -1,0 +1,9 @@
+.post__container {
+    
+}
+
+.timeline-skeleton-wrapper {
+    &+& {
+        margin-top: 40px;
+    }
+}

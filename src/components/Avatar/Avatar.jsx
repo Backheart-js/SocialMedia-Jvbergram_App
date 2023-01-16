@@ -6,9 +6,7 @@ function Avatar({ avatarUrl }) {
   const { default: avatarDefault, current } = avatarUrl;
 
   return avatarUrl === {} ? (
-    <SkeletonTheme color="#ccc">
-      <Skeleton circle={true} />
-    </SkeletonTheme>
+    <Skeleton circle={true} />
   ) : (
     <img
       src={current || avatarDefault}

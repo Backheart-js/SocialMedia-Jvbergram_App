@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import IsLoginProtectedRouter from '~/components/IsLoginProtectedRouter';
 import ProtectedRouter from '~/components/ProtectedRouter';
 
 import LoginLayout from "~/layouts/LoginLayout";
@@ -13,11 +12,13 @@ const Profile = lazy(() => import('~/pages/Profile/Profile'));
 const NotFound = lazy(() => import('~/pages/NotFound/NotFound'));
 
 export const publicRouter = [
-    {path: '/login', component: Login, layout: LoginLayout, protect: IsLoginProtectedRouter},
-    {path: '/signup', component: Signup, layout: LoginLayout, protect: IsLoginProtectedRouter},
-    {path: '/notify', component: VerifyAccount, layout: LoginLayout, protect: IsLoginProtectedRouter},
+    {path: '/login', component: Login, layout: LoginLayout},
+    {path: '/signup', component: Signup, layout: LoginLayout},
+    {path: '/notify', component: VerifyAccount, layout: LoginLayout},
 
-    {path: '/', component: Home, protect: ProtectedRouter},
+    {path: '/', component: Home, 
+    // protect: ProtectedRouter
+    },
     {path: '/direct', component: Direct},
     {path: '/profile/:username', component: Profile},
     {path: '*', component: NotFound},

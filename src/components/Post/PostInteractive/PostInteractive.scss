@@ -1,0 +1,44 @@
+.postInteractive__icon-mainFunc {
+    display: flex;
+
+}
+
+.postInteractive__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 28px;
+    &+& {
+        margin-left: 16px;
+    }
+
+    &:hover {
+        .postInteractive__icon {
+            color: #777;
+        }
+    }
+}
+
+.postInteractive__icon {
+    font-size: 23px;
+    color: #333;
+}
+
+.postInteractive__icon-red {
+    font-size: 24px;
+    color: red;
+    animation: heartScaled .2s ease-in-out;
+}
+
+@keyframes heartScaled {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

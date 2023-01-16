@@ -1,13 +1,12 @@
 import { Suspense } from "react";
-import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useAuthListener } from "~/hooks"
 import { publicRouter } from "./config/routerConfig";
 import DefaultLayout from "./layouts/DefaultLayout";
-import { firebaseSelector } from "./redux/selector";
 
 function App() {
   const { user } = useAuthListener()
+  // console.log(user);
 
   return (
     <Router>
