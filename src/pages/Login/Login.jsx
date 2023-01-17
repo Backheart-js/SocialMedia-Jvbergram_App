@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { firebaseSelector } from "~/redux/selector";
 import passwordSlide from "~/redux/slice/passwordSlide";
 import loginImgs from "./images";
@@ -14,7 +14,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isCheckRemember, setIsCheckRemember] = useState(false)
 
   const isDisable = email === '' || password === '';
 

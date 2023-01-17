@@ -3,33 +3,30 @@ import { useSelector } from "react-redux";
 import { firebaseSelector, rememberPasswordSelector } from "~/redux/selector";
 
 export default function useAuthListener() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { firebase } = useSelector(firebaseSelector);
   const isRememberPassword = useSelector(rememberPasswordSelector);
-
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
-    const listener = firebase.auth().onAuthStateChanged((authUser) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
+      console.log(authUser);
       if (authUser && authUser.emailVerified) {
         isRememberPassword
           ? localStorage.setItem("authUser", JSON.stringify(authUser))
           : sessionStorage.setItem("authUser", JSON.stringify(authUser));
         setUser(authUser);
+        setLoading(false);
       } else {
         localStorage.removeItem("authUser");
         sessionStorage.removeItem("authUser");
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return () => listener();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return unsubscribe;
+  }, [firebase]);
 
-  // if (!loading) {
-  //   return { loading };
-  // }
-
-  return { user };
+  return { user, loading };
 }

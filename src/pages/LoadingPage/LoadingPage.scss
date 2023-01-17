@@ -1,0 +1,23 @@
+.loading-img {
+  width: 100px;
+  height: 100px;
+  animation: loadingAnimation 1.5s ease-in-out;
+}
+
+@keyframes loadingAnimation {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.2);
+  }
+  30% {
+    transform: scale(1);
+  }
+  70% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -31,15 +31,12 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
       });
       setUserCommentList((prev) => [...prev, comment])
       setAllCommentsQuantity(prev => prev+1)
+      setCommentValues("")
 
     } catch (error) {
-      setUserCommentList((prev) => [...prev, {
-        ...comment,
-        isError: true
-      }])
+      throw error;
     }
 
-    setCommentValues("")
   }
 
   function auto_grow(e) {

@@ -1,16 +1,21 @@
 import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useAuthListener } from "~/hooks"
+import { useAuthListener } from "~/hooks";
 import { publicRouter } from "./config/routerConfig";
 import DefaultLayout from "./layouts/DefaultLayout";
+import LoadingPage from "./pages/LoadingPage/LoadingPage";
 
 function App() {
-  const { user } = useAuthListener()
-  // console.log(user);
-
-  return (
+  const { user, loading } = useAuthListener();
+  console.log(user);
+  return loading ? 
+  (
+    <LoadingPage />
+  )
+  :
+  (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingPage />}>
         <Routes>
           {publicRouter.map((router, index) => {
             const Layout = router.layout || DefaultLayout;
@@ -22,15 +27,19 @@ function App() {
                 key={index}
                 path={router.path}
                 element={
-                  <Layout>
+                  <>
                     {router.protect ? (
                       <ProtectedRoute user={user}>
-                        <Page />
+                        <Layout>
+                          <Page />
+                        </Layout>
                       </ProtectedRoute>
                     ) : (
-                      <Page />
+                      <Layout>
+                        <Page />
+                      </Layout>
                     )}
-                  </Layout>
+                  </>
                 }
               />
             );
