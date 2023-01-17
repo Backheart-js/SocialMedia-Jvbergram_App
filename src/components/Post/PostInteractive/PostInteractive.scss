@@ -9,6 +9,8 @@
     align-items: center;
     width: 24px;
     height: 28px;
+    user-select: none;
+
     &+& {
         margin-left: 16px;
     }
@@ -22,7 +24,7 @@
 
 .postInteractive__icon {
     font-size: 23px;
-    color: #333;
+    color: #262626;
 }
 
 .postInteractive__icon-red {

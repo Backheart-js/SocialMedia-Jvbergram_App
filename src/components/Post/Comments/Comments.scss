@@ -1,0 +1,22 @@
+.userComment__wrapper {
+    &+& {
+        margin-top: 4px;
+    }
+}
+
+.comment__input {
+    font-size: 14px;
+    resize: none;
+    height: 22px;
+    max-height: 80px;
+    overflow-y: auto;
+
+    &::placeholder {
+        color: #666;
+        font-size: 14px;
+    }
+
+    &:focus-visible {
+        outline: unset;
+    }
+}
