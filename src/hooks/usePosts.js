@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { UserContext } from '~/layouts/DefaultLayout/DefaultLayout'
+import { UserContext } from "~/context/user";
 import { getPosts } from '~/services/firebaseServices';
 
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, createContext } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./DefaultLayout.scss";
 import Sidebar from "../components/Sidebar";
@@ -7,21 +7,21 @@ import { useAuthListener } from "~/hooks";
 import { getUserById } from "~/services/firebaseServices";
 import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
+import { UserContext } from "~/context/user";
 
-export const UserContext = createContext();
 
 function DefaultLayout({ children }) {
-  const [openModal, setopenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const { user } = useAuthListener();
   const [userInfo, setUserInfo] = useState({});
   const dispatch = useDispatch()
 
   const handleOpenModal = useCallback(() => {
-    setopenModal(true);
+    setOpenModal(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openModal]);
   const handleCloseModal = useCallback(() => {
-    setopenModal(false);
+    setOpenModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openModal]);
 
@@ -35,10 +35,6 @@ function DefaultLayout({ children }) {
     user !== null && getUser();
   }, [user]);
 
-  // useEffect(() => {
-  //   console.log('dispatch');
-  //   dispatch(modalSlice.actions.addOpen(JSON.stringify(handleOpenModal)))
-  // }, [])
   
 
   return (

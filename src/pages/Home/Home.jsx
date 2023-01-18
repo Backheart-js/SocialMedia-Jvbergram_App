@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Suggestion from '~/components/Suggestion';
 import Timeline from '~/components/Timeline';
 import UserLabel from '~/components/UserLabel';
-import { UserContext } from '~/layouts/DefaultLayout/DefaultLayout'
+import { UserContext } from "~/context/user";
 
 import './Home.scss'
 
