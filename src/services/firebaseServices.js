@@ -85,42 +85,6 @@ export async function getSuggestionsProfilesById(userId, following) {
   return responses;
 }
 
-export async function getPosts(userId, following) {
-  try {
-    const responses = await db
-      .collection("posts")
-      .where("userId", "in", following.concat(userId))
-      .get();
-
-    const userFollowedPhotos = responses.docs.map((photo) => ({
-      ...photo.data(),
-      docId: photo.id,
-    }));
-
-    const photosWithUserInfo = await Promise.all(
-      userFollowedPhotos.map(async (photo) => {
-        let youLikedThisPost = false;
-        if (photo.likes.userId.includes(userId)) {
-          youLikedThisPost = true;
-        }
-        const userInfo = await getUserById(photo.userId); //Trả về 1 mảng nhưng chỉ chứ 1 phần tử
-        const { avatarUrl, username } = userInfo[0];
-
-        return {
-          avatarUrl,
-          username,
-          ...photo,
-          youLikedThisPost,
-        };
-      })
-    );
-
-    return photosWithUserInfo;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 export async function verifyAccout() {
   //Thực hiện gửi email xác minh tài khoản
   firebase.auth().useDeviceLanguage(); //Sử dụng ngôn ngữ của máy tính đang dùng

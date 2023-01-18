@@ -8,11 +8,12 @@ import { getUserById } from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import { UserContext } from "~/context/user";
 import { modalSelector } from "~/redux/selector";
+import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 
 function DefaultLayout({ children }) {
   const { user } = useAuthListener();
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(null);
   const { isOpen, ...payload } = useSelector(modalSelector)
 
   useEffect(() => {
@@ -25,7 +26,10 @@ function DefaultLayout({ children }) {
     user !== null && getUser();
   }, [user]);
   
-  return (
+  return !userInfo ? 
+  (<LoadingPage />)
+  :
+  (
     <UserContext.Provider value={userInfo}>
       <div>
         <Sidebar />

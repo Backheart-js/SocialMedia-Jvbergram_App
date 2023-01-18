@@ -1,20 +1,67 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Suggestion from '~/components/Suggestion';
 import Timeline from '~/components/Timeline';
 import UserLabel from '~/components/UserLabel';
+import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
+import { getUserById } from '~/services/firebaseServices';
 
 import './Home.scss'
 
 function Home() {
   const userInfo = useContext(UserContext);
-  // console.log(userInfo);
+  const { firebase } = useContext(FirebaseContext);
+  const [posts, setPosts] = useState(null);
+  const [showUpdateButton, setShowUpdateButton] = useState(false);
+
+  useEffect(() => {
+    let unsubscribe;
+    const getTimeline = async () => {
+        unsubscribe = firebase.firestore()
+        .collection("posts")
+        .where("userId", "in", userInfo.following.concat(userInfo.userId))
+        .onSnapshot(async (snapshot) => { //Snapshot sẽ kiểm tra trạng thái trong firestore nếu có thay đổi
+            let newPosts = snapshot.docs.map((doc) => {
+                return { docId: doc.id, ...doc.data() };
+            });
+            const photosWithUserInfo = await Promise.all(
+            newPosts.map(async (photo) => {
+                let youLikedThisPost = false;
+                if (photo.likes.userId.includes(userInfo.userId)) {
+                youLikedThisPost = true;
+                }
+                const ownerPost = await getUserById(photo.userId);
+                const { avatarUrl, username } = ownerPost[0];
+                return {
+                avatarUrl,
+                username,
+                ...photo,
+                youLikedThisPost,
+                };
+            })
+            );
+            photosWithUserInfo.sort((a, b) => b.dateCreated - a.dateCreated);
+            setPosts(photosWithUserInfo);
+        });
+    };
+    getTimeline();
+    return () => unsubscribe();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+
+  useEffect(() => {
+    document.title = "Jvbergram"
+  }, [])
+  
+  console.log(posts);
+
   return (
     <div className='grid grid-cols-12 gap-8'>
       <div className="col-span-7">
         <div className="mt-4">
-          <Timeline />
+          <Timeline posts={posts} />
         </div>
       </div>
       <div className="col-span-5">
