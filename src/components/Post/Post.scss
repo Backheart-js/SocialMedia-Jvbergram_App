@@ -51,3 +51,22 @@
         }
     }
 }
+
+.post__option-dropdown--item {
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+        background-color: $hover-color-light-theme;
+    }
+
+    &+& {
+        margin-top: 4px;
+    }
+}
+
+.post__option-dropdown-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 8px 20px;
+}

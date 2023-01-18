@@ -5,23 +5,25 @@ import Sidebar from "../components/Sidebar";
 import Modal from "~/components/Modal";
 import { useAuthListener } from "~/hooks";
 import { getUserById } from "~/services/firebaseServices";
+import { useDispatch } from "react-redux";
+import modalSlice from "~/redux/slice/modalSlide";
 
-export const UserContext = createContext()
+export const UserContext = createContext();
 
 function DefaultLayout({ children }) {
-  const [openModal, setopenModal] = useState(false)
+  const [openModal, setopenModal] = useState(false);
   const { user } = useAuthListener();
   const [userInfo, setUserInfo] = useState({});
-
+  const dispatch = useDispatch()
 
   const handleOpenModal = useCallback(() => {
     setopenModal(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[openModal])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openModal]);
   const handleCloseModal = useCallback(() => {
     setopenModal(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openModal])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openModal]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -31,8 +33,13 @@ function DefaultLayout({ children }) {
     };
 
     user !== null && getUser();
+  }, [user]);
+
+  // useEffect(() => {
+  //   console.log('dispatch');
+  //   dispatch(modalSlice.actions.addOpen(JSON.stringify(handleOpenModal)))
+  // }, [])
   
-  }, [user])
 
   return (
     <UserContext.Provider value={userInfo}>
@@ -41,9 +48,7 @@ function DefaultLayout({ children }) {
         <main id="content">
           <div className="pt-8 mx-auto w-[820px]">{children}</div>
         </main>
-        {
-          openModal && <Modal open={openModal} close={handleCloseModal} center animationDuration={200}/>
-        }
+        {openModal && <Modal close={handleCloseModal} />}
       </div>
     </UserContext.Provider>
   );

@@ -131,9 +131,9 @@ function Modal({ close }) {
   useEffect(() => {
     return () => {
       // Fix lỗi xóa URL trong local
-      // imagePreviewLink.forEach((imageLink) => {
-      //   URL.revokeObjectURL(imageLink);
-      // });
+      imagePreviewLink.forEach((imageLink) => {
+        URL.revokeObjectURL(imageLink);
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

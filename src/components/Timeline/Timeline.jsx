@@ -10,7 +10,7 @@ function Timeline() {
 
   return !posts ? (
     <>
-      {[...new Array(4)].map((_, index) => (
+      {[...new Array(1)].map((_, index) => (
         <div className="timeline-skeleton-wrapper" key={index}>
           <div className="flex items-center mb-2">
             <Skeleton circle={true} width={42} height={42}/>
