@@ -12,7 +12,7 @@ import UserLabel from "../UserLabel";
 import "./Post.scss";
 import PostInteractive from "./PostInteractive";
 import Dropdown from "../Dropdown/Dropdown";
-import { UserContext } from "~/layouts/DefaultLayout/DefaultLayout";
+import { UserContext } from "~/context/user";
 
 function Post({ data = {} }) {
   const { userId } = useContext(UserContext);

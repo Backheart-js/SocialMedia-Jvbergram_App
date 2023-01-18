@@ -1,10 +1,9 @@
-import React, { forwardRef, useContext, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { UserContext } from '~/layouts/DefaultLayout/DefaultLayout';
-import { firebaseSelector } from '~/redux/selector';
+import React, { useContext, useState } from 'react'
+import { FirebaseContext } from '~/context/firebase';
+import { UserContext } from "~/context/user";
 
 function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCommentsQuantity }) {
-  const { firebase, FieldValue } = useSelector(firebaseSelector);
+  const { firebase, FieldValue } = useContext(FirebaseContext);
 
   const [commentValues, setCommentValues] = useState("");
   const { userId, username } = useContext(UserContext);

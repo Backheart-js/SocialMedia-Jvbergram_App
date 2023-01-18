@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect, useContext } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { firebaseSelector } from "~/redux/selector";
+import { FirebaseContext } from "~/context/firebase";
 import passwordSlide from "~/redux/slice/passwordSlide";
 import loginImgs from "./images";
 import "./Login.scss";
 
 function Login() {
-  const { firebase } = useSelector(firebaseSelector)
+  const { firebase } = useContext(FirebaseContext);
   const navigate = useNavigate();
   const dispatch = useDispatch()
 

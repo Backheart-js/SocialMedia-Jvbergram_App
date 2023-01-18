@@ -5,6 +5,7 @@ import { publicRouter } from "./config/routerConfig";
 import DefaultLayout from "./layouts/DefaultLayout";
 import LoadingPage from "./pages/LoadingPage/LoadingPage";
 
+
 function App() {
   const { user, loading } = useAuthListener();
 

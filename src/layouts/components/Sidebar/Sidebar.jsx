@@ -18,17 +18,15 @@ import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { useSelector } from "react-redux";
-import { firebaseSelector } from "~/redux/selector";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import "./Sidebar.scss";
 import SubSidebar from "./SubSidebar";
 import Avatar from "~/components/Avatar";
-import { UserContext } from "~/layouts/DefaultLayout/DefaultLayout";
+import { UserContext } from "~/context/user";
+import { FirebaseContext } from "~/context/firebase";
 
 function Sidebar({ openModalFunc }) {
-  const { firebase } = useSelector(firebaseSelector);
-  // const { user } = useAuthListener();
+  const { firebase } = useContext(FirebaseContext);
   const userInfo = useContext(UserContext);
 
   const [toggleDropdown, setToggleDropdown] = useState(false);

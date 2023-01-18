@@ -2,9 +2,8 @@ import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faFillHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { UserContext } from "~/layouts/DefaultLayout/DefaultLayout";
-import { firebaseSelector } from "~/redux/selector";
+import { FirebaseContext } from "~/context/firebase";
+import { UserContext } from "~/context/user";
 import Comments from "../Comments";
 
 import "./PostInteractive.scss";
@@ -16,11 +15,11 @@ function PostInteractive({
   comments,
   children,
 }) {
+  const { firebase, FieldValue } = useContext(FirebaseContext);
   const { userId, following } = useContext(UserContext);
 
   const [toggleLike, setToggleLike] = useState(youLikedThisPost);
   const [likesQuantity, setLikesQuantity] = useState(likes.userId.length);
-  const { firebase, FieldValue } = useSelector(firebaseSelector);
 
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
@@ -53,8 +52,6 @@ function PostInteractive({
 
     commentBtn.current.addEventListener("click", handleFocusOnComment);
   }, []);
-
-  console.log('re-render');
 
   return (
     <div className="mt-3">
