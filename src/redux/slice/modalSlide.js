@@ -10,13 +10,14 @@ const modalSlice = createSlice({
         openModal: (state, action) => {
             return {
                 isOpen:true,
-                type: action.payload.type
+                ...action.payload
             }
         },
-        closeModal: (state, action) => {
+
+        closeModal: () => {
             return {
                 isOpen:false,
-                type: action.payload.type
+                type: ""
             }
         }
     }

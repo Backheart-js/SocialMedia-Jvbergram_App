@@ -9,8 +9,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba($color: #000000, $alpha: 0.15);
+  background-color: rgba($color: #000000, $alpha: 0.7);
   overflow-y: auto;
+  z-index: 9999;
 }
 
 .modal__close-icon {
@@ -27,7 +28,6 @@
   flex-direction: column;
   justify-content: space-between;
   max-height: 90vh;
-  padding: 16px 20px;
   background-color: #fff;
   border-radius: 10px;
   animation: scaleModal .1s linear;
@@ -166,6 +166,17 @@
       cursor: default;
     }
   }
+}
+
+
+// Delete modal
+.delete__logo-wrapper {
+  width: 250px;
+
+}
+
+.modal__delete-item {
+  border-top: 1px solid $border-color-light-theme;
 }
 
 

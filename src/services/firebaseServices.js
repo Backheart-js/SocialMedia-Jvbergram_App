@@ -1,5 +1,11 @@
 import { firebase } from "~/lib/firebase";
+import {
+  getStorage,
+  ref,
+  deleteObject
+} from "firebase/storage";
 import { v4 } from "uuid";
+import { doc, deleteDoc } from "firebase/firestore";
 
 const db = firebase.firestore();
 
@@ -43,21 +49,26 @@ export async function createNewPost(photos, userId, caption) {
         likes: {
           userId: [],
         },
-        comments: [
-          // {
-          //   userId: "nz0inbDI6NWnNhQgMvRBXJhM3Ho1",
-          //   displayName: "bn29122001",
-          //   content: "Nice pic bro!",
-          //   likes: 0,
-          //   dateCreated: Date.now(),
-          // }
-        ],
+        comments: [],
         caption,
         dateCreated: Date.now(),
       });
   } catch (error) {
     console.log(error);
   }
+}
+
+export async function deletePost(postId, imageUrls) {
+  const storage = getStorage();
+
+  await deleteDoc(doc(db, "posts", postId))
+
+  const promises = [];
+  imageUrls.forEach((imageUrl) => {
+    const desertRef = ref(storage, imageUrl);
+    promises.push(deleteObject(desertRef));
+  });
+  await Promise.all(promises); 
 }
 
 export async function getSuggestionsProfilesById(userId, following) {
@@ -83,14 +94,14 @@ export async function getPosts(userId, following) {
 
     const userFollowedPhotos = responses.docs.map((photo) => ({
       ...photo.data(),
-      docId: photo.id
-    }))
+      docId: photo.id,
+    }));
 
     const photosWithUserInfo = await Promise.all(
       userFollowedPhotos.map(async (photo) => {
         let youLikedThisPost = false;
         if (photo.likes.userId.includes(userId)) {
-          youLikedThisPost=true;
+          youLikedThisPost = true;
         }
         const userInfo = await getUserById(photo.userId); //Trả về 1 mảng nhưng chỉ chứ 1 phần tử
         const { avatarUrl, username } = userInfo[0];
@@ -99,10 +110,10 @@ export async function getPosts(userId, following) {
           avatarUrl,
           username,
           ...photo,
-          youLikedThisPost
-        }
+          youLikedThisPost,
+        };
       })
-    )
+    );
 
     return photosWithUserInfo;
   } catch (error) {

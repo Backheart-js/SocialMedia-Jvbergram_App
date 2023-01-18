@@ -24,10 +24,14 @@ import SubSidebar from "./SubSidebar";
 import Avatar from "~/components/Avatar";
 import { UserContext } from "~/context/user";
 import { FirebaseContext } from "~/context/firebase";
+import { useDispatch } from "react-redux";
+import modalSlice from "~/redux/slice/modalSlide";
+import { CREATE_POST } from "~/constants/modalTypes";
 
 function Sidebar({ openModalFunc }) {
   const { firebase } = useContext(FirebaseContext);
   const userInfo = useContext(UserContext);
+  const dispatch = useDispatch()
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);
@@ -50,6 +54,12 @@ function Sidebar({ openModalFunc }) {
       setToggleSubSidebar(true);
     }
   };
+
+  const handleOpenCreateNewPostModal = () => {
+    dispatch(modalSlice.actions.openModal({
+      type: CREATE_POST
+    }))
+  }
 
   return (
     <aside id="sidebar">
@@ -149,7 +159,7 @@ function Sidebar({ openModalFunc }) {
                   <span className="sidebarMain__item-text">Thông báo</span>
                 )}
               </li>
-              <li className="sidebarMain__item-wrapper" onClick={openModalFunc}>
+              <li className="sidebarMain__item-wrapper" onClick={handleOpenCreateNewPostModal}>
                 <FontAwesomeIcon
                   icon={faSquarePlus}
                   className="sidebarMain__item-icon"

@@ -13,14 +13,26 @@ import "./Post.scss";
 import PostInteractive from "./PostInteractive";
 import Dropdown from "../Dropdown/Dropdown";
 import { UserContext } from "~/context/user";
+import { useDispatch } from "react-redux";
+import modalSlice from "~/redux/slice/modalSlide";
+import { DELETE_POST } from "~/constants/modalTypes";
 
 function Post({ data = {} }) {
   const { userId } = useContext(UserContext);
+  const dispatch = useDispatch()
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
 
   const handleCloseDropdown = () => {
     setToggleOptionDropdown(false);
   };
+
+  const handleOpenDeletePostModal = () => {
+    dispatch(modalSlice.actions.openModal({
+      type: DELETE_POST,
+      postId: data.docId,
+      imagesUrl: data.photos
+    }))
+  }
 
   return (
     <div className="post__container">
@@ -60,7 +72,7 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
+                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold" onClick={handleOpenDeletePostModal}>
                       Xóa bài viết
                     </button>
                   </li>

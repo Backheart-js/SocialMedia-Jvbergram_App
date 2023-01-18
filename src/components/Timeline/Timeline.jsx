@@ -6,8 +6,8 @@ import Post from "../Post";
 import "./Timeline.scss";
 
 function Timeline() {
-  const posts = usePosts();
-
+  const posts = usePosts()
+  
   return !posts ? (
     <>
       {[...new Array(1)].map((_, index) => (
