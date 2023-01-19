@@ -4,7 +4,6 @@ import {
   ref,
   deleteObject
 } from "firebase/storage";
-import { v4 } from "uuid";
 import { doc, deleteDoc } from "firebase/firestore";
 
 const db = firebase.firestore();
@@ -20,11 +19,10 @@ export async function checkUserNameExist(username) {
   return responses.docs.length; //Trả về độ dài mảng dữ liệu. 0: Chưa tồn tại | 1: Đã có
 }
 
-export async function getUserById(userId) {
-  const responses = await firebase
-    .firestore()
+export async function getUser(data) { //Lấy data theo id hoặc username
+  const responses = await db
     .collection("users")
-    .where("userId", "==", userId)
+    .where(`${Object.keys(data)[0]}`, "==", Object.values(data)[0])
     .get();
 
   const user = responses.docs.map((item) => {
@@ -37,15 +35,29 @@ export async function getUserById(userId) {
   return user; //Trả ra 1 mảng có 1 phần tử là thông tin của user
 }
 
+export async function getPostOfUser(userId) {
+  const response = await db.collection('posts').where("userId", "==", userId).get();
+  const posts = response.docs.map((post) => ({
+    ...post.data(),
+    docId: post.id
+  }));
+
+  return posts;  
+}
+
+export async function getPostById(docId) {
+  const responses = await db.collection('posts').doc(docId).get();
+
+  return responses.data();  
+}
+
 export async function createNewPost(photos, userId, caption) {
   try {
-    await firebase
-      .firestore()
+    await db
       .collection("posts")
       .add({
         photos,
         userId,
-        postId: v4(),
         likes: {
           userId: [],
         },

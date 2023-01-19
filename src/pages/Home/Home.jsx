@@ -5,12 +5,13 @@ import Timeline from '~/components/Timeline';
 import UserLabel from '~/components/UserLabel';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
-import { getUserById } from '~/services/firebaseServices';
+import { getUser } from '~/services/firebaseServices';
 
 import './Home.scss'
 
 function Home() {
   const userInfo = useContext(UserContext);
+  console.log(userInfo);
   const { firebase } = useContext(FirebaseContext);
   const [posts, setPosts] = useState(null);
   const [showUpdateButton, setShowUpdateButton] = useState(false);
@@ -31,7 +32,9 @@ function Home() {
                 if (photo.likes.userId.includes(userInfo.userId)) {
                 youLikedThisPost = true;
                 }
-                const ownerPost = await getUserById(photo.userId);
+                const ownerPost = await getUser({
+                  userId: photo.userId
+                });
                 const { avatarUrl, username } = ownerPost[0];
                 return {
                 avatarUrl,
@@ -58,25 +61,27 @@ function Home() {
   console.log(posts);
 
   return (
-    <div className='grid grid-cols-12 gap-8'>
-      <div className="col-span-7">
-        <div className="mt-4">
-          <Timeline posts={posts} />
-        </div>
-      </div>
-      <div className="col-span-5">
-        <div className="my-4"><UserLabel avatarUrl={userInfo?.avatarUrl} username={userInfo?.username} fullname={userInfo?.fullname} /></div>
-        <div className="suggestion__wrapper">
-          <div className="suggestion__title-wrapper flex justify-between">
-            <span className='text-sm text-gray-500 font-medium'>
-              Gợi ý cho bạn
-            </span>
-            <Link to={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
-              Xem tất cả
-            </Link>
+    <div className='pt-8 mx-auto w-[820px]'>
+      <div className='grid grid-cols-12 gap-8'>
+        <div className="col-span-7">
+          <div className="mt-4">
+            <Timeline posts={posts} />
           </div>
-          <div className="suggestion__body-min mt-2">
-            <Suggestion uid={userInfo.userId} following={userInfo.following}/>
+        </div>
+        <div className="col-span-5">
+          <div className="my-4"><UserLabel avatarUrl={userInfo?.avatarUrl} username={userInfo?.username} fullname={userInfo?.fullname} /></div>
+          <div className="suggestion__wrapper">
+            <div className="suggestion__title-wrapper flex justify-between">
+              <span className='text-sm text-gray-500 font-medium'>
+                Gợi ý cho bạn
+              </span>
+              <Link to={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
+                Xem tất cả
+              </Link>
+            </div>
+            <div className="suggestion__body-min mt-2">
+              <Suggestion uid={userInfo.userId} following={userInfo.following}/>
+            </div>
           </div>
         </div>
       </div>

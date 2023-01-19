@@ -62,7 +62,7 @@ function Sidebar({ openModalFunc }) {
   }
 
   return (
-    <aside id="sidebar">
+    <aside id="sidebar" className="z-10">
       <div className="sidebar__main-wrapper">
         <div className="flex flex-col justify-between h-full px-3 py-8">
           <div className="sidebarMain__function-wrapper">
@@ -172,7 +172,7 @@ function Sidebar({ openModalFunc }) {
               </li>
               <NavLink to={`/profile/${userInfo?.username}`} className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
-                  <Avatar avatarUrl={userInfo?.avatarUrl === undefined ? {} : userInfo.avatarUrl} />
+                  <Avatar avatarUrl={userInfo?.avatarUrl === undefined ? {} : userInfo.avatarUrl} size={"small"}/>
                 </div>
                 {toggleSubSidebar ? (
                   <></>

@@ -4,7 +4,7 @@ import "./DefaultLayout.scss";
 import Sidebar from "../components/Sidebar";
 import Modal from "~/components/Modal";
 import { useAuthListener } from "~/hooks";
-import { getUserById } from "~/services/firebaseServices";
+import { getUser } from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import { UserContext } from "~/context/user";
 import { modalSelector } from "~/redux/selector";
@@ -13,28 +13,31 @@ import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 function DefaultLayout({ children }) {
   const { user } = useAuthListener();
-  const [userInfo, setUserInfo] = useState(null);
+  const [currentUserInfo, setCurrentUserInfo] = useState(null);
   const { isOpen, ...payload } = useSelector(modalSelector)
 
   useEffect(() => {
-    const getUser = async () => {
-      const response = await getUserById(user.uid); //phương thức từ firebaseService
+    const getData = async () => {
+      const response = await getUser({
+        userId: user.uid
+      }); //phương thức từ firebaseService
       const [userObj] = response;
-      setUserInfo(userObj); //1 Object
+      setCurrentUserInfo(userObj); //1 Object
     };
-
-    user !== null && getUser();
+    
+    user !== null && getData();
   }, [user]);
-  
-  return !userInfo ? 
+  console.log(currentUserInfo);
+
+  return !currentUserInfo ? 
   (<LoadingPage />)
   :
   (
-    <UserContext.Provider value={userInfo}>
+    <UserContext.Provider value={currentUserInfo}>
       <div>
         <Sidebar />
-        <main id="content">
-          <div className="pt-8 mx-auto w-[820px]">{children}</div>
+        <main id="content" className="bg-[#fafafa] min-h-screen h-full">
+            {children}
         </main>
         {isOpen && <Modal payload={payload} />}
       </div>

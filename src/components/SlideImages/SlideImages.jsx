@@ -12,8 +12,6 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 function SlideImages({ imagesList, ...props }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-    const [xPos, setXPos] = useState(0);
-const [yPos, setYPos] = useState(0);
 
 
   return (
@@ -25,7 +23,7 @@ const [yPos, setYPos] = useState(0);
     //   ))}
     // </Slider>
     <div className="slider-container mt-4">
-      <div className="slider__image-wrapper">
+      <div className="slider__image-wrapper min-h-[400px]">
           {imagesList.map((image, index) => {
             return (
               <img

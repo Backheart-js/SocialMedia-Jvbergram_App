@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Comments.scss";
 import CommentTextField from "./CommentTextField";
+import '../Post.scss'
 
 function Comments({ docId, allComments = [], userId, commentFieldRef }) {
   //Comment preview hiển thị với những cmt của user
@@ -19,7 +20,7 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       {allCommentsQuantity >= 1 && (
         <button className="mb-1">
           <span className="text-gray-500 text-sm font-normal hover:text-gray-700">
@@ -32,21 +33,21 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
         userCommentList.map((userComment, index) => {
           return (
             <div
-              className="userComment__wrapper flex justify-between"
+              className="userComment__wrapper flex justify-between w-full"
               key={index}
             >
-              <div>
+              <div className="">
                 <Link
                   className="font-semibold text-sm mr-1"
                   to={`/profile/${userComment.displayName}`}
                 >
                   {userComment.displayName}
                 </Link>
-                <span className="text-[15px] font-normal">
+                <span className="text-[15px] font-normal wrap-text">
                   {userComment.content}
                 </span>
               </div>
-              <button className="">
+              <button className="pl-2">
                 <FontAwesomeIcon className="text-xs" icon={faHeart} />
               </button>
             </div>

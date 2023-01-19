@@ -24,7 +24,7 @@ function DeletePost({ closeModal, postId, imagesUrl }) {
     }
 
   return (
-    <div className='modal__box-wrapper flex flex-col items-center min-w-[400px] pt-5 select-none'>
+    <div className='modal__box-wrapper flex flex-col items-center min-w-[400px] min-h-[370px] pt-5 select-none'>
         <div className="delete__logo-wrapper mt-2 mb-4">
             <img src={logo.delete_option_1} alt="" className="" />
         </div>

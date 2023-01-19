@@ -1,0 +1,22 @@
+@import '../../styles/variable';
+
+.avatar__wrapper {
+    border: 1px solid $border-color-light-theme;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &.avatar__small {
+        width: 24px;
+        height: 24px;
+    }
+    
+    &.avatar__medium {
+        width: 56px;
+        height: 56px;
+    }
+    
+    &.avatar__big {
+        width: 168px;
+        height: 168px;
+    }
+}

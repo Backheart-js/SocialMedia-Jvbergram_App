@@ -2,20 +2,13 @@
 
 .post__container {
     position: relative;
+    background-color: #fff;
+    border: 1px solid $border-color-light-theme;
+    border-radius: 6px;
+    overflow: hidden;
 
     &+& {
         margin-top: 22px;
-        padding-top: 26px;
-
-        &::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            height: 1px;
-            background-color: $border-color-light-theme;
-        }
     }
 }
 
@@ -69,4 +62,8 @@
     width: 100%;
     font-size: 15px;
     padding: 8px 20px;
+}
+
+.wrap-text {
+    word-wrap: break-word;
 }

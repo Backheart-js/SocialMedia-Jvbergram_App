@@ -32,6 +32,7 @@ function CreateNewPost({ closeModal }) {
       };
     
       const handleChange = (e) => {
+        console.log('change');
         const files = e.target.files;
         handlePreviewImage(files);
     
@@ -39,6 +40,7 @@ function CreateNewPost({ closeModal }) {
           const newImg = files[i];
           setImageList((prev) => [...prev, newImg]);
         }
+
       };
     
       function auto_grow(e) {

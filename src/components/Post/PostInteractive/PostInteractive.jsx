@@ -54,7 +54,7 @@ function PostInteractive({
   }, []);
 
   return (
-    <div className="mt-3">
+    <div className="mt-3 px-3">
       <div className="postInteractive__icon-wrapper flex justify-between">
         <div className="postInteractive__icon-mainFunc">
           {toggleLike ? (

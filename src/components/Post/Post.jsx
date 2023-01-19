@@ -1,7 +1,7 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistance, format } from "date-fns";
 import vi from "date-fns/locale/vi";
 import Tippy from "@tippyjs/react";
@@ -18,6 +18,7 @@ import modalSlice from "~/redux/slice/modalSlide";
 import { DELETE_POST } from "~/constants/modalTypes";
 
 function Post({ data = {} }) {
+  const navigate = useNavigate()
   const { userId } = useContext(UserContext);
   const dispatch = useDispatch()
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
@@ -34,9 +35,13 @@ function Post({ data = {} }) {
     }))
   }
 
+  const handleGoToPost = () => {
+    navigate(`/p/${data.docId}`)
+  }
+
   return (
-    <div className="post__container">
-      <div className="flex justify-between items-center">
+    <div className="post__container py-3">
+      <div className="flex justify-between items-center px-3">
         <div className="flex items-center">
           <UserLabel
             avatarUrl={data.avatarUrl}
@@ -82,7 +87,7 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button className="post__option-dropdown-btn" onClick={handleGoToPost}>
                       Đi tới bài viết
                     </button>
                   </li>
@@ -120,7 +125,7 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button className="post__option-dropdown-btn" onClick={handleGoToPost}>
                       Đi tới bài viết
                     </button>
                   </li>
@@ -162,14 +167,14 @@ function Post({ data = {} }) {
         youLikedThisPost={data.youLikedThisPost}
         comments={data.comments}
       >
-        <div className="post__caption my-1">
+        <div className="post__caption mb-1 mt-3">
           <Link
             className="font-semibold text-sm mr-1"
             to={`/profile/${data.username}`}
           >
             {data.username}
           </Link>
-          <span className="text-[15px] font-normal">{data.caption}</span>
+          <span className="text-[15px] font-normal wrap-text">{data.caption}</span>
         </div>
       </PostInteractive>
     </div>

@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useAuthListener } from "~/hooks";
 import { publicRouter } from "./config/routerConfig";
 import DefaultLayout from "./layouts/DefaultLayout";
+import OnlyHeaderLayout from "./layouts/OnlyHeaderLayout";
 import LoadingPage from "./pages/LoadingPage/LoadingPage";
 
 
 function App() {
   const { user, loading } = useAuthListener();
+  console.log(user);
 
   return loading ? 
   (
@@ -19,7 +21,7 @@ function App() {
       <Suspense fallback={<LoadingPage />}>
         <Routes>
           {publicRouter.map((router, index) => {
-            const Layout = router.layout || DefaultLayout;
+            const Layout = router.layout || (user ? DefaultLayout : OnlyHeaderLayout);
             const ProtectedRoute = router.protect;
             const Page = router.component;
 

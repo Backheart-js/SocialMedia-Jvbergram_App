@@ -1,0 +1,43 @@
+@import '../../styles/variable';
+
+.profile__top-wrapper {
+    border-bottom: 1px solid $border-color-light-theme;
+}
+
+.profile__info-wrapper+.profile__info-wrapper {
+    margin-top: 22px;
+}
+
+.profile__info-2 {
+    &+& {
+        margin-left: 32px;
+    }
+}
+
+.post__wrapper {
+    border-bottom: 1px solid $border-color-light-theme;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.post__wrapper-link {
+    position: relative;
+
+    .post__layout {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(#000, .4);
+    }
+
+    &:hover {
+        .post__layout {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

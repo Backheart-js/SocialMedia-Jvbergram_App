@@ -1,18 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 
-function Avatar({ avatarUrl }) {
-  const { default: avatarDefault, current } = avatarUrl;
+import "./Avatar.scss";
 
-  return avatarUrl === {} ? (
-    <Skeleton circle={true} />
+function Avatar({ avatarUrl, size }) {
+  return !avatarUrl ? (
+    <Skeleton count={1} circle={true} className={`avatart__${size}`}/>
   ) : (
-    <img
-      src={current || avatarDefault}
-      alt=""
-      className="rounded-full select-none"
-    />
+    <div className={`avatar__wrapper avatar__${size}`}>
+      <img
+        src={avatarUrl.current || avatarUrl.default}
+        alt=""
+        className={`select-none`}
+      />
+    </div>
   );
 }
 
