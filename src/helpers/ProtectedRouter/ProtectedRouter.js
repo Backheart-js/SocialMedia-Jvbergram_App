@@ -3,12 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import LoadingPage from '~/pages/LoadingPage/LoadingPage';
 
 function ProtectedUserRouter({ user, children }) {
-    console.log('Bắt đầu đi vào protectedUserRouter');
     const navigate = useNavigate()
     const [isLoaded, setIsLoaded] = useState(false);
     const location = useLocation();
-
-    console.log("Đã load xong? " + isLoaded);
 
     useEffect(() => {
         if(!user) {
@@ -21,15 +18,14 @@ function ProtectedUserRouter({ user, children }) {
     }, [user]);
 
     useEffect(() => {
-        console.log('rơi vào location');
         setIsLoaded(true);
     }, [location]);
 
 
-    if (!isLoaded) {
-        return <LoadingPage />
-    } else {
+    if (isLoaded && user) { //Có user và đã chạy effect xong thì mới cho vào, không thì đợi load
         return <>{children}</>
+    } else {
+        return <LoadingPage />
     }
 }
 
