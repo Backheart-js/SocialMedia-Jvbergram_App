@@ -27,7 +27,6 @@ function DefaultLayout({ children }) {
     
     user !== null && getData();
   }, [user]);
-  console.log(currentUserInfo);
 
   return !currentUserInfo ? 
   (<LoadingPage />)

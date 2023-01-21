@@ -11,10 +11,11 @@ import './Home.scss'
 
 function Home() {
   const userInfo = useContext(UserContext);
-  console.log(userInfo);
   const { firebase } = useContext(FirebaseContext);
   const [posts, setPosts] = useState(null);
   const [showUpdateButton, setShowUpdateButton] = useState(false);
+
+  console.log('Home');
 
   useEffect(() => {
     let unsubscribe;
@@ -57,8 +58,6 @@ function Home() {
   useEffect(() => {
     document.title = "Jvbergram"
   }, [])
-  
-  console.log(posts);
 
   return (
     <div className='pt-8 mx-auto w-[820px]'>

@@ -10,22 +10,21 @@ export default function useAuthListener() {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
+    console.log("auth changed");
     const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
       if (authUser && authUser.emailVerified) {
-        isRememberPassword
-          ? localStorage.setItem("authUser", JSON.stringify(authUser))
-          : sessionStorage.setItem("authUser", JSON.stringify(authUser));
+        localStorage.setItem("authUser", JSON.stringify(authUser))
         setUser(authUser);
         setLoading(false);
       } else {
         localStorage.removeItem("authUser");
-        sessionStorage.removeItem("authUser");
         setUser(null);
         setLoading(false);
       }
     });
 
     return unsubscribe;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firebase]);
 
   return { user, loading };

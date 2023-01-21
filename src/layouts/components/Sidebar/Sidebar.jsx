@@ -15,7 +15,7 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Dropdown from "~/components/Dropdown/Dropdown";
@@ -28,10 +28,11 @@ import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import { CREATE_POST } from "~/constants/modalTypes";
 
-function Sidebar({ openModalFunc }) {
+function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
   const userInfo = useContext(UserContext);
   const dispatch = useDispatch()
+  const nagative = useNavigate()
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);
