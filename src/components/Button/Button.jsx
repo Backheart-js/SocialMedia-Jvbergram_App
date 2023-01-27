@@ -12,8 +12,8 @@ function Button({
   const classes = `${className} ${
     btnPrimary && "bg-blue-primary hover:bg-blue-bold text-white"
   } ${
-    btnWhite && "bg-white text-blue-primary hover:text-ble-bold"
-  } flex items-center justify-center rounded-lg `;
+    btnWhite && "bg-white text-blue-primary hover:text-blue-bold"
+  } flex items-center justify-center rounded-lg`;
 
   return (
     <button className={classes} onClick={handleClick} {...props}>

@@ -8,6 +8,7 @@ import LoginLayout from "~/layouts/LoginLayout";
 const Login = lazy(() => import("~/pages/Login/Login"));
 const Signup = lazy(() => import("~/pages/Signup/Signup"));
 const VerifyAccount = lazy(() => import("~/pages/VerifyAccount/VerifyAccount"));
+const ResetPassword = lazy(() => import("~/pages/ResetPassword/ResetPassword"));
 
 const Home = lazy(() => import("~/pages/Home/Home"));
 const Suggestion = lazy(() => import("~/pages/Suggestion/Suggestion"));
@@ -20,6 +21,7 @@ export const publicRouter = [
   { path: "/login", component: Login, layout: LoginLayout, protect: ProtectedLoginAndSignupRouter },
   { path: "/signup", component: Signup, layout: LoginLayout, protect: ProtectedLoginAndSignupRouter },
   { path: "/notify", component: VerifyAccount, layout: LoginLayout, protect: ProtectedVerifyRouter },
+  { path: "/reset-password", component: ResetPassword, layout: LoginLayout, protect: ProtectedVerifyRouter },
 
   { path: "/", component: Home, protect: ProtectedUserRouter },
   { path: "/direct", component: Direct, protect: ProtectedUserRouter },
