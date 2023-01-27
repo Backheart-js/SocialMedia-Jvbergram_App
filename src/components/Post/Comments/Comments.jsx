@@ -17,23 +17,24 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
     });
 
     setUserCommentList(userComments);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   return (
     <div className="w-full">
       {allCommentsQuantity >= 1 && (
-        <button className="mb-1">
+        <Link to={`/p/${docId}`} className="mb-1">
           <span className="text-gray-500 text-sm font-normal hover:text-gray-700">
             Xem{allCommentsQuantity > 1 ? " tất cả" : ""} {allCommentsQuantity}{" "}
             bình luận
           </span>
-        </button>
+        </Link>
       )}
       {userCommentList.length > 0 &&
         userCommentList.map((userComment, index) => {
           return (
             <div
-              className="userComment__wrapper flex justify-between w-full"
+              className="userComment__wrapper flex justify-between w-full mt-1"
               key={index}
             >
               <div className="">

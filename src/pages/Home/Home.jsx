@@ -15,8 +15,6 @@ function Home() {
   const [posts, setPosts] = useState(null);
   const [showUpdateButton, setShowUpdateButton] = useState(false);
 
-  console.log('Home');
-
   useEffect(() => {
     let unsubscribe;
     const getTimeline = async () => {
@@ -34,7 +32,7 @@ function Home() {
                 youLikedThisPost = true;
                 }
                 const ownerPost = await getUser({
-                  userId: photo.userId
+                  userId: [photo.userId]
                 });
                 const { avatarUrl, username } = ownerPost[0];
                 return {

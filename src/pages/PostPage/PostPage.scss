@@ -1,0 +1,63 @@
+@import '../../styles/variable';
+
+.postPage__wrapper {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid $border-color-light-theme;
+    border-radius: 2px;
+}
+
+.postPage__owner-wrapper {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $border-color-light-theme;
+}
+
+.postPage__follow-state {
+    position: relative;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 10px;
+    padding-left: 10px;
+
+    .isfollowing {
+       
+    }
+
+    .notfollowing {
+
+    }
+
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 4px;
+        height: 4px;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: #666;
+    }
+}
+
+.postPage__comment-wrapper {
+    flex-grow: 1;
+    overflow-y: overlay;
+}
+
+.postPage__bottom {
+    border-top: 1px solid $border-color-light-theme;
+}
+
+.postPage__comment-input {
+    border-top: 1px solid $border-color-light-theme;
+}
+
+.postPage__owner-wrapper,
+.postPage__comment-wrapper,
+.postPage__interactive-wrapper,
+.postPage__comment-input {
+    padding: 14px 16px;
+}

@@ -1,60 +1,38 @@
 import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faFillHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
-import Comments from "../Comments";
+import { updateLikePost } from "~/services/firebaseServices";
 
 import "./PostInteractive.scss";
 
 function PostInteractive({
+  commentBtnRef,
   docId,
   likes,
   youLikedThisPost,
-  comments,
-  children,
 }) {
-  const { firebase, FieldValue } = useContext(FirebaseContext);
-  const { userId, following } = useContext(UserContext);
+  const { userId } = useContext(UserContext);
 
   const [toggleLike, setToggleLike] = useState(youLikedThisPost);
   const [likesQuantity, setLikesQuantity] = useState(likes.userId.length);
 
-  const commentFieldRef = useRef(null);
-  const commentBtn = useRef(null);
+  
 
   const handleToggleLiked = async () => {
-    setToggleLike((prev) => !prev);
-    setLikesQuantity((likes) => (!toggleLike ? likes + 1 : likes - 1));
-
     try {
-      await firebase
-        .firestore()
-        .collection("posts")
-        .doc(docId)
-        .update({
-          likes: {
-            userId: !toggleLike
-              ? FieldValue.arrayUnion(userId)
-              : FieldValue.arrayRemove(userId),
-          },
-        });
+      setToggleLike((prev) => !prev);
+      setLikesQuantity((likes) => (!toggleLike ? likes + 1 : likes - 1));
+      await updateLikePost(docId, userId, toggleLike);
     } catch (error) {
       throw error;
     }
   };
 
-  useEffect(() => {
-    const handleFocusOnComment = () => {
-      commentFieldRef.current.focus();
-    };
-
-    commentBtn.current.addEventListener("click", handleFocusOnComment);
-  }, []);
-
   return (
-    <div className="mt-3 px-3">
+    <>
       <div className="postInteractive__icon-wrapper flex justify-between">
         <div className="postInteractive__icon-mainFunc">
           {toggleLike ? (
@@ -88,7 +66,7 @@ function PostInteractive({
               />
             </button>
           )}
-          <button ref={commentBtn} className="postInteractive__button">
+          <button ref={commentBtnRef} className="postInteractive__button">
             <svg
               aria-label="Bình luận"
               className="postInteractive__icon"
@@ -157,15 +135,7 @@ function PostInteractive({
           </button>
         </div>
       )}
-      {children}
-      <Comments
-        docId={docId}
-        allComments={comments}
-        userId={userId}
-        following={following}
-        commentFieldRef={commentFieldRef}
-      />
-    </div>
+    </>
   );
 }
 

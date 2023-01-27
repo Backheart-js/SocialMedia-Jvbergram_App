@@ -1,6 +1,6 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { formatDistance, format } from "date-fns";
 import vi from "date-fns/locale/vi";
@@ -15,29 +15,52 @@ import Dropdown from "../Dropdown/Dropdown";
 import { UserContext } from "~/context/user";
 import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
-import { DELETE_POST } from "~/constants/modalTypes";
+import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
+import Comments from "./Comments";
 
 function Post({ data = {} }) {
-  const navigate = useNavigate()
-  const { userId } = useContext(UserContext);
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const { userId:currentUserId } = useContext(UserContext);
+  const dispatch = useDispatch();
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
+  const commentFieldRef = useRef(null);
+  const commentBtn = useRef(null);
 
   const handleCloseDropdown = () => {
     setToggleOptionDropdown(false);
   };
 
   const handleOpenDeletePostModal = () => {
-    dispatch(modalSlice.actions.openModal({
-      type: DELETE_POST,
-      postId: data.docId,
-      imagesUrl: data.photos
-    }))
-  }
+    dispatch(
+      modalSlice.actions.openModal({
+        type: DELETE_POST,
+        postId: data.docId,
+        imagesUrl: data.photos,
+      })
+    );
+  };
+
+  const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
+    dispatch(
+      modalSlice.actions.openModal({
+        type: UNFOLLOW,
+        currentUserId,
+        followingUserInfo: profileInfo,
+      })
+    );
+  };
 
   const handleGoToPost = () => {
-    navigate(`/p/${data.docId}`)
-  }
+    navigate(`/p/${data.docId}`);
+  };
+
+  useEffect(() => {
+    const handleFocusOnComment = () => {
+      commentFieldRef.current.focus();
+    };
+
+    commentBtn.current.addEventListener("click", handleFocusOnComment);
+  }, []);
 
   return (
     <div className="post__container py-3">
@@ -69,7 +92,7 @@ function Post({ data = {} }) {
           placement="bottom-start"
           content={
             <ul className="py-2">
-              {data.userId === userId ? (
+              {data.userId === currentUserId ? (
                 <>
                   <li className="post__option-dropdown--item">
                     <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
@@ -77,7 +100,10 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold" onClick={handleOpenDeletePostModal}>
+                    <button
+                      className="post__option-dropdown-btn text-[#ED4956] font-semibold"
+                      onClick={handleOpenDeletePostModal}
+                    >
                       Xóa bài viết
                     </button>
                   </li>
@@ -87,7 +113,10 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn" onClick={handleGoToPost}>
+                    <button
+                      className="post__option-dropdown-btn"
+                      onClick={handleGoToPost}
+                    >
                       Đi tới bài viết
                     </button>
                   </li>
@@ -115,7 +144,11 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
+                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold" onClick={() => handleUnFollowOtherUser(currentUserId, {
+                      avatar: data.avatarUrl,
+                      username: data.username,
+                      userId: data.userId
+                    })}>
                       Bỏ theo dõi
                     </button>
                   </li>
@@ -125,7 +158,10 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn" onClick={handleGoToPost}>
+                    <button
+                      className="post__option-dropdown-btn"
+                      onClick={handleGoToPost}
+                    >
                       Đi tới bài viết
                     </button>
                   </li>
@@ -159,24 +195,35 @@ function Post({ data = {} }) {
           </button>
         </Dropdown>
       </div>
+
       <SlideImages imagesList={data.photos} />
 
-      <PostInteractive
-        docId={data.docId}
-        likes={data.likes}
-        youLikedThisPost={data.youLikedThisPost}
-        comments={data.comments}
-      >
-        <div className="post__caption mb-1 mt-3">
+      <div className="mt-3 px-3">
+        <PostInteractive
+          commentBtnRef={commentBtn}
+          docId={data.docId}
+          likes={data.likes}
+          youLikedThisPost={data.youLikedThisPost}
+          comments={data.comments}
+        ></PostInteractive>
+        <div className="post__caption mb-1 mt-2">
           <Link
             className="font-semibold text-sm mr-1"
             to={`/profile/${data.username}`}
           >
             {data.username}
           </Link>
-          <span className="text-[15px] font-normal wrap-text">{data.caption}</span>
+          <span className="text-[15px] font-normal wrap-text">
+            {data.caption}
+          </span>
         </div>
-      </PostInteractive>
+        <Comments
+          docId={data.docId}
+          allComments={data.comments}
+          userId={currentUserId}
+          commentFieldRef={commentFieldRef}
+        />
+      </div>
     </div>
   );
 }

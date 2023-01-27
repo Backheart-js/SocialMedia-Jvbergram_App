@@ -1,7 +1,8 @@
-.userComment__wrapper {
-    &+& {
-        margin-top: 4px;
-    }
+@import '../../../styles/variable';
+
+.comment__input-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .comment__input {
@@ -13,7 +14,7 @@
 
     &::placeholder {
         color: #666;
-        font-size: 14px;
+        font-size: 13px;
     }
 
     &:focus-visible {

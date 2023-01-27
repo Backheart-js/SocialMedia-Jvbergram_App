@@ -45,7 +45,7 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
   }
 
   return (
-    <form className="comment__input-wrapper flex items-center mt-2">
+    <form className="comment__input-wrapper flex items-center">
         <textarea
           ref={commentFieldRef}
           value={commentValues}
@@ -61,7 +61,7 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
             }
           }}
         />
-        <button className={`px-2 text-[#219ebc] font-semibold text-sm ${commentValues ? "" : "hidden"}`} onClick={(e) => {
+        <button className={`pl-2 text-[#219ebc] font-semibold text-sm ${commentValues ? "" : "hidden"}`} onClick={(e) => {
           e.preventDefault();
           handleSubmitComment();
         }}>

@@ -6,9 +6,9 @@ function OnlyHeaderLayout({ children }) {
   return (
     <div>
         <Header />
-        <div className="">
+        <main className="bg-main-bg min-h-screen h-full mt-[60px]">
             {children}
-        </div>
+        </main>
     </div>
   )
 }

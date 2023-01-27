@@ -32,7 +32,6 @@ function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
   const userInfo = useContext(UserContext);
   const dispatch = useDispatch()
-  const nagative = useNavigate()
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);

@@ -6,8 +6,9 @@ import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import CreateNewPost from "./ModalContent/CreateNewPost";
 import "./Modal.scss";
-import { CREATE_POST, DELETE_POST } from "~/constants/modalTypes";
+import { CREATE_POST, DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
 import DeletePost from "./ModalContent/DeletePost";
+import UnFollow from "./ModalContent/UnFollow";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -41,6 +42,8 @@ function Modal({ payload }) {
         (payload.type === CREATE_POST && <CreateNewPost closeModal={closeModal} />) 
         ||
         (payload.type === DELETE_POST && <DeletePost closeModal={closeModal} postId={payload.postId} imagesUrl={payload.imagesUrl}/>) 
+        ||
+        (payload.type === UNFOLLOW && <UnFollow closeModal={closeModal} currentUserId={payload.currentUserId} followingUserInfo={payload.followingUserInfo}/>)
       }
     </div>
   );

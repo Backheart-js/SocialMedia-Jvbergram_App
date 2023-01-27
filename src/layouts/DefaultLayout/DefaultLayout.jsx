@@ -19,7 +19,7 @@ function DefaultLayout({ children }) {
   useEffect(() => {
     const getData = async () => {
       const response = await getUser({
-        userId: user.uid
+        userId: [user.uid]
       }); //phương thức từ firebaseService
       const [userObj] = response;
       setCurrentUserInfo(userObj); //1 Object
@@ -35,7 +35,7 @@ function DefaultLayout({ children }) {
     <UserContext.Provider value={currentUserInfo}>
       <div>
         <Sidebar />
-        <main id="content" className="bg-[#fafafa] min-h-screen h-full">
+        <main id="content" className="bg-main-bg min-h-screen h-full">
             {children}
         </main>
         {isOpen && <Modal payload={payload} />}

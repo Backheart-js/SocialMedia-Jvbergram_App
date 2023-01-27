@@ -8,7 +8,7 @@ import './SearchSubSidebar.scss'
 function SearchInput() {
     const [searchValue, setSearchValue] = useState('')
     const [showResult, setShowResult] = useState(true)
-    const [resultValue, setResultValue] = useState([1,2,3])
+    const [resultValue, setResultValue] = useState([])
 
     const handleSearchValueChange = (e) => {
         setSearchValue(e.target.value);

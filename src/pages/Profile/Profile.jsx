@@ -2,12 +2,20 @@ import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 
 import Avatar from "~/components/Avatar";
+import { UNFOLLOW } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import { useAuthListener } from "~/hooks";
-import { getPostOfUser, getUser } from "~/services/firebaseServices";
+import modalSlice from "~/redux/slice/modalSlide";
+import {
+  getPostOfUser,
+  getUser,
+  updateCurrentUserFolling,
+  updateFollower,
+} from "~/services/firebaseServices";
 import "./Profile.scss";
 
 const initialState = {
@@ -22,6 +30,7 @@ const reducer = (state, newState) => ({
 
 function Profile() {
   const { username } = useParams();
+  const reduxDispatch = useDispatch()
   const { user } = useAuthListener();
   const currentUser = useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -31,10 +40,25 @@ function Profile() {
     initialState
   );
 
+  const handleFollowOtherUser = async (currentUserId, profileId) => {
+    await updateCurrentUserFolling(currentUserId, profileId, false);
+    await updateFollower(currentUserId, profileId, false);
+    setIsFollowing(true);
+  };
+  const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
+    reduxDispatch(
+      modalSlice.actions.openModal({
+        type: UNFOLLOW,
+        currentUserId,
+        followingUserInfo: profileInfo,
+      })
+    );
+  };
+
   useEffect(() => {
     const getInforAndPhotos = async () => {
       const [userInfo] = await getUser({
-        username: username,
+        username: [username],
       });
       // if (userInfo.length === 0) {
       // } check không tìm thấy người dùng
@@ -47,12 +71,15 @@ function Profile() {
     };
 
     getInforAndPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
+
+  console.log(profile);
 
   return !profile && !postsCollection ? (
     <Skeleton />
   ) : (
-    <div className="pt-10 mx-auto w-[935px]">
+    <div className="pt-10 mx-auto lg:w-[935px]">
       <div className="profile__top-wrapper grid grid-cols-12 lg:h-[200px] pb-6">
         <div className="col-span-4 flex justify-center items-center">
           <Avatar avatarUrl={profile.avatarUrl} size={"big"} />
@@ -65,19 +92,31 @@ function Profile() {
               </span>
             </div>
             {user?.uid === profile.userId ? (
-              <Link className="flex items-center justify-center mx-6 h-8 w-52 rounded-xl bg-gray-100 hover:bg-gray-200">
+              <Link className="flex items-center justify-center mx-6 h-8 w-52 rounded-lg bg-gray-100 hover:bg-gray-200">
                 <span className="text-sm font-medium">
                   Chỉnh sửa trang cá nhân
                 </span>
               </Link>
             ) : isFollowing ? (
-              <button className="flex items-center justify-center mx-8 h-8 w-40 rounded-xl bg-gray-100 hover:bg-gray-200">
-                <span className="text-sm font-semibold">
-                  Đang theo dõi
-                </span>
+              <button
+                className="flex items-center justify-center mx-8 h-8 w-40 rounded-lg bg-gray-100 hover:bg-gray-200"
+                onClick={() =>
+                  handleUnFollowOtherUser(currentUser.userId, {
+                    avatar: profile.avatarUrl,
+                    userId: profile.userId,
+                    username: profile.username,
+                  })
+                }
+              >
+                <span className="text-sm font-semibold">Đang theo dõi</span>
               </button>
             ) : (
-              <button className="flex items-center justify-center mx-8 h-8 w-36 rounded-xl bg-[#0095f6] hover:bg-[#118ab2]">
+              <button
+                className="flex items-center justify-center mx-8 h-8 w-36 rounded-lg bg-[#0095f6] hover:bg-[#118ab2]"
+                onClick={() =>
+                  handleFollowOtherUser(currentUser.userId, profile.userId)
+                }
+              >
                 <span className="text-sm font-semibold text-white">
                   Theo dõi
                 </span>
@@ -138,7 +177,9 @@ function Profile() {
       </div>
       <div className="profile__bottom-wrapper mt-6">
         {postsCollection.length === 0 ? (
-          <div className="">Hiện chưa có bài viết nào</div>
+          <div className="">
+            <span>Hiện chưa có bài viết nào</span>
+          </div>
         ) : (
           <div className="grid grid-cols-12 gap-8">
             {postsCollection.map((post) => (
