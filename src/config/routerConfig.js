@@ -24,7 +24,7 @@ export const publicRouter = [
   { path: "/", component: Home, protect: ProtectedUserRouter },
   { path: "/direct", component: Direct, protect: ProtectedUserRouter },
   { path: "/explore/people", component: Suggestion, protect: ProtectedUserRouter  },
-  { path: "/p/:docId", component: PostPage  },
+  { path: "/p/:docId", component: PostPage, protect: ProtectedUserRouter },
   { path: "/profile/:username", component: Profile },
   { path: "*", component: NotFound },
 ];

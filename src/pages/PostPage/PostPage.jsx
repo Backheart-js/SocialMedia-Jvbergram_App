@@ -65,7 +65,7 @@ function PostPage() {
       console.log(response);
 
       let youLikedThisPost = false;
-      if (response.likes.userId.includes(currentUserId)) {
+      if (response.likes.includes(currentUserId)) {
         youLikedThisPost = true;
       }
 

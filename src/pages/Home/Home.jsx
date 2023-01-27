@@ -28,7 +28,7 @@ function Home() {
             const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
                 let youLikedThisPost = false;
-                if (photo.likes.userId.includes(userInfo.userId)) {
+                if (photo.likes.includes(userInfo.userId)) {
                 youLikedThisPost = true;
                 }
                 const ownerPost = await getUser({

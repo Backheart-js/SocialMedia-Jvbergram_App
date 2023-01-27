@@ -64,9 +64,7 @@ export async function createNewPost(photos, userId, caption) {
     await db.collection("posts").add({
       photos,
       userId,
-      likes: {
-        userId: [],
-      },
+      likes: [],
       comments: [],
       caption,
       dateCreated: Date.now(),
@@ -104,15 +102,14 @@ export async function getSuggestionsProfilesById(userId, following) {
 }
 
 export async function updateLikePost(postId, userIdLiked, isLiked) {
+  console.log(userIdLiked);
   return db
     .collection("posts")
     .doc(postId)
     .update({
-      likes: {
-        userId: !isLiked
-          ? FieldValue.arrayUnion(userIdLiked)
-          : FieldValue.arrayRemove(userIdLiked),
-      },
+      likes: !isLiked
+        ? FieldValue.arrayUnion(userIdLiked)
+        : FieldValue.arrayRemove(userIdLiked),
     });
 }
 

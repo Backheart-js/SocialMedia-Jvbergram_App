@@ -195,7 +195,7 @@ function Profile() {
                       <div className="flex justify-center items-center">
                         <FontAwesomeIcon className="text-xl" icon={faHeart} />
                         <span className="font-semibold text-lg ml-2">
-                          {post.likes.userId.length}
+                          {post.likes.length}
                         </span>
                       </div>
                       <div className="flex justify-center items-center ">

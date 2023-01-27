@@ -17,7 +17,7 @@ function PostInteractive({
   const { userId } = useContext(UserContext);
 
   const [toggleLike, setToggleLike] = useState(youLikedThisPost);
-  const [likesQuantity, setLikesQuantity] = useState(likes.userId.length);
+  const [likesQuantity, setLikesQuantity] = useState(likes.length);
 
   
 
