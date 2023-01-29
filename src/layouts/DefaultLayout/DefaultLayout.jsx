@@ -13,7 +13,7 @@ import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 function DefaultLayout({ children }) {
   const { user } = useAuthListener();
-  const [currentUserInfo, setCurrentUserInfo] = useState(null);
+  const [userLoggedIn, setCurrentUserInfo] = useState(null);
   const { isOpen, ...payload } = useSelector(modalSelector)
 
   useEffect(() => {
@@ -28,11 +28,11 @@ function DefaultLayout({ children }) {
     user !== null && getData();
   }, [user]);
 
-  return !currentUserInfo ? 
+  return !userLoggedIn ? 
   (<LoadingPage />)
   :
   (
-    <UserContext.Provider value={currentUserInfo}>
+    <UserContext.Provider value={userLoggedIn}>
       <div>
         <Sidebar />
         <main id="content" className="bg-main-bg min-h-screen h-full">

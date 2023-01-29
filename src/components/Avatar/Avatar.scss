@@ -5,16 +5,21 @@
     border-radius: 50%;
     overflow: hidden;
 
-    &.avatar__small {
+    &.avatar__xs {
         width: 24px;
         height: 24px;
+    }
+    
+    &.avatar__small {
+        width: 42px;
+        height: 42px;
     }
     
     &.avatar__medium {
         width: 56px;
         height: 56px;
     }
-    
+
     &.avatar__big {
         width: 168px;
         height: 168px;

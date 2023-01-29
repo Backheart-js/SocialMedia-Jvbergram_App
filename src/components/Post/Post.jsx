@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
 import Comments from "./Comments";
+import formatDate from "~/utils/formatDate";
 
 function Post({ data = {} }) {
   const navigate = useNavigate();
@@ -78,10 +79,7 @@ function Post({ data = {} }) {
             arrow={false}
           >
             <span className="post__dateCreated text-gray-500 text-[14px] select-none">
-              {formatDistance(data.dateCreated, new Date(), {
-                addSuffix: true,
-                locale: vi,
-              })}
+              {formatDate(data.dateCreated)}
             </span>
           </Tippy>
         </div>
@@ -95,13 +93,13 @@ function Post({ data = {} }) {
               {data.userId === currentUserId ? (
                 <>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
+                    <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold">
                       Chỉnh sửa
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn text-[#ED4956] font-semibold"
+                      className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
                       onClick={handleOpenDeletePostModal}
                     >
                       Xóa bài viết
@@ -139,12 +137,12 @@ function Post({ data = {} }) {
               ) : (
                 <>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
+                    <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold">
                       Báo cáo
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-[#ED4956] font-semibold" onClick={() => handleUnFollowOtherUser(currentUserId, {
+                    <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold" onClick={() => handleUnFollowOtherUser(currentUserId, {
                       avatar: data.avatarUrl,
                       username: data.username,
                       userId: data.userId

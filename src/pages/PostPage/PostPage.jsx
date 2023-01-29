@@ -17,6 +17,7 @@ import {
   updateCurrentUserFolling,
   updateFollower,
 } from "~/services/firebaseServices";
+import sortComments from "~/utils/sortComment";
 import CommentDetail from "./CommentDetail/CommentDetail";
 import "./PostPage.scss";
 
@@ -28,6 +29,7 @@ function PostPage() {
   const [data, setData] = useState(null);
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [userCommentList, setUserCommentList] = useState([]);
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -59,10 +61,27 @@ function PostPage() {
     );
   };
 
+  // const sortComments = (commentList) => {
+  //   //Sắp xếp cmt thời gian giảm dần (quick sort)
+  //   if (commentList.length <= 1) {
+  //     return commentList;
+  //   }
+  //   let pivot = commentList[commentList.length - 1];
+  //   let left = [];
+  //   let right = [];
+  //   for (let i = 0; i < commentList.length - 1; i++) {
+  //     if (commentList[i].dataCreate > pivot.dataCreate) {
+  //       left.push(commentList[i]);
+  //     } else {
+  //       right.push(commentList[i]);
+  //     }
+  //   }
+  //   return sortComments(left).concat(pivot, sortComments(right));
+  // };
+
   useEffect(() => {
     const getData = async () => {
       const response = await getPostWithOwnerById(docId);
-      console.log(response);
 
       let youLikedThisPost = false;
       if (response.likes.includes(currentUserId)) {
@@ -75,6 +94,7 @@ function PostPage() {
         ...response,
         youLikedThisPost,
       });
+      setUserCommentList(sortComments(response.comments)); //sắp xếp comment theo thời gian từ mới nhất đến cũ nhất
     };
 
     getData();
@@ -88,7 +108,7 @@ function PostPage() {
     commentBtn.current &&
       commentBtn.current.addEventListener("click", handleFocusOnComment);
   }, []);
-
+  console.log(data);
   return !data ? (
     <Skeleton count={1} width={975} height={500} />
   ) : (
@@ -97,7 +117,7 @@ function PostPage() {
         <div className="w-[590px] h-[590px]">
           <SlideImages imagesList={data.photos} />
         </div>
-        <div className="relative flex flex-col justify-between flex-grow">
+        <div className="relative flex flex-col flex-grow w-[334px]">
           <div className="postPage__owner-wrapper">
             <div className="flex">
               <UserLabel
@@ -117,7 +137,7 @@ function PostPage() {
                       })
                     }
                   >
-                    <span className="isfollowing hover:text-gray-500">
+                    <span className="isfollowing text-sm hover:text-gray-500">
                       Đang theo dõi
                     </span>{" "}
                   </button>
@@ -128,7 +148,7 @@ function PostPage() {
                       handleFollowOtherUser(currentUserId, data.userId)
                     }
                   >
-                    <span className="notfollowing text-blue-primary hover:text-blue-bold">
+                    <span className="notfollowing text-sm text-blue-primary hover:text-blue-bold">
                       Theo dõi
                     </span>
                   </button>
@@ -225,7 +245,13 @@ function PostPage() {
             </Dropdown>
           </div>
           <div className="postPage__comment-wrapper">
-            <CommentDetail postId={docId} />
+            <CommentDetail
+              postId={docId}
+              avatarUrl={data.avatarUrl}
+              username={data.username}
+              ownerCaption={data.caption}
+              commentList={userCommentList}
+            />
           </div>
           <div className="postPage__bottom">
             <div className="postPage__interactive-wrapper">
@@ -240,6 +266,7 @@ function PostPage() {
               <CommentTextField
                 docId={docId}
                 commentFieldRef={commentFieldRef}
+                setUserCommentList={setUserCommentList}
               />
             </div>
           </div>

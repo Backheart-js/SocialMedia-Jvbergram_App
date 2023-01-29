@@ -15,7 +15,7 @@ export async function checkUserNameExist(username) {
 }
 
 export async function getUser(data) {
-  //Lấy data theo id hoặc username
+  //Lấy data theo id hoặc username (data là 1 Object)
   const responses = await db
     .collection("users")
     .where(`${Object.keys(data)[0]}`, "in", Object.values(data)[0])
@@ -87,6 +87,18 @@ export async function deletePost(postId, imageUrls) {
   await Promise.all(promises);
 }
 
+export async function deleteComment(postId, commentId) {
+  const postRef = db.collection("posts").doc(postId);
+
+  return postRef.get().then((doc) => {
+    let comments = doc.data().comments;
+    let comment = comments.find((x) => x.commentId === commentId);
+    postRef.update({
+      comments: FieldValue.arrayRemove(comment),
+    });
+  });
+}
+
 export async function getSuggestionsProfilesById(userId, following) {
   let responses = [];
 
@@ -118,33 +130,34 @@ export async function updateCurrentUserFolling(
   profileId,
   isFollowing //true, false
 ) {
-  
   return db
     .collection("users")
     .where("userId", "==", currentUser)
     .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        doc.ref.update({ following: isFollowing
-          ? FieldValue.arrayRemove(profileId) //Nếu đã follow -> hủy follow: xóa userId khỏi mảng following
-          : FieldValue.arrayUnion(profileId), //Ngược lại });
-        })
-      })
-    })
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.update({
+          following: isFollowing
+            ? FieldValue.arrayRemove(profileId) //Nếu đã follow -> hủy follow: xóa userId khỏi mảng following
+            : FieldValue.arrayUnion(profileId), //Ngược lại });
+        });
+      });
+    });
 }
 export async function updateFollower(currentUser, profileId, isFollowing) {
   return db
     .collection("users")
     .where("userId", "==", profileId)
     .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        doc.ref.update({ followers: isFollowing
-          ? FieldValue.arrayRemove(currentUser) //Nếu đã follow -> hủy follow: xóa userId khỏi mảng following
-          : FieldValue.arrayUnion(currentUser), //Ngược lại });
-        })
-      })
-    })
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.update({
+          followers: isFollowing
+            ? FieldValue.arrayRemove(currentUser) //Nếu đã follow -> hủy follow: xóa userId khỏi mảng following
+            : FieldValue.arrayUnion(currentUser), //Ngược lại });
+        });
+      });
+    });
 }
 
 export async function verifyAccout() {

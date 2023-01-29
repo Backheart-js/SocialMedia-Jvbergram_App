@@ -23,7 +23,7 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
   return (
     <div className="w-full">
       {allCommentsQuantity >= 1 && (
-        <Link to={`/p/${docId}`} className="mb-1">
+        <Link to={`/p/${docId}`} className="">
           <span className="text-gray-500 text-sm font-normal hover:text-gray-700">
             Xem{allCommentsQuantity > 1 ? " tất cả" : ""} {allCommentsQuantity}{" "}
             bình luận

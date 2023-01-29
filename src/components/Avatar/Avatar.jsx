@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 
 import "./Avatar.scss";
 
-function Avatar({ avatarUrl, size }) {
+function Avatar({ avatarUrl, size = "small" }) {
   return !avatarUrl ? (
     <Skeleton count={1} circle={true} className={`avatart__${size}`}/>
   ) : (

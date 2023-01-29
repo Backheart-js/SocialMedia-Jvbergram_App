@@ -30,7 +30,7 @@ import { CREATE_POST } from "~/constants/modalTypes";
 
 function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
-  const userInfo = useContext(UserContext);
+  const userLoggedIn = useContext(UserContext);
   const dispatch = useDispatch()
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -170,9 +170,9 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tạo</span>
                 )}
               </li>
-              <NavLink to={`/profile/${userInfo?.username}`} className="sidebarMain__item-wrapper">
+              <NavLink to={`/profile/${userLoggedIn?.username}`} className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
-                  <Avatar avatarUrl={userInfo?.avatarUrl === undefined ? {} : userInfo.avatarUrl} size={"small"}/>
+                  <Avatar avatarUrl={userLoggedIn?.avatarUrl === undefined ? {} : userLoggedIn.avatarUrl} size={"sx"}/>
                 </div>
                 {toggleSubSidebar ? (
                   <></>

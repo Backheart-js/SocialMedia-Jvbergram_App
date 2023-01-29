@@ -10,6 +10,7 @@ module.exports = {
         'main-bg': '#fafafa',
         'blue-primary': '#0095f6',
         'blue-bold': '#118ab2',
+        'highlight-dropdown': '#ED4956'
       },
     },
   },

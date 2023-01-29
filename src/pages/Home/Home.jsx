@@ -10,7 +10,7 @@ import { getUser } from '~/services/firebaseServices';
 import './Home.scss'
 
 function Home() {
-  const userInfo = useContext(UserContext);
+  const userLoggedIn = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
   const [posts, setPosts] = useState(null);
   const [showUpdateButton, setShowUpdateButton] = useState(false);
@@ -20,7 +20,7 @@ function Home() {
     const getTimeline = async () => {
         unsubscribe = firebase.firestore()
         .collection("posts")
-        .where("userId", "in", userInfo.following.concat(userInfo.userId))
+        .where("userId", "in", userLoggedIn.following.concat(userLoggedIn.userId))
         .onSnapshot(async (snapshot) => { //Snapshot sẽ kiểm tra trạng thái trong firestore nếu có thay đổi
             let newPosts = snapshot.docs.map((doc) => {
                 return { docId: doc.id, ...doc.data() };
@@ -28,7 +28,7 @@ function Home() {
             const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
                 let youLikedThisPost = false;
-                if (photo.likes.includes(userInfo.userId)) {
+                if (photo.likes.includes(userLoggedIn.userId)) {
                 youLikedThisPost = true;
                 }
                 const ownerPost = await getUser({
@@ -66,7 +66,7 @@ function Home() {
           </div>
         </div>
         <div className="col-span-5">
-          <div className="my-4"><UserLabel avatarUrl={userInfo?.avatarUrl} username={userInfo?.username} fullname={userInfo?.fullname} /></div>
+          <div className="my-4"><UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} /></div>
           <div className="suggestion__wrapper">
             <div className="suggestion__title-wrapper flex justify-between">
               <span className='text-sm text-gray-500 font-medium'>
@@ -77,7 +77,7 @@ function Home() {
               </Link>
             </div>
             <div className="suggestion__body-min mt-2">
-              <Suggestion uid={userInfo.userId} following={userInfo.following}/>
+              <Suggestion uid={userLoggedIn.userId} following={userLoggedIn.following}/>
             </div>
           </div>
         </div>

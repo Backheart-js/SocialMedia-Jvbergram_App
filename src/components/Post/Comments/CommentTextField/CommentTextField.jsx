@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { v4 } from 'uuid';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
 
@@ -20,17 +21,19 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
       content: commentValues.replace(/\s+$/g, ""), //Loại bỏ khoảng trắng ở cuối comment
       dateCreated: Date.now(),
       displayName: username,
-      likes: 0,
-      userId: userId
+      likes: [],
+      userId: userId,
+      commentId: v4()
     }
 
     try {
+      setUserCommentList((prev) => [...prev, comment])
+      setAllCommentsQuantity && setAllCommentsQuantity(prev => prev+1)
+      setCommentValues("")
+
       await firebase.firestore().collection("posts").doc(docId).update({
         comments: FieldValue.arrayUnion(comment)
       });
-      setUserCommentList((prev) => [...prev, comment])
-      setAllCommentsQuantity(prev => prev+1)
-      setCommentValues("")
 
     } catch (error) {
       throw error;
@@ -45,7 +48,7 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
   }
 
   return (
-    <form className="comment__input-wrapper flex items-center">
+    <form className="comment__input-wrapper flex items-center mt-2">
         <textarea
           ref={commentFieldRef}
           value={commentValues}

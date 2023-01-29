@@ -32,9 +32,8 @@ function Profile() {
   const { username } = useParams();
   const reduxDispatch = useDispatch()
   const { user } = useAuthListener();
-  const currentUser = useContext(UserContext);
+  const userLoggedIn = useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
-  console.log(currentUser);
   const [{ profile, postsCollection }, dispatch] = useReducer(
     reducer,
     initialState
@@ -63,7 +62,7 @@ function Profile() {
       // if (userInfo.length === 0) {
       // } check không tìm thấy người dùng
 
-      setIsFollowing(currentUser?.following.includes(userInfo.userId));
+      setIsFollowing(userLoggedIn?.following.includes(userInfo.userId));
       const posts = await getPostOfUser(userInfo.userId);
       posts.sort((a, b) => b.dateCreated - a.dateCreated); //sắp xếp theo thời gian
 
@@ -101,7 +100,7 @@ function Profile() {
               <button
                 className="flex items-center justify-center mx-8 h-8 w-40 rounded-lg bg-gray-100 hover:bg-gray-200"
                 onClick={() =>
-                  handleUnFollowOtherUser(currentUser.userId, {
+                  handleUnFollowOtherUser(userLoggedIn.userId, {
                     avatar: profile.avatarUrl,
                     userId: profile.userId,
                     username: profile.username,
@@ -114,7 +113,7 @@ function Profile() {
               <button
                 className="flex items-center justify-center mx-8 h-8 w-36 rounded-lg bg-[#0095f6] hover:bg-[#118ab2]"
                 onClick={() =>
-                  handleFollowOtherUser(currentUser.userId, profile.userId)
+                  handleFollowOtherUser(userLoggedIn.userId, profile.userId)
                 }
               >
                 <span className="text-sm font-semibold text-white">
