@@ -17,7 +17,9 @@ function Button({
 
   return (
     <button className={classes} onClick={handleClick} {...props}>
-      {children}
+      <span className="font-semibold">
+        {children}
+      </span>
     </button>
   );
 }

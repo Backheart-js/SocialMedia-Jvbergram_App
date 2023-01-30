@@ -243,7 +243,7 @@ function CreateNewPost({ closeModal }) {
           </button>
         </div>
         <Loader
-          Type={RotatingLines}
+          type={RotatingLines}
           display={loadingDisplay}
           strokeColor="grey"
           strokeWidth="5"

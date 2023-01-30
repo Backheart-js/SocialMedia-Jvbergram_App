@@ -41,7 +41,7 @@ function Modal({ payload }) {
       {
         (payload.type === CREATE_POST && <CreateNewPost closeModal={closeModal} />) 
         ||
-        (payload.type === DELETE_POST && <DeletePost closeModal={closeModal} postId={payload.postId} imagesUrl={payload.imagesUrl}/>) 
+        (payload.type === DELETE_POST && <DeletePost closeModal={closeModal} postId={payload.postId} imagesUrl={payload.imagesUrl} redirectToProfile={payload.redirectToProfile}/>) 
         ||
         (payload.type === UNFOLLOW && <UnFollow closeModal={closeModal} currentUserId={payload.currentUserId} followingUserInfo={payload.followingUserInfo}/>)
       }

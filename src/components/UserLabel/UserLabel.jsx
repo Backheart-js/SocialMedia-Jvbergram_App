@@ -24,7 +24,7 @@ function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...pro
       <div className="flex flex-col justify-center">
         <span className="text-[14px] font-semibold">{username}</span>
         {fullname !== "" && (
-          <span className="text-[14px] text-gray-500 font-medium">
+          <span className={`userLabel__name-${size} text-gray-500 font-medium`}>
             {fullname}
           </span>
         )}

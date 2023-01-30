@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { v4 } from 'uuid';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
+import '../Comments.scss'
 
 function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCommentsQuantity }) {
   const { firebase, FieldValue } = useContext(FirebaseContext);

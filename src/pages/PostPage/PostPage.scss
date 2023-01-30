@@ -20,15 +20,6 @@
     margin-left: 10px;
     padding-left: 10px;
 
-    .isfollowing {
-       
-    }
-
-    .notfollowing {
-
-    }
-
-
     &::before {
         content: "";
         position: absolute;
@@ -65,4 +56,23 @@
 .postPage__interactive-wrapper,
 .postPage__comment-input {
     padding: 14px 16px;
+}
+
+.post__option-dropdown--item {
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+        background-color: $hover-color-light-theme;
+    }
+
+    &+& {
+        margin-top: 4px;
+    }
+}
+
+.post__option-dropdown-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 8px 20px;
 }

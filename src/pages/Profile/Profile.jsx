@@ -40,9 +40,9 @@ function Profile() {
   );
 
   const handleFollowOtherUser = async (currentUserId, profileId) => {
+    setIsFollowing(true);
     await updateCurrentUserFolling(currentUserId, profileId, false);
     await updateFollower(currentUserId, profileId, false);
-    setIsFollowing(true);
   };
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
     reduxDispatch(

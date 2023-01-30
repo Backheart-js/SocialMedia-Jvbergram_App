@@ -1,6 +1,8 @@
 import { firebase, FieldValue } from "~/lib/firebase";
 import { getStorage, ref, deleteObject } from "firebase/storage";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
+
+var _ = require('lodash');
 
 const db = firebase.firestore();
 
@@ -57,8 +59,6 @@ export async function getPostWithOwnerById(docId) {
   };
 }
 
-export async function getComments(docId) {}
-
 export async function createNewPost(photos, userId, caption) {
   try {
     await db.collection("posts").add({
@@ -99,22 +99,62 @@ export async function deleteComment(postId, commentId) {
   });
 }
 
-export async function getSuggestionsProfilesById(userId, following) {
-  let responses = [];
+export async function getSuggestionsProfilesByFollowing(LoggedInUserId, following, limit) {
+  let suggestion = [];
+  const counts = {};
+  const userRef = db.collection("users");
+  
+  for (const userId of following) {
+    const query = userRef.where("followers", "array-contains", userId);
+    const getSuggestionsProfiles = await query.get(); //Trả về 1 mảng người dùng được following của mình (bên thứ 2) theo dõi
 
-  try {
-    if (following.length >= 10) {
-      responses = await db.collection("users").limit(10).get();
-    } else {
-      responses = await db.collection("users");
+    for (const profileDoc of getSuggestionsProfiles.docs) {
+      const profile = profileDoc.data();
+      const profileId = profile.userId;
+
+      if (following.includes(profileId) || profileId === LoggedInUserId) continue;
+      
+      if (!counts[profileId]) {
+        counts[profileId] = { profile, count: 0 };
+      }
+
+      counts[profileId].count++;
     }
-  } catch (error) {}
+  }
 
-  return responses;
+  // sort the profiles based on the count
+  const profiles = Object.values(counts)
+    .sort((a, b) => b.count - a.count)
+    .map(entry => entry.profile);
+
+    suggestion = [...profiles]
+
+    if (profiles.length < limit) {  //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
+      const getPopularUsers = await userRef.limit(limit*2+1).get();
+       //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
+
+      for (const popularUserDoc of getPopularUsers.docs) {
+        const popularUser = popularUserDoc.data();
+        let isExist = false;
+
+        if (popularUser.userId === LoggedInUserId || profiles.includes(popularUser)) continue;
+
+        for (const prevProfile of suggestion) {
+          if (_.isEqual(prevProfile, popularUser)){ //Check xem profile phổ biến đã có trong mảng trước đó chưa
+            isExist = true;
+            break;
+          } 
+        }
+        if (!isExist) {
+          suggestion = [...suggestion, popularUser];
+        }
+      }
+    }
+  // return the top 'limit' profiles
+  return suggestion.slice(0, limit);
 }
 
 export async function updateLikePost(postId, userIdLiked, isLiked) {
-  console.log(userIdLiked);
   return db
     .collection("posts")
     .doc(postId)

@@ -1,10 +1,13 @@
-.suggestion__follow-btn {
-    color: #0095f6;
-    font-size: 12px;
-    padding: 4px 6px;
+.suggestion__profile-wrapper-min+.suggestion__profile-wrapper-min,
+.suggestion__skeleton-wrapper-min+.suggestion__skeleton-wrapper-min {
+    margin-top: 15px;
+}
 
-    &:hover {
-        color: #333;
-        cursor: pointer;
-    }
+.suggestion__profile-wrapper+.suggestion__profile-wrapper,
+.suggestion__skeleton-wrapper+.suggestion__skeleton-wrapper {
+    margin-top: 20px;
+}
+
+.suggestion__profile-wrapper {
+    height: 42px;
 }

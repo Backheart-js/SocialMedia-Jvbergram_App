@@ -1,10 +1,12 @@
 import React from 'react'
 import './Loader.scss'
 
-function Loader({ Type, display, ...props }) {
+function Loader({ type, display, ...props }) {
+  const TypeLoader = type
+
   return display && (
     <div className="loader-overlay absolute flex justify-center items-center inset-0">
-        <Type
+        <TypeLoader
             {...props}
         />
     </div>

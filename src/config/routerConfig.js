@@ -11,7 +11,7 @@ const VerifyAccount = lazy(() => import("~/pages/VerifyAccount/VerifyAccount"));
 const ResetPassword = lazy(() => import("~/pages/ResetPassword/ResetPassword"));
 
 const Home = lazy(() => import("~/pages/Home/Home"));
-const Suggestion = lazy(() => import("~/pages/Suggestion/Suggestion"));
+const SuggestionPage = lazy(() => import("~/pages/SuggestionPage/SuggestionPage"));
 const Direct = lazy(() => import("~/pages/Direct/Direct"));
 const PostPage = lazy(() => import("~/pages/PostPage/PostPage"));
 const Profile = lazy(() => import("~/pages/Profile/Profile"));
@@ -25,7 +25,7 @@ export const publicRouter = [
 
   { path: "/", component: Home, protect: ProtectedUserRouter },
   { path: "/direct", component: Direct, protect: ProtectedUserRouter },
-  { path: "/explore/people", component: Suggestion, protect: ProtectedUserRouter  },
+  { path: "/explore/people", component: SuggestionPage, protect: ProtectedUserRouter  },
   { path: "/p/:docId", component: PostPage, protect: ProtectedUserRouter },
   { path: "/profile/:username", component: Profile },
   { path: "*", component: NotFound },

@@ -63,7 +63,7 @@ function UnFollow({ closeModal, currentUserId, followingUserInfo }) {
         </li>
       </ul>
       <Loader
-        Type={RotatingLines}
+        type={RotatingLines}
         display={loadingDisplay}
         strokeColor="grey"
         strokeWidth="5"

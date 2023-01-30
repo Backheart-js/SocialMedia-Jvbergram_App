@@ -6,16 +6,20 @@ import logo from '~/assets/logo';
 import { deletePost } from '~/services/firebaseServices';
 import Loader from '~/components/Loader';
 import { RotatingLines } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 
-function DeletePost({ closeModal, postId, imagesUrl }) {
+function DeletePost({ closeModal, postId, imagesUrl, redirectToProfile }) {
     const [loadingDisplay, setLoadingDisplay] = useState(false);
+    const navigate = useNavigate();
 
     const handleDeletePost = async () => {
         setLoadingDisplay(true);
         try {
             await deletePost(postId, imagesUrl);
             
-            await closeModal();
+            closeModal();
+
+            redirectToProfile && navigate(`/profile/${redirectToProfile}`);
         } catch (error) {
             setLoadingDisplay(false)
             console.log(error);
@@ -40,7 +44,7 @@ function DeletePost({ closeModal, postId, imagesUrl }) {
             </li>
         </ul>
         <Loader
-          Type={RotatingLines}
+          type={RotatingLines}
           display={loadingDisplay}
           strokeColor="grey"
           strokeWidth="5"

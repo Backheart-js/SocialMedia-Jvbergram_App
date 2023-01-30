@@ -69,15 +69,15 @@ function Home() {
           <div className="my-4"><UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} /></div>
           <div className="suggestion__wrapper">
             <div className="suggestion__title-wrapper flex justify-between">
-              <span className='text-sm text-gray-500 font-medium'>
+              <span className='text-[13px] text-gray-500 font-semibold'>
                 Gợi ý cho bạn
               </span>
               <Link to={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
                 Xem tất cả
               </Link>
             </div>
-            <div className="suggestion__body-min mt-2">
-              <Suggestion uid={userLoggedIn.userId} following={userLoggedIn.following}/>
+            <div className="suggestion__body-min mt-5">
+              <Suggestion userId={userLoggedIn.userId} following={userLoggedIn.following} min/>
             </div>
           </div>
         </div>

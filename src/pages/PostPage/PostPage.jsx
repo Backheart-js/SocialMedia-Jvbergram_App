@@ -20,6 +20,7 @@ import {
 import sortComments from "~/utils/sortComment";
 import CommentDetail from "./CommentDetail/CommentDetail";
 import "./PostPage.scss";
+import "~/components/Post/Post.scss";
 
 function PostPage() {
   const { docId } = useParams();
@@ -36,12 +37,13 @@ function PostPage() {
   const handleCloseDropdown = () => {
     setToggleOptionDropdown(false);
   };
-  const handleOpenDeletePostModal = () => {
+  const handleOpenDeletePostModal = (ownerUsername) => {
     dispatch(
       modalSlice.actions.openModal({
         type: DELETE_POST,
         postId: docId,
         imagesUrl: data.photos,
+        redirectToProfile: ownerUsername,
       })
     );
   };
@@ -60,24 +62,6 @@ function PostPage() {
       })
     );
   };
-
-  // const sortComments = (commentList) => {
-  //   //Sắp xếp cmt thời gian giảm dần (quick sort)
-  //   if (commentList.length <= 1) {
-  //     return commentList;
-  //   }
-  //   let pivot = commentList[commentList.length - 1];
-  //   let left = [];
-  //   let right = [];
-  //   for (let i = 0; i < commentList.length - 1; i++) {
-  //     if (commentList[i].dataCreate > pivot.dataCreate) {
-  //       left.push(commentList[i]);
-  //     } else {
-  //       right.push(commentList[i]);
-  //     }
-  //   }
-  //   return sortComments(left).concat(pivot, sortComments(right));
-  // };
 
   useEffect(() => {
     const getData = async () => {
@@ -100,6 +84,7 @@ function PostPage() {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     const handleFocusOnComment = () => {
       commentFieldRef.current.focus();
@@ -108,9 +93,36 @@ function PostPage() {
     commentBtn.current &&
       commentBtn.current.addEventListener("click", handleFocusOnComment);
   }, []);
-  console.log(data);
+
   return !data ? (
-    <Skeleton count={1} width={975} height={500} />
+    <div className="h-[580px] w-[950px] flex pt-10 mx-auto">
+      <div className="h-full">
+        <Skeleton count={1} width={580} height={580} />
+      </div>
+      <div className="h-full ml-6">
+        <div className="flex">
+          <div className="">
+            <Skeleton circle height={42} width={42} />
+          </div>
+          <div className="ml-3">
+            <Skeleton height={16} width={150} />
+            <Skeleton height={16} width={100} />
+          </div>
+        </div>
+        <div className="mt-4">
+          <div className="flex">
+            <div className="">
+              <Skeleton circle height={42} width={42} />
+            </div>
+            <div className="ml-3">
+              <Skeleton height={16} width={150} />
+              <Skeleton height={16} width={100} />
+            </div>
+          </div>
+        </div>
+        <div className=""></div>
+      </div>
+    </div>
   ) : (
     <div className="pt-10 mx-auto lg:min-w-[935px] lg:max-w-[950px]">
       <div className="postPage__wrapper flex bg-white">
@@ -158,7 +170,7 @@ function PostPage() {
               interactive={true}
               visible={toggleOptionDropdown}
               onClickOutside={handleCloseDropdown}
-              placement="bottom-start"
+              placement="bottom"
               content={
                 <ul className="py-2">
                   {data.userId === currentUserId ? (
@@ -171,7 +183,9 @@ function PostPage() {
                       <li className="post__option-dropdown--item">
                         <button
                           className="post__option-dropdown-btn text-[#ED4956] font-semibold"
-                          onClick={handleOpenDeletePostModal}
+                          onClick={() =>
+                            handleOpenDeletePostModal(data.username)
+                          }
                         >
                           Xóa bài viết
                         </button>
@@ -205,9 +219,29 @@ function PostPage() {
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
-                          Bỏ theo dõi
-                        </button>
+                        {isFollowing ? (
+                          <button
+                            className="post__option-dropdown-btn text-[#ED4956] font-semibold"
+                            onClick={() =>
+                              handleUnFollowOtherUser(currentUserId, {
+                                avatar: data.avatarUrl,
+                                userId: data.userId,
+                                username: data.username,
+                              })
+                            }
+                          >
+                            Bỏ theo dõi
+                          </button>
+                        ) : (
+                          <button
+                            className="post__option-dropdown-btn text-[#ED4956] font-semibold"
+                            onClick={() =>
+                              handleFollowOtherUser(currentUserId, data.userId)
+                            }
+                          >
+                            Theo dõi
+                          </button>
+                        )}
                       </li>
                       <li className="post__option-dropdown--item">
                         <button className="post__option-dropdown-btn">

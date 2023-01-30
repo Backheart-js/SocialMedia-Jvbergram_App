@@ -3,47 +3,50 @@ import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { getSuggestionsProfilesById } from "~/services/firebaseServices";
-import UserLabel from "../UserLabel";
+import { getSuggestionsProfilesByFollowing } from "~/services/firebaseServices";
 import "./Suggestion.scss";
+import SuggestionProfile from "./SuggestionProfile";
 
-function Suggestion({ uid, following = [] }) {
-  const [profiles, setProfiles] = useState([]);
+function Suggestion({ userId, following = [], min }) {
+  const [profiles, setProfiles] = useState(null);
 
   useEffect(() => {
     const getSuggestions = async () => {
-      const responses = await getSuggestionsProfilesById(uid);
-
+      const responses = await getSuggestionsProfilesByFollowing(userId, following, min ? 5 : 20);
       setProfiles(responses);
     };
 
-    if (uid) {
+    if (userId) {
       getSuggestions();
     }
-  }, [uid]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, following]);
 
   return !profiles ? (
-    <Skeleton count={5} height={48} />
+    <>
+      {
+        [...new Array(5)].map((_, index) => (
+          <div className={`suggestion__skeleton-wrapper${min ? '-min' : ''} flex`} key={index}>
+            <div className=""><Skeleton circle height={42} width={42}/></div>
+            <div className="ml-3">
+              <Skeleton height={16} width={150}/>
+              <Skeleton height={16} width={100}/>
+            </div>
+          </div>
+        ))
+      }
+    </>
   ) : (
-    <div className="">
+    <div className="w-full">
       {profiles.map((profile) => (
-        <div className="flex justify-between items-center">
-          <UserLabel
-            avatarUrl={profile.avatarUrl}
-            username={profile.username}
-            fullname={profile.fullname}
-            size={"small"}
-            key={profile.userId}
-          />
-          <button className="suggestion__follow-btn">Theo dõi</button>
-        </div>
+        <SuggestionProfile profile={profile} key={profile.userId} min={min}/>
       ))}
     </div>
   );
 }
 
 Suggestion.propTypes = {
-  uid: PropTypes.string,
+  userId: PropTypes.string,
   following: PropTypes.array.isRequired,
 };
 
