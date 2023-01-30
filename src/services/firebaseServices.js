@@ -130,7 +130,7 @@ export async function getSuggestionsProfilesByFollowing(LoggedInUserId, followin
     suggestion = [...profiles]
 
     if (profiles.length < limit) {  //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
-      const getPopularUsers = await userRef.limit(limit*2+1).get();
+      const getPopularUsers = await userRef.where("userId", "not-in", following).limit(limit*2+1).get();
        //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
 
       for (const popularUserDoc of getPopularUsers.docs) {
