@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { v4 } from 'uuid';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
+import { autoGrowTextarea } from '~/utils/autoGrowTextarea';
 import '../Comments.scss'
 
 function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCommentsQuantity }) {
@@ -42,12 +43,6 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
 
   }
 
-  function auto_grow(e) {
-    //auto grow cho textarea
-    e.target.style.height = "5px";
-    e.target.style.height = e.target.scrollHeight + "px";
-  }
-
   return (
     <form className="comment__input-wrapper flex items-center mt-2">
         <textarea
@@ -56,10 +51,10 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
           type="text"
           className="comment__input w-full"
           placeholder="Viết bình luận..."
-          onInput={auto_grow}
+          onInput={(e) => autoGrowTextarea(e)}
           onChange={handleCommentChange}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
               handleSubmitComment()
             }

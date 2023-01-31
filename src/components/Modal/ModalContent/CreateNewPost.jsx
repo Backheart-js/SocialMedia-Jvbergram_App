@@ -14,6 +14,7 @@ import { useAuthListener } from "~/hooks";
 import { RotatingLines } from "react-loader-spinner";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
+import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 
 function CreateNewPost({ closeModal }) {
     const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -42,12 +43,6 @@ function CreateNewPost({ closeModal }) {
         }
 
       };
-    
-      function auto_grow(e) {
-        //auto grow cho textarea
-        e.target.style.height = "5px";
-        e.target.style.height = e.target.scrollHeight + "px";
-      }
     
       async function uploadFilesToStorage(files) {
         const storage = getStorage();
@@ -146,7 +141,7 @@ function CreateNewPost({ closeModal }) {
               value={captionValue}
               className="modal__caption-input"
               placeholder="Viết chú thích..."
-              onInput={auto_grow}
+              onInput={(e) => autoGrowTextarea(e)}
               onChange={(e) => {
                 setCaptionValue(e.target.value);
               }}

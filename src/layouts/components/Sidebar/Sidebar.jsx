@@ -63,14 +63,14 @@ function Sidebar() {
 
   return (
     <aside id="sidebar" className="z-10">
-      <div className="sidebar__main-wrapper">
+      <div className="sidebar__main-wrapper xl:w-[245px] w-[80px]">
         <div className="flex flex-col justify-between h-full px-3 py-8">
           <div className="sidebarMain__function-wrapper">
             <div className="sidebarMain__logo-wrapper">
               {toggleSubSidebar ? (
                 <></>
               ) : (
-                <a href="/" className="">
+                <a href="/" className="sidebarMain__logo">
                   <svg
                     aria-label="Instagram"
                     className="_ab6-"

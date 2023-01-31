@@ -9,7 +9,6 @@
 }
 
 .sidebar__main-wrapper {
-    width: $sidebar-width;
     height: 100%;
     border-right: 1px solid $border-color-light-theme;
 }
@@ -17,6 +16,10 @@
 .sidebarMain__logo-wrapper {
     height: 75px;
     padding: 10px 16px 12px 16px;
+}
+
+.sidebarMain__logo {
+    @apply sm:hidden xl:block;
 }
 
 .sidebarMain__list-wrapper {
@@ -62,6 +65,7 @@
     font-weight: 500;
     margin-left: 16px;
     user-select: none;
+    @apply hidden xl:block
 }
 
 
@@ -112,4 +116,14 @@
     border-left: 1px solid $border-color-light-theme;
     border-right: 1px solid $border-color-light-theme;
     box-shadow: rgba(100, 100, 111, 0.2) 10px 7px 15px -6px;
+}
+
+@media (min-width: 768px) { 
+    // .sidebarMain__logo-wrapper {
+    //     display: none;
+    // }
+
+    // .sidebarMain__item-text {
+    //     display: none;
+    // }
 }

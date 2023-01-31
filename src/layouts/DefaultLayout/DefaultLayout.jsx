@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import "./DefaultLayout.scss";
 import Sidebar from "../components/Sidebar";
 import Modal from "~/components/Modal";
 import { useAuthListener } from "~/hooks";
@@ -35,7 +34,7 @@ function DefaultLayout({ children }) {
     <UserContext.Provider value={userLoggedIn}>
       <div>
         <Sidebar />
-        <main id="content" className="bg-main-bg min-h-screen h-full">
+        <main id="content" className="bg-main-bg min-h-screen h-full ml-[80px] xl:ml-[245px]">
             {children}
         </main>
         {isOpen && <Modal payload={payload} />}
