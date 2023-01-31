@@ -6,6 +6,7 @@ var _ = require('lodash');
 
 const db = firebase.firestore();
 
+// GET
 export async function checkUserNameExist(username) {
   //Check tên user đã có trong firestore chưa
   const responses = await db
@@ -57,46 +58,6 @@ export async function getPostWithOwnerById(docId) {
     avatarUrl,
     username,
   };
-}
-
-export async function createNewPost(photos, userId, caption) {
-  try {
-    await db.collection("posts").add({
-      photos,
-      userId,
-      likes: [],
-      comments: [],
-      caption,
-      dateCreated: Date.now(),
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function deletePost(postId, imageUrls) {
-  const storage = getStorage();
-
-  await deleteDoc(doc(db, "posts", postId));
-
-  const promises = [];
-  imageUrls.forEach((imageUrl) => {
-    const desertRef = ref(storage, imageUrl);
-    promises.push(deleteObject(desertRef));
-  });
-  await Promise.all(promises);
-}
-
-export async function deleteComment(postId, commentId) {
-  const postRef = db.collection("posts").doc(postId);
-
-  return postRef.get().then((doc) => {
-    let comments = doc.data().comments;
-    let comment = comments.find((x) => x.commentId === commentId);
-    postRef.update({
-      comments: FieldValue.arrayRemove(comment),
-    });
-  });
 }
 
 export async function getSuggestionsProfilesByFollowing(LoggedInUserId, following, limit) {
@@ -154,6 +115,23 @@ export async function getSuggestionsProfilesByFollowing(LoggedInUserId, followin
   return suggestion.slice(0, limit);
 }
 
+// CREATE
+export async function createNewPost(photos, userId, caption) {
+  try {
+    await db.collection("posts").add({
+      photos,
+      userId,
+      likes: [],
+      comments: [],
+      caption,
+      dateCreated: Date.now(),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// UPDATE
 export async function updateLikePost(postId, userIdLiked, isLiked) {
   return db
     .collection("posts")
@@ -184,6 +162,7 @@ export async function updateCurrentUserFolling(
       });
     });
 }
+
 export async function updateFollower(currentUser, profileId, isFollowing) {
   return db
     .collection("users")
@@ -200,6 +179,33 @@ export async function updateFollower(currentUser, profileId, isFollowing) {
     });
 }
 
+// DELETE
+export async function deletePost(postId, imageUrls) {
+  const storage = getStorage();
+
+  await deleteDoc(doc(db, "posts", postId));
+
+  const promises = [];
+  imageUrls.forEach((imageUrl) => {
+    const desertRef = ref(storage, imageUrl);
+    promises.push(deleteObject(desertRef));
+  });
+  await Promise.all(promises);
+}
+
+export async function deleteComment(postId, commentId) {
+  const postRef = db.collection("posts").doc(postId);
+
+  return postRef.get().then((doc) => {
+    let comments = doc.data().comments;
+    let comment = comments.find((x) => x.commentId === commentId);
+    postRef.update({
+      comments: FieldValue.arrayRemove(comment),
+    });
+  });
+}
+
+// SENT EMAIL VERIFY  ACCOUNT
 export async function verifyAccout() {
   //Thực hiện gửi email xác minh tài khoản
   firebase.auth().useDeviceLanguage(); //Sử dụng ngôn ngữ của máy tính đang dùng
@@ -213,4 +219,12 @@ export async function verifyAccout() {
   };
 
   sentVerificationEmail();
+}
+
+// SEARCH USER 
+export async function searchUserByUsernameOrFullname(searchKeyword) {
+  const querySnapshot = await db.collection('users').where("fullname", "==", searchKeyword).get();
+  const results = querySnapshot.docs.map(doc => doc.data());
+
+  return results;
 }

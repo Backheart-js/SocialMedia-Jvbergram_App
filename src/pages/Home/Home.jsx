@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import Button from '~/components/Button';
 import Suggestion from '~/components/Suggestion';
 import Timeline from '~/components/Timeline';
 import UserLabel from '~/components/UserLabel';
@@ -13,7 +14,13 @@ function Home() {
   const userLoggedIn = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
   const [posts, setPosts] = useState(null);
+  const [photosWithUserInfoState, setPhotosWithUserInfoState] = useState(null)
   const [showUpdateButton, setShowUpdateButton] = useState(false);
+
+  const handleReload = () => {
+    setPosts(photosWithUserInfoState);
+    setShowUpdateButton(false);
+  }
 
   useEffect(() => {
     let unsubscribe;
@@ -43,10 +50,44 @@ function Home() {
                 };
             })
             );
+
             photosWithUserInfo.sort((a, b) => b.dateCreated - a.dateCreated);
+            // if (!posts) {
+            //   console.log('vào đây 1: ',photosWithUserInfo);
+            //   //Set posts cho lần đầu load trang
+            //   setPosts(photosWithUserInfo);
+            // }
+            // else if (userLoggedIn.userId === photosWithUserInfo[0].userId) {
+            //   console.log('vào đây 2');
+            //   //Nếu chính mình tạo bài viết sẽ tự reload lại
+            //   setPosts(photosWithUserInfo);
+            // }
+            // else if (photosWithUserInfo.length > (posts || []).length) {
+            //   //Nếu user đang follow tạo bài mới sẽ show reload Button
+            //   console.log('vào đây 3');
+            //   setShowUpdateButton(true);
+            // }
+
+            // else if (photosWithUserInfo.length < (posts || []).length) {
+            //   //Nếu xóa bài thì tự động reload
+            //   console.log('vào đây 4');
+            //   setPosts(photosWithUserInfo);
+            // }
             setPosts(photosWithUserInfo);
+
+            // setPhotosWithUserInfoState(photosWithUserInfo)
+            // console.log(photosWithUserInfoState);
+            // if (!posts) {
+            //   console.log('vào đây 1: ', photosWithUserInfo);
+            // }
+            // else if (photosWithUserInfo.length > (posts || []).length) {
+            //   console.log('vào đây 2');
+            //   setShowUpdateButton(true);
+            // }
+            
         });
     };
+
     getTimeline();
     return () => unsubscribe();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,10 +101,13 @@ function Home() {
   return (
     <div className='pt-8 mx-auto w-[820px]'>
       <div className='grid grid-cols-12 gap-8'>
-        <div className="col-span-7">
+        <div className="col-span-7 relative">
           <div className="mt-4">
             <Timeline posts={posts} />
           </div>
+          {
+            showUpdateButton && <Button className={'reloadTimeLine-btn'} onClick={handleReload}>Bài viết mới</Button>
+          }
         </div>
         <div className="col-span-5">
           <div className="my-4"><UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} /></div>
