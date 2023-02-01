@@ -43,7 +43,14 @@ function App() {
                     )}
                   </>
                 }
-              />
+              >
+                {
+                  router.nestedRoute && router.nestedRoute.map((nestedRoute, index) => {
+                    const Childlayout = nestedRoute.component;
+                    return <Route key={index} path={nestedRoute.path} element={<Childlayout/>}></Route>
+                  })
+                }
+              </Route>
             );
           })}
         </Routes>

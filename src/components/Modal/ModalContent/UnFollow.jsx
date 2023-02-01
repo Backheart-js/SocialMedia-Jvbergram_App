@@ -9,7 +9,7 @@ import {
 } from "~/services/firebaseServices";
 import "../Modal.scss";
 
-function UnFollow({ closeModal, currentUserId, followingUserInfo }) {
+function UnFollow({ closeModal, currentUserId, followingUserInfo, setUnfollowFunc }) {
   console.log(currentUserId);
   console.log(followingUserInfo);
   const [loadingDisplay, setLoadingDisplay] = useState(false);
@@ -24,7 +24,8 @@ function UnFollow({ closeModal, currentUserId, followingUserInfo }) {
       );
       await updateFollower(currentUserId, followingUserInfo.userId, true);
 
-      await closeModal();
+      closeModal();
+      setUnfollowFunc(false)
     } catch (error) {
       setLoadingDisplay(false);
       console.log(error);

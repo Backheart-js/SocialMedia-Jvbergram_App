@@ -65,7 +65,7 @@ function Post({ data = {} }) {
 
   return (
     <div className="post__container py-3">
-      <div className="flex justify-between items-center px-3">
+      <div className="flex justify-between items-center px-3 mb-3">
         <div className="flex items-center">
           <UserLabel
             avatarUrl={data.avatarUrl}
@@ -87,7 +87,7 @@ function Post({ data = {} }) {
           interactive={true}
           visible={toggleOptionDropdown}
           onClickOutside={handleCloseDropdown}
-          placement="bottom-start"
+          placement="bottom"
           content={
             <ul className="py-2">
               {data.userId === currentUserId ? (

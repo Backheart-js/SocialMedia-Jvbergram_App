@@ -179,6 +179,14 @@ export async function updateFollower(currentUser, profileId, isFollowing) {
     });
 }
 
+export async function updateAvatar(loggedInUserId, newAvatarUrl) {
+  return db.collection('users').where("userId", "==", loggedInUserId).get().then(function (querySnapshot) {
+    querySnapshot.forEach((doc) => {
+      doc.ref.update({avatarUrl: newAvatarUrl})
+    })
+  })
+}
+
 // DELETE
 export async function deletePost(postId, imageUrls) {
   const storage = getStorage();

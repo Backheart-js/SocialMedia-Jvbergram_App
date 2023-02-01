@@ -15,7 +15,7 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Dropdown from "~/components/Dropdown/Dropdown";
@@ -120,7 +120,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tìm kiếm</span>
                 )}
               </li>
-              <NavLink to="/" className="sidebarMain__item-wrapper">
+              <NavLink to="/explore/people" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faCompass}
                   className="sidebarMain__item-icon"
@@ -189,10 +189,10 @@ function Sidebar() {
               interactive={true}
               content={
                 <ul className="dropdown__list">
-                  <button className="dropdown__item">
+                  <Link to="/setting/account" className="dropdown__item">
                     <span className="">Cài đặt</span>
                     <FontAwesomeIcon icon={faGear} />
-                  </button>
+                  </Link>
                   <button className="dropdown__item">
                     <span className="">Đã lưu</span>
                     <FontAwesomeIcon icon={faBookmark} />

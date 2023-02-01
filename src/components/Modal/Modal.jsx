@@ -5,10 +5,11 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import CreateNewPost from "./ModalContent/CreateNewPost";
-import "./Modal.scss";
-import { CREATE_POST, DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
+import { CREATE_POST, DELETE_POST, UNFOLLOW, UPDATE_AVATAR } from "~/constants/modalTypes";
 import DeletePost from "./ModalContent/DeletePost";
 import UnFollow from "./ModalContent/UnFollow";
+import "./Modal.scss";
+import UpdateAvatar from "./ModalContent/UpdateAvatar";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -43,7 +44,9 @@ function Modal({ payload }) {
         ||
         (payload.type === DELETE_POST && <DeletePost closeModal={closeModal} postId={payload.postId} imagesUrl={payload.imagesUrl} redirectToProfile={payload.redirectToProfile}/>) 
         ||
-        (payload.type === UNFOLLOW && <UnFollow closeModal={closeModal} currentUserId={payload.currentUserId} followingUserInfo={payload.followingUserInfo}/>)
+        (payload.type === UNFOLLOW && <UnFollow closeModal={closeModal} currentUserId={payload.currentUserId} followingUserInfo={payload.followingUserInfo} setUnfollowFunc={payload.setIsFollowing}/>)
+        ||
+        (payload.type === UPDATE_AVATAR && <UpdateAvatar closeModal={closeModal} currentUserId={payload.currentUserId} avatarUrl={payload.avatarUrl}/>)
       }
     </div>
   );

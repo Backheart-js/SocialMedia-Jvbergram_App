@@ -91,6 +91,31 @@
   border-radius: 10px;
 }
 
+.modal__avatar-area--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
+}
+
+.modal__haveAvatar-wrapper {
+
+}
+
+.modal__avatar-change-btn {
+  padding: 4px 8px;
+  color: #333;
+  font-weight: 500;
+  border-radius: 10px;
+  background-color: $border-color-light-theme;
+  // border: 2px solid $border-color-light-theme;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .modal__image-area--nonImg {
   display: flex;
   flex-direction: column;
@@ -99,6 +124,10 @@
 }
 
 .modal__image-area--haveImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   position: relative;
   overflow: hidden;
 

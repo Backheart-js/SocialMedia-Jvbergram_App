@@ -50,6 +50,7 @@ function Profile() {
         type: UNFOLLOW,
         currentUserId,
         followingUserInfo: profileInfo,
+        setIsFollowing: setIsFollowing 
       })
     );
   };
@@ -72,8 +73,6 @@ function Profile() {
     getInforAndPhotos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
-
-  console.log(profile);
 
   return !profile && !postsCollection ? (
     <Skeleton />

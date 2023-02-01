@@ -6,14 +6,13 @@ import { useAuthListener } from "~/hooks";
 import { getUser } from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import { UserContext } from "~/context/user";
-import { modalSelector } from "~/redux/selector";
 import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 
 function DefaultLayout({ children }) {
   const { user } = useAuthListener();
   const [userLoggedIn, setCurrentUserInfo] = useState(null);
-  const { isOpen, ...payload } = useSelector(modalSelector)
+  const { isOpen, ...payload } = useSelector((state) => state.modal)
 
   useEffect(() => {
     const getData = async () => {

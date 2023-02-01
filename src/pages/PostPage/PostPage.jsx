@@ -59,6 +59,7 @@ function PostPage() {
         type: UNFOLLOW,
         currentUserId,
         followingUserInfo: profileInfo,
+        setIsFollowing: setIsFollowing
       })
     );
   };
