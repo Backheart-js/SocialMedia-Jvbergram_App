@@ -2,7 +2,7 @@ import { firebase, FieldValue } from "~/lib/firebase";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { doc, deleteDoc } from "firebase/firestore";
 
-var _ = require('lodash');
+var _ = require("lodash");
 
 const db = firebase.firestore();
 
@@ -60,11 +60,15 @@ export async function getPostWithOwnerById(docId) {
   };
 }
 
-export async function getSuggestionsProfilesByFollowing(LoggedInUserId, following, limit) {
+export async function getSuggestionsProfilesByFollowing(
+  LoggedInUserId,
+  following,
+  limit
+) {
   let suggestion = [];
   const counts = {};
   const userRef = db.collection("users");
-  
+
   for (const userId of following) {
     const query = userRef.where("followers", "array-contains", userId);
     const getSuggestionsProfiles = await query.get(); //Trả về 1 mảng người dùng được following của mình (bên thứ 2) theo dõi
@@ -73,8 +77,9 @@ export async function getSuggestionsProfilesByFollowing(LoggedInUserId, followin
       const profile = profileDoc.data();
       const profileId = profile.userId;
 
-      if (following.includes(profileId) || profileId === LoggedInUserId) continue;
-      
+      if (following.includes(profileId) || profileId === LoggedInUserId)
+        continue;
+
       if (!counts[profileId]) {
         counts[profileId] = { profile, count: 0 };
       }
@@ -86,31 +91,43 @@ export async function getSuggestionsProfilesByFollowing(LoggedInUserId, followin
   // sort the profiles based on the count
   const profiles = Object.values(counts)
     .sort((a, b) => b.count - a.count)
-    .map(entry => entry.profile);
+    .map((entry) => entry.profile);
 
-    suggestion = [...profiles]
+  suggestion = [...profiles];
 
-    if (profiles.length < limit) {  //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
-      const getPopularUsers = await userRef.where("userId", "not-in", following).limit(limit*2+1).get();
-       //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
+  if (profiles.length < limit) {
+    //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
+    const getPopularUsers =
+      following.length > 0
+        ? await userRef
+            .where("userId", "not-in", following)
+            .limit(limit * 2 + 1)
+            .get()
+        : await userRef.limit(limit * 2 + 1).get();
+    //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
 
-      for (const popularUserDoc of getPopularUsers.docs) {
-        const popularUser = popularUserDoc.data();
-        let isExist = false;
+    for (const popularUserDoc of getPopularUsers.docs) {
+      const popularUser = popularUserDoc.data();
+      let isExist = false;
 
-        if (popularUser.userId === LoggedInUserId || profiles.includes(popularUser)) continue;
+      if (
+        popularUser.userId === LoggedInUserId ||
+        profiles.includes(popularUser)
+      )
+        continue;
 
-        for (const prevProfile of suggestion) {
-          if (_.isEqual(prevProfile, popularUser)){ //Check xem profile phổ biến đã có trong mảng trước đó chưa
-            isExist = true;
-            break;
-          } 
-        }
-        if (!isExist) {
-          suggestion = [...suggestion, popularUser];
+      for (const prevProfile of suggestion) {
+        if (_.isEqual(prevProfile, popularUser)) {
+          //Check xem profile phổ biến đã có trong mảng trước đó chưa
+          isExist = true;
+          break;
         }
       }
+      if (!isExist) {
+        suggestion = [...suggestion, popularUser];
+      }
     }
+  }
   // return the top 'limit' profiles
   return suggestion.slice(0, limit);
 }
@@ -180,11 +197,15 @@ export async function updateFollower(currentUser, profileId, isFollowing) {
 }
 
 export async function updateAvatar(loggedInUserId, newAvatarUrl) {
-  return db.collection('users').where("userId", "==", loggedInUserId).get().then(function (querySnapshot) {
-    querySnapshot.forEach((doc) => {
-      doc.ref.update({avatarUrl: newAvatarUrl})
-    })
-  })
+  return db
+    .collection("users")
+    .where("userId", "==", loggedInUserId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        doc.ref.update({ avatarUrl: newAvatarUrl });
+      });
+    });
 }
 
 export async function updateUserInfo(loggedInUserId, newData) {
@@ -195,12 +216,20 @@ export async function updateUserInfo(loggedInUserId, newData) {
       birthday: string,
       gender: number
     }
-  */ 
-  return db.collection('users').where("userId", "==", loggedInUserId).get().then(function (querySnapshot) {
-    querySnapshot.forEach((doc) => {
-      doc.ref.update({fullname: newData.fullname, birthday: newData.birthday, gender: newData.gender})
-    })
-  })
+  */
+  return db
+    .collection("users")
+    .where("userId", "==", loggedInUserId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        doc.ref.update({
+          fullname: newData.fullname,
+          birthday: newData.birthday,
+          gender: newData.gender,
+        });
+      });
+    });
 }
 
 // DELETE
@@ -245,10 +274,13 @@ export async function verifyAccout() {
   sentVerificationEmail();
 }
 
-// SEARCH USER 
+// SEARCH USER
 export async function searchUserByUsernameOrFullname(searchKeyword) {
-  const querySnapshot = await db.collection('users').where("fullname", "==", searchKeyword).get();
-  const results = querySnapshot.docs.map(doc => doc.data());
+  const querySnapshot = await db
+    .collection("users")
+    .where("fullname", "==", searchKeyword)
+    .get();
+  const results = querySnapshot.docs.map((doc) => doc.data());
 
   return results;
 }

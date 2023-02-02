@@ -41,10 +41,6 @@ function VerifyAccount() {
 
   }, [])
 
-  // var referrer = document.referrer;
-  // var previousRoute = referrer.substring(referrer.indexOf('/', referrer.indexOf('://') + 3));
-  // console.log(previousRoute);
-  // console.log(typeof document.referrer);
 
   return (
     <div className="relative xl:w-[500px] md:w-[450px] w-[400px] bg-white rounded py-4 px-6 flex flex-col items-center">

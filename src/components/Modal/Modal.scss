@@ -99,10 +99,6 @@
   width: 100%;
 }
 
-.modal__haveAvatar-wrapper {
-
-}
-
 .modal__avatar-change-btn {
   padding: 4px 8px;
   color: #333;
@@ -133,6 +129,10 @@
   overflow: hidden;
 
   .modal__image-preview {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 100%;
     width: 100%;
   }
 
@@ -156,7 +156,8 @@
 
   &:hover {
     .modal__image-area-overlay {
-      display: block;
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
@@ -198,6 +199,40 @@
   }
 }
 
+.selectImg__dropdown {
+  position: absolute;
+  height: 118px;
+  padding: 12px;
+  right: 0;
+  bottom: 42px;
+  border-radius: 5px;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+}
+
+.modal__image-preview-sub-btn {
+    
+  .modal__image-preview-sub {
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 100%;
+    width: 90px;
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($color: #000000, $alpha: 0.4);
+    }
+  }
+
+  &+& {
+    margin-left: 12px;
+  }
+}
 
 // Delete modal
 .delete__logo-wrapper {

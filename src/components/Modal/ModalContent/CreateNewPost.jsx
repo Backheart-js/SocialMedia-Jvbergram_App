@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faFileImage } from "@fortawesome/free-regular-svg-icons";
+import { faClone, faFileImage } from "@fortawesome/free-regular-svg-icons";
 import {
   getStorage,
   ref,
@@ -15,12 +15,15 @@ import { RotatingLines } from "react-loader-spinner";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function CreateNewPost({ closeModal }) {
-  const [imagePreviewLink, setImagePreviewLink] = useState([]);
-  const [imageList, setImageList] = useState([]);
+  const [imagePreviewLink, setImagePreviewLink] = useState([]); //List ảnh preview
+  const [imageList, setImageList] = useState([]); //List ảnh đẩy lên Storage
+  const [orderPreview, setOrderPreview] = useState(-1);
   const [captionValue, setCaptionValue] = useState("");
   const [loadingDisplay, setLoadingDisplay] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const { user } = useAuthListener();
 
   const handlePreviewImage = (filesInput) => {
@@ -33,7 +36,6 @@ function CreateNewPost({ closeModal }) {
   };
 
   const handleChangeImage = (e) => {
-    console.log("change");
     const files = e.target.files;
     handlePreviewImage(files);
 
@@ -64,10 +66,8 @@ function CreateNewPost({ closeModal }) {
         (snapshot) => {
           switch (snapshot.state) {
             case "paused":
-              console.log("Upload is paused");
               break;
             case "running":
-              console.log("Upload is running");
               break;
             default:
           }
@@ -109,6 +109,11 @@ function CreateNewPost({ closeModal }) {
     }
   };
 
+  const handleRemoveImage = (index) => {
+    setImageList(imageList.filter((_, i) => i !== index));
+    setImagePreviewLink(imagePreviewLink.filter((_, i) => i !== index));
+  };
+
   useEffect(() => {
     return () => {
       // Fix lỗi xóa URL trong local
@@ -118,6 +123,10 @@ function CreateNewPost({ closeModal }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setOrderPreview(imagePreviewLink.length - 1);
+  }, [imagePreviewLink.length]);
 
   return (
     <div
@@ -133,7 +142,7 @@ function CreateNewPost({ closeModal }) {
           <div className="modal__user-avatar"></div>
           <div className="modal__user-name"></div>
         </div>
-        <div className="modal__caption">
+        <div className="modal__caption pr-2 pb-2">
           <textarea
             value={captionValue}
             className="modal__caption-input"
@@ -192,29 +201,72 @@ function CreateNewPost({ closeModal }) {
             ) : (
               <div className="modal__image-area--haveImage">
                 {imagePreviewLink.map((imageLink, index) => (
-                  <img
+                  <div
+                    className={`modal__image-preview ${
+                      orderPreview === index ? "block" : "hidden"
+                    }`}
+                    style={{ backgroundImage: `url(${imageLink})` }}
                     key={index}
-                    src={imageLink}
-                    alt=""
-                    className="modal__image-preview"
-                  />
+                  ></div>
                 ))}
                 <div className="modal__image-area-overlay">
-                  <input
-                    id="modal__select-file"
-                    multiple
-                    className="hidden"
-                    type="file"
-                    onChange={handleChangeImage}
-                    accept="image/*"
-                  />
-                  <label
-                    htmlFor="modal__select-file"
-                    className="modal__select-label"
-                  >
-                    <FontAwesomeIcon icon={faFileImage} />
-                    <span className="ml-1 font-semibold">Thêm ảnh</span>
-                  </label>
+                  <div>
+                    <input
+                      id="modal__select-file"
+                      multiple
+                      className="hidden"
+                      type="file"
+                      onChange={handleChangeImage}
+                      accept="image/*"
+                    />
+                    <label
+                      htmlFor="modal__select-file"
+                      className="modal__select-label"
+                    >
+                      <FontAwesomeIcon icon={faFileImage} />
+                      <span className="ml-1 font-semibold">Thêm ảnh</span>
+                    </label>
+                  </div>
+                  <div className="absolute top-3 right-4" name="delete image">
+                    <button
+                      className="flex justify-center items-center w-8 h-8 rounded-full text-gray-50 bg-gray-600"
+                      onClick={() => handleRemoveImage(orderPreview)}
+                    >
+                      <FontAwesomeIcon icon={faXmark} className={"text-lg"} />
+                    </button>
+                  </div>
+                  {imagePreviewLink.length > 1 && (
+                    <div className="absolute bottom-4 right-4">
+                      <button
+                        className="flex justify-center items-center w-8 h-8 rounded-full text-gray-800 bg-white"
+                        onClick={() => setShowDropdown((prev) => !prev)}
+                      >
+                        <FontAwesomeIcon icon={faClone} />
+                      </button>
+                      <div
+                        className={`selectImg__dropdown ${
+                          showDropdown ? "flex" : "hidden"
+                        }`}
+                      >
+                        {imagePreviewLink.map((imageLink, index) => (
+                          <button
+                            className="modal__image-preview-sub-btn"
+                            onClick={() => setOrderPreview(index)}
+                          >
+                            <div
+                              className={`modal__image-preview-sub`}
+                              style={{ backgroundImage: `url(${imageLink})` }}
+                              key={index}
+                            >
+                              {orderPreview !== index && (
+                                <div className={"overlay"} />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

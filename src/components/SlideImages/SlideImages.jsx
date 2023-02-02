@@ -9,12 +9,12 @@ function SlideImages({ imagesList, ...props }) {
 
   return (
     <div className="slider-container" {...props}>
-      <div className="slider__image-wrapper min-h-[400px]">
+      <div className="slider__image-wrapper">
         {imagesList.map((image, index) => (
             <div
               className={`${
-                index === currentIndex ? "slider-img" : "hidden"
-              } pb-[100%] bg-center bg-contain bg-no-repeat w-full`}
+                index === currentIndex ? "block" : "hidden"
+              } slider__image-bg`}
               style={{ backgroundImage: `url(${image})` }}
               key={index}
             ></div>
