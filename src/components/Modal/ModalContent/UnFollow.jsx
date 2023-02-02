@@ -8,8 +8,15 @@ import {
   updateFollower,
 } from "~/services/firebaseServices";
 import "../Modal.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { setFollowing } from "~/redux/slice/profileSlice";
 
-function UnFollow({ closeModal, currentUserId, followingUserInfo, setUnfollowFunc }) {
+function UnFollow({ closeModal }) {
+  const { currentUserId, followingUserInfo } = useSelector(
+    (state) => state.modal
+  );
+  const dispatch = useDispatch();
+
   console.log(currentUserId);
   console.log(followingUserInfo);
   const [loadingDisplay, setLoadingDisplay] = useState(false);
@@ -24,8 +31,8 @@ function UnFollow({ closeModal, currentUserId, followingUserInfo, setUnfollowFun
       );
       await updateFollower(currentUserId, followingUserInfo.userId, true);
 
+      dispatch(setFollowing(false));
       closeModal();
-      setUnfollowFunc(false)
     } catch (error) {
       setLoadingDisplay(false);
       console.log(error);

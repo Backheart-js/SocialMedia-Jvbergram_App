@@ -2,7 +2,7 @@ import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 import Avatar from "~/components/Avatar/Avatar";
@@ -17,32 +17,27 @@ import {
   updateFollower,
 } from "~/services/firebaseServices";
 import "./Profile.scss";
-
-const initialState = {
-  profile: null,
-  postsCollection: null,
-};
-
-const reducer = (state, newState) => ({
-  ...state,
-  ...newState,
-});
+import profileSlide, {
+  setFollowing,
+  setPostsCollection,
+  setProfile,
+} from "~/redux/slice/profileSlice";
 
 function Profile() {
+  const { profile, postsCollection, isFollowing } = useSelector(
+    (state) => state.profile
+  );
   const { username } = useParams();
-  const reduxDispatch = useDispatch()
+  const reduxDispatch = useDispatch();
   const { user } = useAuthListener();
   const userLoggedIn = useContext(UserContext);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [{ profile, postsCollection }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
 
   const handleFollowOtherUser = async (currentUserId, profileId) => {
-    setIsFollowing(true);
-    await updateCurrentUserFolling(currentUserId, profileId, false);
-    await updateFollower(currentUserId, profileId, false);
+    try {
+      await updateCurrentUserFolling(currentUserId, profileId, false);
+      await updateFollower(currentUserId, profileId, false);
+      reduxDispatch(setFollowing(true));
+    } catch (e) {}
   };
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
     reduxDispatch(
@@ -50,7 +45,6 @@ function Profile() {
         type: UNFOLLOW,
         currentUserId,
         followingUserInfo: profileInfo,
-        setIsFollowing: setIsFollowing 
       })
     );
   };
@@ -63,11 +57,14 @@ function Profile() {
       // if (userInfo.length === 0) {
       // } check không tìm thấy người dùng
 
-      setIsFollowing(userLoggedIn?.following.includes(userInfo.userId));
       const posts = await getPostOfUser(userInfo.userId);
       posts.sort((a, b) => b.dateCreated - a.dateCreated); //sắp xếp theo thời gian
 
-      dispatch({ profile: userInfo, postsCollection: posts });
+      reduxDispatch(setProfile(userInfo));
+      reduxDispatch(
+        setFollowing(userLoggedIn?.following.includes(userInfo.userId))
+      );
+      reduxDispatch(setPostsCollection(posts));
     };
 
     getInforAndPhotos();
