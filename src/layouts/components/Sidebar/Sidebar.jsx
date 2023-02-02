@@ -21,7 +21,7 @@ import PropTypes from "prop-types";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import "./Sidebar.scss";
 import SubSidebar from "./SubSidebar";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import { UserContext } from "~/context/user";
 import { FirebaseContext } from "~/context/firebase";
 import { useDispatch } from "react-redux";
@@ -172,7 +172,7 @@ function Sidebar() {
               </li>
               <NavLink to={`/profile/${userLoggedIn?.username}`} className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
-                  <Avatar avatarUrl={userLoggedIn?.avatarUrl === undefined ? {} : userLoggedIn.avatarUrl} size={"sx"}/>
+                  <Avatar avatarUrl={userLoggedIn?.avatarUrl === undefined ? {} : userLoggedIn.avatarUrl} size={"xs"}/>
                 </div>
                 {toggleSubSidebar ? (
                   <></>

@@ -9,11 +9,7 @@ function Avatar({ avatarUrl, size = "small" }) {
     <Skeleton count={1} circle={true} className={`avatart__${size}`}/>
   ) : (
     <div className={`avatar__wrapper avatar__${size}`}>
-      <img
-        src={avatarUrl.current || avatarUrl.default}
-        alt=""
-        className={`select-none`}
-      />
+      <div className="pb-[100%] bg-center bg-cover bg-no-repeat w-full" style={{ backgroundImage: `url(${avatarUrl.current || avatarUrl.default})` }}></div>
     </div>
   );
 }

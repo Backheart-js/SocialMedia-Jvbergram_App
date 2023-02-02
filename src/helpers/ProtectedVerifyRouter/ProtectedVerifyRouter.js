@@ -10,6 +10,7 @@ function ProtectedVerifyRouter({ user, children }) {
         if(user && user.emailVerified) {
             navigate('/')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     useEffect(() => {

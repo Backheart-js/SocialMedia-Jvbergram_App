@@ -3,7 +3,7 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import { UserContext } from "~/context/user";
 import { deleteComment, getUser } from "~/services/firebaseServices";

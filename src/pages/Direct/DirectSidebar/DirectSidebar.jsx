@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Avatar from '~/components/Avatar'
+import Avatar from '~/components/Avatar/Avatar'
 import { UserContext } from '~/context/user'
 import '../Direct.scss'
 

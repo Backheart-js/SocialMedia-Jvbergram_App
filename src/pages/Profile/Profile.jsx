@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import { UNFOLLOW } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import { useAuthListener } from "~/hooks";
@@ -91,7 +91,7 @@ function Profile() {
             </div>
             {user?.uid === profile.userId ? (
               <Link className="flex items-center justify-center mx-6 h-8 w-52 rounded-lg bg-gray-100 hover:bg-gray-200">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-semibold">
                   Chỉnh sửa trang cá nhân
                 </span>
               </Link>

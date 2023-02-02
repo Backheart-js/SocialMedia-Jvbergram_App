@@ -1,6 +1,5 @@
 import avatars from "./assets/avatar";
 
-// NOTE: replace '1Mv0PpzvIqZPxPiyDjbvdpBOtYr2' with your Firebase auth user id (can be taken from Firebase)
 export function seedDatabase(firebase) {
     const users = [
       {

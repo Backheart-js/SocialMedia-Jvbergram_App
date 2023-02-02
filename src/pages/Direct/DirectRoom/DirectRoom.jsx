@@ -19,7 +19,7 @@ function DirectRoom() {
     }
 
     useEffect(() => {
-        contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`
+      contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`
     }, [])
     
 

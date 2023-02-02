@@ -41,6 +41,7 @@ function CreateNewPost({ closeModal }) {
       const newImg = files[i];
       setImageList((prev) => [...prev, newImg]);
     }
+    e.target.value = null;
   };
 
   async function uploadFilesToStorage(files) {
@@ -52,7 +53,7 @@ function CreateNewPost({ closeModal }) {
       contentType: "image/*",
     };
 
-    files.forEach((file, index) => {
+    files.forEach((file) => {
       const randomId = v4();
       const storageRef = ref(storage, `images/${file.name}-${randomId}`);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
@@ -100,11 +101,11 @@ function CreateNewPost({ closeModal }) {
     try {
       const fileURLs = await uploadFilesToStorage(files);
       await createNewPost(fileURLs, user.uid, caption);
-      setLoadingDisplay(false);
       closeModal();
     } catch (error) {
-      setLoadingDisplay(false);
       alert("Lỗi! Vui lòng thử lại");
+    } finally {
+      setLoadingDisplay(false);
     }
   };
 

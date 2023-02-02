@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { Link } from "react-router-dom";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
 import {
   updateCurrentUserFolling,

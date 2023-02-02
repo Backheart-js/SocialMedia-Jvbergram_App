@@ -1,0 +1,9 @@
+.verify-noti {
+    transition: bottom .3s ease-in-out;
+    @apply flex items-center fixed left-0 right-0 bottom-[-50px] h-14 px-10 bg-[#262626];
+
+    &.show {
+        bottom: 0;
+    }
+}
+

@@ -1,5 +1,6 @@
+
 const firebaseConfig = {
-    apiKey: "AIzaSyAmeXmcgOvxw3dgfuQf6bC185mhOoXog4o",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: "jvbergram.firebaseapp.com",
     projectId: "jvbergram",
     storageBucket: "jvbergram.appspot.com",
@@ -7,5 +8,4 @@ const firebaseConfig = {
     appId: "1:750715503765:web:7b782f0a55bf745735879c",
     measurementId: "G-CNCC33MZ0F"
 }
-
 export default firebaseConfig;

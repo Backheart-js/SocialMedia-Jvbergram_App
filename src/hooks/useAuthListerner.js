@@ -3,15 +3,16 @@ import { useSelector } from "react-redux";
 import { FirebaseContext } from "~/context/firebase";
 import { rememberPasswordSelector } from "~/redux/selector";
 
+// const isRememberPassword = useSelector(rememberPasswordSelector);
 export default function useAuthListener() {
   const { firebase } = useContext(FirebaseContext);
-  const isRememberPassword = useSelector(rememberPasswordSelector);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
-      if (authUser && authUser.emailVerified) {
+      console.log(authUser);
+      if (authUser) {
         localStorage.setItem("authUser", JSON.stringify(authUser))
         setUser(authUser);
         setLoading(false);

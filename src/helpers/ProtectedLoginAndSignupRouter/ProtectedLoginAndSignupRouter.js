@@ -6,10 +6,19 @@ function ProtectedLoginAndSignupRouter({ user, children }) {
     const [isLoaded, setIsLoaded] = useState(false);
     const location = useLocation();
 
+    var referrer = document.referrer;
+    var previousRoute = referrer.substring(referrer.indexOf('/', referrer.indexOf('://') + 3));
+    console.log(user);
+
+
     useEffect(() => {
-        if(user) {
+        if (previousRoute === '/notify') {
+            return;
+        }
+        else if(user && user.emailVerified) {
             navigate('/')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     useEffect(() => {

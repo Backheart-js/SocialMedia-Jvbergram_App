@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { checkUserNameExist, verifyAccout } from "~/services/firebaseServices";
+import { checkUserNameExist } from "~/services/firebaseServices";
 import { firebase } from "~/lib/firebase";
 import "./Signup.scss";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "~/constants/Regex";

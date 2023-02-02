@@ -10,7 +10,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
 import { updateAvatar } from "~/services/firebaseServices";

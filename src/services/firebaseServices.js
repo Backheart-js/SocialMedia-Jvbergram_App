@@ -187,6 +187,22 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
   })
 }
 
+export async function updateUserInfo(loggedInUserId, newData) {
+  /*
+    newData: object chứa các trường có thể update (fullname, birthday, gender)
+    {
+      fullname: string,
+      birthday: string,
+      gender: number
+    }
+  */ 
+  return db.collection('users').where("userId", "==", loggedInUserId).get().then(function (querySnapshot) {
+    querySnapshot.forEach((doc) => {
+      doc.ref.update({fullname: newData.fullname, birthday: newData.birthday, gender: newData.gender})
+    })
+  })
+}
+
 // DELETE
 export async function deletePost(postId, imageUrls) {
   const storage = getStorage();

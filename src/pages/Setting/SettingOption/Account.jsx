@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
 import { UPDATE_AVATAR } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import modalSlice from "~/redux/slice/modalSlide";
+import { updateUserInfo } from "~/services/firebaseServices";
 import "../Setting.scss";
 
 function Account() {
   const loggedInUser = useContext(UserContext);
   const [avatar, setAvatar] = useState(loggedInUser.avatarUrl);
-  const [fullname, setFullname] = useState(loggedInUser.fullname);
-  const [birthday, setBirthday] = useState(loggedInUser.birthday);
-  const [gender, setGender] = useState(loggedInUser.gender);
+  const [userData, setUserData] = useState({
+    fullname: loggedInUser.fullname,
+    birthday: loggedInUser.birthday,
+    gender: loggedInUser.gender
+  })
   const dispatch = useDispatch();
 
   const openUpdateAvatarModal = () => {
@@ -25,13 +28,10 @@ function Account() {
     );
   };
 
-  const handleSaveInfo = () => {
-
-  }
-
   useEffect(() => {}, []);
 
-  console.log(birthday);
+  console.log(userData);
+
   return (
     <div className="">
       <div className="setting__avatar-wrapper setting__field-wrapper">
@@ -57,10 +57,15 @@ function Account() {
         </div>
         <div className="setting__rightside">
           <input
-            value={fullname}
+            value={userData.fullname}
             type="text"
             className="setting__fullname-input setting__input"
-            onChange={(e) => setFullname(e.target.value)}
+            onChange={(e) => setUserData(prev => {
+              return {
+                ...prev,
+                fullname: e.target.value
+              }
+            })}
           />
           <p className="setting__subnote">
             Thông tin này sẽ xuất hiện trên trang cá nhân của bạn
@@ -73,10 +78,15 @@ function Account() {
         </div>
         <div className="setting__rightside">
           <input
-            value={birthday}
+            value={userData.birthday}
             type="date"
             className="setting__birthday-input setting__input"
-            onChange={(e) => setBirthday(e.target.value)}
+            onChange={(e) => setUserData(prev => {
+              return {
+                ...prev,
+                birthday: e.target.value
+              }
+            })}
           />
         </div>
       </div>
@@ -89,7 +99,12 @@ function Account() {
             className="setting__input"
             name=""
             id=""
-            onChange={(e) => setGender(+e.target.value)}
+            onChange={(e) => setUserData(prev => {
+              return {
+                ...prev,
+                gender: +e.target.value
+              }
+            })}
           >
             <option value={0} className="">
               Nam
@@ -111,7 +126,7 @@ function Account() {
         <div className="setting__leftside">
         </div>
         <div className="setting__rightside">
-          <Button className={"px-3 py-1"} btnPrimary>Lưu</Button>
+          <Button className={"px-3 py-1"} btnPrimary onClick={() => updateUserInfo(loggedInUser.userId, userData)}>Lưu</Button>
         </div>
       </div>
     </div>
