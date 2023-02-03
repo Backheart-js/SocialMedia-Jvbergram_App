@@ -11,7 +11,6 @@ export default function useAuthListener() {
   
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
-      console.log(authUser);
       if (authUser) {
         localStorage.setItem("authUser", JSON.stringify(authUser))
         setUser(authUser);

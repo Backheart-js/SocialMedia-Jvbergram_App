@@ -117,7 +117,7 @@ function Profile() {
                 </span>
               </button>
             )}
-            <button>
+            {/* <button>
               <svg
                 aria-label="Tùy chọn"
                 className="_ab6-"
@@ -146,7 +146,7 @@ function Profile() {
                   strokeWidth={2}
                 />
               </svg>
-            </button>
+            </button> */}
           </div>
           <div className="profile__info-wrapper flex">
             <div className="profile__info-2">

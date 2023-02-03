@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import Button from "~/components/Button";
+import Notification from "~/components/Notification/Notification";
 import { verifyAccout } from "~/services/firebaseServices";
-import "./VerifyAccount.scss"
 
 function VerifyAccount() {
   const [countdown, setCountdown] = useState(60);
@@ -76,11 +75,7 @@ function VerifyAccount() {
         </Button>
       </a>
 
-      <div className={`verify-noti ${showNoti ? "show" : ""}`}>
-        <p className="text-white font-semibold text-[13px]">
-          Đã gửi email xác nhận
-        </p>
-      </div>
+      <Notification content="Đã gửi email xác nhận" isShowing={showNoti} />
     </div>
   );
 }

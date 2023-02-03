@@ -10,8 +10,6 @@ import LoadingPage from "./pages/LoadingPage/LoadingPage";
 function App() {
   const { user, loading } = useAuthListener();
 
-  console.log(user);
-
   return loading ? 
   (
     <LoadingPage />

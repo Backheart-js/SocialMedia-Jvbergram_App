@@ -1,0 +1,9 @@
+.notification {
+    transition: bottom .3s ease-in-out;
+    z-index: 99;
+    @apply flex items-center fixed left-0 right-0 bottom-[-56px] h-14 px-10 bg-[#262626];
+
+    &.show {
+        bottom: 0;
+    }
+}

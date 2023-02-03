@@ -7,8 +7,6 @@ function ProtectedUserRouter({ user, children }) {
     const [isLoaded, setIsLoaded] = useState(false);
     const location = useLocation();
 
-    console.log(user);
-
     useEffect(() => {
         if(!user) {
             navigate('/login')

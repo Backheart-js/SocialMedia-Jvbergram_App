@@ -1,6 +1,7 @@
 import { firebase, FieldValue } from "~/lib/firebase";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { doc, deleteDoc } from "firebase/firestore";
+import sortUserByFollower from "~/utils/sortUserByFollower";
 
 var _ = require("lodash");
 
@@ -97,17 +98,19 @@ export async function getSuggestionsProfilesByFollowing(
 
   if (profiles.length < limit) {
     //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
-    const getPopularUsers =
+    const getAllUser =
       following.length > 0
         ? await userRef
             .where("userId", "not-in", following)
-            .limit(limit * 2 + 1)
             .get()
-        : await userRef.limit(limit * 2 + 1).get();
+            .then((snapshot) => snapshot.docs.map((doc) => doc.data()))
+        : await userRef
+            .get()
+            .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
     //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
+    const popularUsers = sortUserByFollower(getAllUser).slice(0, limit * 2 - 1);
 
-    for (const popularUserDoc of getPopularUsers.docs) {
-      const popularUser = popularUserDoc.data();
+    for (const popularUser of popularUsers) {
       let isExist = false;
 
       if (

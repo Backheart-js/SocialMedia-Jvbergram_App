@@ -21,7 +21,7 @@ function Home() {
     setPosts(photosWithUserInfoState);
     setShowUpdateButton(false);
   }
-
+  console.log(userLoggedIn);
   useEffect(() => {
     let unsubscribe;
     const getTimeline = async () => {
@@ -52,39 +52,8 @@ function Home() {
             );
 
             photosWithUserInfo.sort((a, b) => b.dateCreated - a.dateCreated);
-            // if (!posts) {
-            //   console.log('vào đây 1: ',photosWithUserInfo);
-            //   //Set posts cho lần đầu load trang
-            //   setPosts(photosWithUserInfo);
-            // }
-            // else if (userLoggedIn.userId === photosWithUserInfo[0].userId) {
-            //   console.log('vào đây 2');
-            //   //Nếu chính mình tạo bài viết sẽ tự reload lại
-            //   setPosts(photosWithUserInfo);
-            // }
-            // else if (photosWithUserInfo.length > (posts || []).length) {
-            //   //Nếu user đang follow tạo bài mới sẽ show reload Button
-            //   console.log('vào đây 3');
-            //   setShowUpdateButton(true);
-            // }
-
-            // else if (photosWithUserInfo.length < (posts || []).length) {
-            //   //Nếu xóa bài thì tự động reload
-            //   console.log('vào đây 4');
-            //   setPosts(photosWithUserInfo);
-            // }
-            setPosts(photosWithUserInfo);
-
-            // setPhotosWithUserInfoState(photosWithUserInfo)
-            // console.log(photosWithUserInfoState);
-            // if (!posts) {
-            //   console.log('vào đây 1: ', photosWithUserInfo);
-            // }
-            // else if (photosWithUserInfo.length > (posts || []).length) {
-            //   console.log('vào đây 2');
-            //   setShowUpdateButton(true);
-            // }
             
+            setPosts(photosWithUserInfo);
         });
     };
 
@@ -116,9 +85,9 @@ function Home() {
               <span className='text-[13px] text-gray-500 font-semibold'>
                 Gợi ý cho bạn
               </span>
-              <Link to={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
+              <a href={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
                 Xem tất cả
-              </Link>
+              </a>
             </div>
             <div className="suggestion__body-min mt-5">
               <Suggestion userId={userLoggedIn.userId} following={userLoggedIn.following} min/>

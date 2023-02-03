@@ -92,7 +92,7 @@ function Sidebar() {
               )}
             </div>
             <ul className="sidebarMain__list-wrapper">
-              <NavLink to="/" className="sidebarMain__item-wrapper">
+              <a href="/" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faHouse}
                   className="sidebarMain__item-icon"
@@ -102,7 +102,7 @@ function Sidebar() {
                 ) : (
                   <span className="sidebarMain__item-text">Trang chủ</span>
                 )}
-              </NavLink>
+              </a>
               <li
                 data-type="search"
                 className="sidebarMain__item-wrapper"
@@ -120,7 +120,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tìm kiếm</span>
                 )}
               </li>
-              <NavLink to="/explore/people" className="sidebarMain__item-wrapper">
+              <a href="/explore/people" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faCompass}
                   className="sidebarMain__item-icon"
@@ -130,7 +130,7 @@ function Sidebar() {
                 ) : (
                   <span className="sidebarMain__item-text">Khám phá</span>
                 )}
-              </NavLink>
+              </a>
               <NavLink to="/direct" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faPaperPlane}

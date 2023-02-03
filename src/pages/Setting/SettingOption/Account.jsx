@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
+import Notification from "~/components/Notification/Notification";
 import { UPDATE_AVATAR } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import modalSlice from "~/redux/slice/modalSlide";
@@ -16,6 +17,8 @@ function Account() {
     birthday: loggedInUser.birthday,
     gender: loggedInUser.gender
   })
+  const [showNoti, setShowNoti] = useState(false)
+
   const dispatch = useDispatch();
 
   const openUpdateAvatarModal = () => {
@@ -28,9 +31,14 @@ function Account() {
     );
   };
 
-  useEffect(() => {}, []);
+  const handleUpdateInfo = () => {
+    updateUserInfo(loggedInUser.userId, userData); 
+    setShowNoti(true);
 
-  console.log(userData);
+    setTimeout(() => {
+      setShowNoti(false);
+    }, 4000); 
+  }
 
   return (
     <div className="">
@@ -97,6 +105,7 @@ function Account() {
         <div className="setting__rightside">
           <select
             className="setting__input"
+            value={userData.gender}
             name=""
             id=""
             onChange={(e) => setUserData(prev => {
@@ -126,9 +135,10 @@ function Account() {
         <div className="setting__leftside">
         </div>
         <div className="setting__rightside">
-          <Button className={"px-3 py-1"} btnPrimary onClick={() => updateUserInfo(loggedInUser.userId, userData)}>Lưu</Button>
+          <Button className={"px-3 py-1"} btnPrimary onClick={handleUpdateInfo}>Lưu</Button>
         </div>
       </div>
+      <Notification content={"Đã cập nhật thông tin cá nhân"} isShowing={showNoti} />
     </div>
   );
 }
