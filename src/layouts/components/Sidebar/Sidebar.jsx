@@ -15,7 +15,7 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Dropdown from "~/components/Dropdown/Dropdown";

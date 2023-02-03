@@ -19,10 +19,17 @@ const profileSlide = createSlice({
     setFollowing: (state, action) => {
       state.isFollowing = action.payload;
     },
+    resetProfile: () => {
+      return {
+        profile: null,
+        postsCollection: null,
+        isFollowing: false,
+      }
+    }
   },
 });
 
-export const { setProfile, setPostsCollection, setFollowing } =
+export const { setProfile, setPostsCollection, setFollowing, resetProfile } =
   profileSlide.actions;
 
 export default profileSlide;

@@ -17,10 +17,11 @@ import {
   updateFollower,
 } from "~/services/firebaseServices";
 import "./Profile.scss";
-import profileSlide, {
+import {
   setFollowing,
   setPostsCollection,
   setProfile,
+  resetProfile
 } from "~/redux/slice/profileSlice";
 
 function Profile() {
@@ -48,6 +49,16 @@ function Profile() {
       })
     );
   };
+
+  useEffect(() => {
+    
+  
+    return () => {
+      console.log("unmound")
+      reduxDispatch(resetProfile())
+    }
+  }, [])
+  
 
   useEffect(() => {
     const getInforAndPhotos = async () => {

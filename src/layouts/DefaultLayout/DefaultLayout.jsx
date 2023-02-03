@@ -10,20 +10,22 @@ import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 function DefaultLayout({ children }) {
   const { user } = useAuthListener();
-  const [userLoggedIn, setCurrentUserInfo] = useState(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(null);
   const { isOpen, ...payload } = useSelector((state) => state.modal);
 
-  useEffect(() => {
+  useEffect(() => { 
+    console.log("re-render")
     const getData = async () => {
       const response = await getUser({
         userId: [user.uid],
       }); //phương thức từ firebaseService
       const [userObj] = response;
-      setCurrentUserInfo(userObj); //1 Object
+      setUserLoggedIn(userObj); //1 Object
     };
 
     user !== null && getData();
   }, [user]);
+
 
   return !userLoggedIn ? (
     <LoadingPage />
