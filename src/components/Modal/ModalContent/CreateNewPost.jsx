@@ -8,14 +8,14 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { v4 } from "uuid";
 import { createNewPost } from "~/services/firebaseServices";
 import { useAuthListener } from "~/hooks";
 import { RotatingLines } from "react-loader-spinner";
 import Loader from "~/components/Loader";
-import "../Modal.scss";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import "../Modal.scss";
 
 function CreateNewPost({ closeModal }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]); //List ảnh preview

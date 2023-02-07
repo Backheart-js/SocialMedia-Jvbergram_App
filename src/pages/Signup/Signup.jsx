@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { checkUserNameExist } from "~/services/firebaseServices";
+import { checkUserNameExist, updateFollower } from "~/services/firebaseServices";
 import { firebase } from "~/lib/firebase";
 import "./Signup.scss";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "~/constants/Regex";
@@ -58,10 +58,10 @@ function Signup() {
   const signupWithEmailAndPassword = async function (info, email, password) {
     //Chức năng đăng nhập với Email/Pass
     try {
-      const res = await firebase
+      const response = await firebase
         .auth()
         .createUserWithEmailAndPassword(email.toLowerCase(), password); //Tạo 1 auth mới lên firebase
-      const user = res.user; //Response trả về thông tin của auth vừa tạo
+      const user = response.user; //Response trả về thông tin của auth vừa tạo
       await user.updateProfile({
         displayName: info.username,
       });
@@ -80,8 +80,10 @@ function Signup() {
         emailAdress: email.toLowerCase(),
         dateCreated: Date.now(),
         followers: [],
-        following: [],
+        following: ["SCx4yqNoa6OxMWcYTVYvkFsodNF2"],
+        chatroomId: []
       });
+      await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
 
     } catch (err) {

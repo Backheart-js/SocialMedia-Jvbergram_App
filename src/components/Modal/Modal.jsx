@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import CreateNewPost from "./ModalContent/CreateNewPost";
 import {
+  CREATE_MESSAGE,
   CREATE_POST,
   DELETE_POST,
   UNFOLLOW,
@@ -16,6 +17,7 @@ import UnFollow from "./ModalContent/UnFollow";
 import "./Modal.scss";
 import UpdateAvatar from "./ModalContent/UpdateAvatar";
 import { setFollowing } from "~/redux/slice/profileSlice";
+import CreateMessage from "./ModalContent/CreateMessage";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -74,7 +76,15 @@ function Modal({ payload }) {
             currentUserId={payload.currentUserId}
             avatarUrl={payload.avatarUrl}
           />
-        ))}
+        )) ||
+        (payload.type === CREATE_MESSAGE && (
+          <CreateMessage
+            closeModal={closeModal}
+            currentUserId={payload.currentUserId}
+            
+          />
+        ))
+        }
     </div>
   );
 }

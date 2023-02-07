@@ -14,7 +14,6 @@ function DefaultLayout({ children }) {
   const { isOpen, ...payload } = useSelector((state) => state.modal);
 
   useEffect(() => { 
-    console.log("re-render")
     const getData = async () => {
       const response = await getUser({
         userId: [user.uid],

@@ -1,0 +1,71 @@
+@import "../../../styles/variable";
+
+.message-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
+
+    &.mine {
+        justify-content: flex-end;
+
+        .message-bubble {
+            background-color: #efefef;
+        }
+    }
+
+    &.partner {
+        justify-content: flex-start;
+
+        .message-bubble {
+            border: 1px solid $border-color-light-theme;
+        }
+
+        &+& {
+            .message-wrapper.partner:first-child {
+                .message__avatar-box {
+                    display: none;
+                }
+            }
+    
+            .message-wrapper.partner:not(:last-child) {
+                .message__avatar-box {
+                    display: none;
+                }
+            }
+
+        }
+    }
+
+    &+& {
+        margin-top: 6px;
+    }
+}
+
+.message-bubble {
+    display: flex;
+    align-items: center;
+    max-width: 234px;
+    min-height: 44px;
+    text-align: left;
+    padding: 13px 16px;
+    border-radius: 25px;
+}
+
+.message-content {
+    font-size: 14px;
+    color: #262626;
+    line-height: 120%;
+    cursor: default;
+}
+
+.message__avatar-wrapper {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.message__avatar-box {
+    width: 100%;
+    height: 100px;
+}

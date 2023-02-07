@@ -2,7 +2,9 @@ import { faCircleXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import Dropdown from "~/components/Dropdown/Dropdown";
-import { searchUserByUsernameOrFullname } from "~/services/firebaseServices";
+import UserLabel from "~/components/UserLabel";
+import { useDebounce } from "~/hooks";
+import { searchUserByFullname } from "~/services/firebaseServices";
 
 import "./SearchSubSidebar.scss";
 
@@ -11,18 +13,24 @@ function SearchInput() {
   const [showResult, setShowResult] = useState(true);
   const [resultValue, setResultValue] = useState([]);
 
+  const debounce = useDebounce(searchValue, 700);
+
   const inputRef = useRef(null);
 
   useEffect(() => {
     const searchUser = async () => {
-        const response = await searchUserByUsernameOrFullname(searchValue)
-
+        const response = await searchUserByFullname(debounce)
+        console.log(response);
         setResultValue(response);
     }
 
-    searchValue.length > 0 && searchUser()
+    debounce.length > 0 && searchUser()
 
-  }, [searchValue]);
+    return () => {
+      setResultValue([])
+    }
+
+  }, [debounce]);
 
   console.log(resultValue);
 
@@ -30,13 +38,13 @@ function SearchInput() {
     <Dropdown
       visible={showResult && resultValue.length > 0 && searchValue.length > 0}
       onClickOutside={() => setShowResult(false)}
-      interactive={true}
+      interactive
       className={"result-width"}
       content={
         <ul className="py-4 search__result-list">
           {resultValue.map((result, index) => (
             <li className="search__result-item" key={index}>
-              {/* {result} */}
+              <UserLabel avatarUrl={result.avatarUrl} username={result.username} fullname={result.fullname} size={"small"}/>
             </li>
           ))}
         </ul>

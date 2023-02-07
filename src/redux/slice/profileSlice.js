@@ -6,8 +6,8 @@ const initialState = {
   isFollowing: false,
 };
 
-const profileSlide = createSlice({
-  name: "profileSlide",
+const profileSlice = createSlice({
+  name: "profileSlice",
   initialState,
   reducers: {
     setProfile: (state, action) => {
@@ -30,6 +30,6 @@ const profileSlide = createSlice({
 });
 
 export const { setProfile, setPostsCollection, setFollowing, resetProfile } =
-  profileSlide.actions;
+  profileSlice.actions;
 
-export default profileSlide;
+export default profileSlice;

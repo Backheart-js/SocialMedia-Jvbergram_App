@@ -7,3 +7,5 @@ export const DELETE_POST = 'delete_post';
 export const UNFOLLOW = 'unfollow';
 
 export const UPDATE_AVATAR = 'update_avatar';
+
+export const CREATE_MESSAGE = 'create_message';

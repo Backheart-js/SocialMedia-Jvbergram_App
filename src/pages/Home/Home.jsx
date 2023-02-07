@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import Button from '~/components/Button';
 import Suggestion from '~/components/Suggestion';
 import Timeline from '~/components/Timeline';
@@ -21,7 +20,7 @@ function Home() {
     setPosts(photosWithUserInfoState);
     setShowUpdateButton(false);
   }
-  console.log(userLoggedIn);
+
   useEffect(() => {
     let unsubscribe;
     const getTimeline = async () => {

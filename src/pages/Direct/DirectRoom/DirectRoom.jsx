@@ -1,33 +1,136 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Button from "~/components/Button";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
+import Loader from "~/components/Loader";
 import "../Direct.scss";
+import { FirebaseContext } from "~/context/firebase";
+import { UserContext } from "~/context/user";
+import Message from "./Message";
+import { deleteEmptyChatRoom, sentMessage } from "~/services/firebaseServices";
+import { useSelector } from "react-redux";
+import Avatar from "~/components/Avatar/Avatar";
+import Skeleton from "react-loading-skeleton";
 
 function DirectRoom() {
+  const { chatroomId } = useParams();
+  const loggedInUser = useContext(UserContext);
+  const { firebase } = useContext(FirebaseContext);
+  const chatroomInfo = useSelector(state => state.conversation)
+  const [allConversation, setAllConversation] = useState(null);
+  const [displayMessages, setDisplayMessages] = useState([]);
   const [messageValue, setMessageValue] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [loadDataFirstTime, setLoadDataFirstTime] = useState(false)
 
-    const wrapperRef = useRef(null)
-    const contentRef = useRef(null)
-    const textareaRef = useRef(null)
+  const wrapperRef = useRef(null);
+  const contentRef = useRef(null);
+  const textareaRef = useRef(null);
+  const contentboxRef = useRef(null);
 
-    const handleSentMessage = (e) => {
-        if (!messageValue.trim()) { //Khoảng trắng
-            return
-        }
-        alert(messageValue)
-        setMessageValue("");
+  const handleSentMessage = (e) => {
+    if (!messageValue.trim()) {
+      //Khoảng trắng
+      return;
+    }
+    sentMessage(chatroomId, messageValue, loggedInUser.userId);
+    setMessageValue("");
+  };
+
+  function loadMoreMessages() {
+    setLimit((prev) => prev + 20);
+  }
+
+  useEffect(() => {
+    if (allConversation !== null) {
+      contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`;
+    }
+    contentRef.current?.scrollIntoView({ behavior: "smooth" });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allConversation]);
+
+  useEffect(() => {
+    let unsubscribe;
+    if (loggedInUser.chatroomId.includes(chatroomId)) {
+      (async function () {
+        unsubscribe = firebase
+          .firestore()
+          .collection("conversation")
+          .doc(chatroomId)
+          .onSnapshot((snapshot) => {
+            const data = snapshot.data()?.messages;
+            setAllConversation(data ? data : []);
+            setLoadDataFirstTime(true)
+          });
+      })();
     }
 
-    useEffect(() => {
-      contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`
-    }, [])
-    
+    return () => {
+      if (loggedInUser.chatroomId.includes(chatroomId)) {
+        unsubscribe();
+        setAllConversation(null);
+        setDisplayMessages([]);
+        setLimit(10);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatroomId]);
 
-  return (
+  useEffect(() => {
+    document.title = "Jvbergram - Direct"
+
+    return () => {
+      if (allConversation?.length === 0 ) {
+        deleteEmptyChatRoom(loggedInUser.userId, chatroomInfo.partnerId, chatroomId)
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadDataFirstTime]);
+
+
+  return !allConversation ? (
+    <div className="drRoom__wrapper">
+      <div className="drRoom__header">
+        <div className="flex h-full items-center">
+          <div className="">
+            {/* <Skeleton circle width={25} height={25} /> */}
+          </div>
+          <div className="ml-2">
+            {/* <Skeleton height={18} width={100} /> */}
+          </div>
+        </div>
+        <div className="">
+          
+        </div>
+      </div>
+    </div>
+  ) : (
     <div ref={wrapperRef} className="drRoom__wrapper">
-      <div className="drRoom__header"></div>
+      <div className="drRoom__header">
+        <Link to={`/profile/${chatroomInfo.username}`} className="flex h-full items-center">
+          <div className="">
+            <Avatar avatarUrl={chatroomInfo.avatarUrl} size={"xs"} />
+          </div>
+          <div className="ml-2">
+            <p className="text-sm font-medium">
+              {chatroomInfo.fullname}
+            </p>
+          </div>
+        </Link>
+        <div className="">
+          
+        </div>
+      </div>
       <div ref={contentRef} className="drRoom_content-wrapper">
-        
+        {allConversation.map((message) => (
+          <Message
+            content={message.content}
+            loggedInUser={message.sender === loggedInUser.userId}
+            avatarUrl={chatroomInfo.avatarUrl}
+            username={chatroomInfo.username}
+            key={message.messageId}
+          />
+        ))}
       </div>
       <div ref={textareaRef} className="drRoom__chatInput-wrapper">
         <div className="chatInput__wrapper">
@@ -55,19 +158,23 @@ function DirectRoom() {
               placeholder="Nhập tin..."
               onInput={(e) => autoGrowTextarea(e)}
               onChange={(e) => {
-                setMessageValue(e.target.value.trimStart())
+                setMessageValue(e.target.value.trimStart());
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSentMessage();
+                  e.preventDefault();
+                  handleSentMessage();
                 }
               }}
             ></textarea>
           </div>
           <div className="chatInput__sentFunc">
             {messageValue.length > 0 ? (
-              <Button className={"px-4 py-2"} btnWhite onClick={handleSentMessage}>
+              <Button
+                className={"px-4 py-2"}
+                btnWhite
+                onClick={handleSentMessage}
+              >
                 Gửi
               </Button>
             ) : (

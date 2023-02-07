@@ -244,6 +244,75 @@
   border-top: 1px solid $border-color-light-theme;
 }
 
+// Create message Modal
+.createMessageModal__header-wrapper {
+  border-bottom: 1px solid $border-color-light-theme;
+}
+
+.createMessageModal__content-input {
+  width: 100%;
+  resize: none;
+  border-bottom: 1px solid $border-color-light-theme;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.createMessageModal__search-wrapper {
+  display: flex;
+  border-bottom: 1px solid $border-color-light-theme;
+}
+
+.createMessage__search-input {
+  flex-grow: 1;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 50px;
+  padding: 1px 14px;
+  margin-bottom: 12px;
+  margin-top: 3px;
+
+  &:focus-visible {
+    outline: none;
+  }
+  &::placeholder {
+    font-size: 14px;
+    color: #999;
+    font-weight: 400;
+  }
+}
+
+.search__result-modal-list {
+  max-height: 240px;
+  overflow-y: auto;
+}
+.search__result-modal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &+& {
+    border-top: 1px solid $border-color-light-theme;
+  }
+}
+
+.modal-select-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.createMessageModal__suggestion-wrapper {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.userSelected-label {
+  border-radius: 20px;
+  margin: 0px 4px 4px 4px;
+  background-color: #e0f1ff;
+}
 
 @keyframes scaleModal {
   0% {

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Avatar from "~/components/Avatar/Avatar";
 import { UNFOLLOW } from "~/constants/modalTypes";
@@ -11,8 +11,12 @@ import { UserContext } from "~/context/user";
 import { useAuthListener } from "~/hooks";
 import modalSlice from "~/redux/slice/modalSlide";
 import {
+  checkChatRoom,
+  createNewChatRoom,
+  createNewConversation,
   getPostOfUser,
   getUser,
+  updateChatRoomOfUser,
   updateCurrentUserFolling,
   updateFollower,
 } from "~/services/firebaseServices";
@@ -32,6 +36,10 @@ function Profile() {
   const reduxDispatch = useDispatch();
   const { user } = useAuthListener();
   const userLoggedIn = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const [checkDirectLoading, setCheckDirectLoading] = useState(false)
+
 
   const handleFollowOtherUser = async (currentUserId, profileId) => {
     try {
@@ -49,14 +57,36 @@ function Profile() {
       })
     );
   };
+  const navigateToDirect = async (profileId) => {
+    // setCheckDirectLoading(true);
+    try {
+      const chatRoomSnapshot = await checkChatRoom(userLoggedIn.userId, [profileId])
+      console.log(chatRoomSnapshot[0].empty)
+      if (chatRoomSnapshot[0].empty) { //Chưa nhắn tin với người này -> Tạo chatroom mới
+
+        const newChatRoom = await createNewChatRoom(userLoggedIn.userId, profileId, "") //Chuỗi rỗng vì tạo chatroom chưa có tin nhắn
+        await createNewConversation(newChatRoom.id)
+        await updateChatRoomOfUser(userLoggedIn.userId, newChatRoom.id, true);
+        await updateChatRoomOfUser(profileId, newChatRoom.id, true);
+
+        setCheckDirectLoading(false);
+        navigate(`/direct/${newChatRoom.id}`);
+      } else {
+        setCheckDirectLoading(false);
+        navigate(`/direct/${chatRoomSnapshot[0].docs[0].id}`);
+      }
+    } catch (err) {
+
+    }
+  }
 
   useEffect(() => {
-    
+    document.title = "Trang cá nhân"
   
     return () => {
-      console.log("unmound")
       reduxDispatch(resetProfile())
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
 
@@ -82,9 +112,7 @@ function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
-  return !profile && !postsCollection ? (
-    <Skeleton />
-  ) : (
+  return (!profile && !postsCollection) || (
     <div className="pt-10 mx-auto lg:w-[935px]">
       <div className="profile__top-wrapper grid grid-cols-12 lg:h-[200px] pb-6">
         <div className="col-span-4 flex justify-center items-center">
@@ -105,7 +133,7 @@ function Profile() {
               </Link>
             ) : isFollowing ? (
               <button
-                className="flex items-center justify-center mx-8 h-8 w-40 rounded-lg bg-gray-100 hover:bg-gray-200"
+                className="flex items-center justify-center ml-8 h-8 w-40 rounded-lg bg-gray-100 hover:bg-gray-200"
                 onClick={() =>
                   handleUnFollowOtherUser(userLoggedIn.userId, {
                     avatar: profile.avatarUrl,
@@ -118,7 +146,7 @@ function Profile() {
               </button>
             ) : (
               <button
-                className="flex items-center justify-center mx-8 h-8 w-36 rounded-lg bg-[#0095f6] hover:bg-[#118ab2]"
+                className="flex items-center justify-center ml-8 h-8 w-36 rounded-lg bg-[#0095f6] hover:bg-[#118ab2]"
                 onClick={() =>
                   handleFollowOtherUser(userLoggedIn.userId, profile.userId)
                 }
@@ -158,6 +186,12 @@ function Profile() {
                 />
               </svg>
             </button> */}
+            {user?.uid === profile.userId ? <></> : <button
+                className="flex items-center justify-center h-8 ml-2 w-24 rounded-lg bg-gray-100 hover:bg-gray-200"
+                onClick={() => navigateToDirect(profile.userId)}
+              >
+                <span className="text-sm font-semibold">Nhắn tin</span>
+              </button>}
           </div>
           <div className="profile__info-wrapper flex">
             <div className="profile__info-2">

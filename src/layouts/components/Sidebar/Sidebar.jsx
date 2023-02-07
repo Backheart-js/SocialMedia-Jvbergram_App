@@ -131,7 +131,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct" className="sidebarMain__item-wrapper">
+              <NavLink to="/direct/inbox" className="sidebarMain__item-wrapper">
                 <FontAwesomeIcon
                   icon={faPaperPlane}
                   className="sidebarMain__item-icon"

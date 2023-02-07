@@ -59,11 +59,6 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
 
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [openEmoji, commentFieldRef.current])
-  
-  useEffect(() => {
-    console.log(commentFieldRef.current.height);
-  }, [commentFieldRef.current?.height])
-  
 
   return (
     <form className="comment__input-wrapper relative flex items-center mt-2" onSubmit={(e) => e.preventDefault()}>

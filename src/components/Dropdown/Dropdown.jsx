@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Tippy from "@tippyjs/react/headless"; // different import path!
 import PropTypes from 'prop-types';
 
