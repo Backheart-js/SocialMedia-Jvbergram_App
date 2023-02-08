@@ -7,7 +7,11 @@ import "../Direct.scss";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import Message from "./Message";
-import { deleteEmptyChatRoom, sentMessage } from "~/services/firebaseServices";
+import {
+  deleteEmptyChatRoom,
+  sentMessage,
+  updateSeenMessage,
+} from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
 import Skeleton from "react-loading-skeleton";
@@ -16,14 +20,15 @@ function DirectRoom() {
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
-  const chatroomInfo = useSelector(state => state.conversation)
-  const chatroomList = useSelector(state => state.chatRoomList)
+  const chatroomInfo = useSelector((state) => state.conversation);
+  const chatroomList = useSelector((state) => state.chatRoomList);
   const [allConversation, setAllConversation] = useState(null);
   const [displayMessages, setDisplayMessages] = useState([]);
   const [messageValue, setMessageValue] = useState("");
   const [limit, setLimit] = useState(10);
-  const [loadDataFirstTime, setLoadDataFirstTime] = useState(false)
+  const [loadDataFirstTime, setLoadDataFirstTime] = useState(false);
 
+  const isExistRoom = chatroomList.some((eachRoom) => eachRoom.chatroomId === chatroomId);
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
   const textareaRef = useRef(null);
@@ -34,7 +39,12 @@ function DirectRoom() {
       //Khoảng trắng
       return;
     }
-    sentMessage(chatroomId, messageValue, chatroomInfo.partnerId, loggedInUser.userId);
+    sentMessage(
+      chatroomId,
+      messageValue,
+      chatroomInfo.partnerId,
+      loggedInUser.userId
+    );
     setMessageValue("");
   };
 
@@ -43,32 +53,32 @@ function DirectRoom() {
   }
 
   useEffect(() => {
-    if (allConversation !== null) {
+    if (isExistRoom) {
       contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`;
     }
     contentRef.current?.scrollIntoView({ behavior: "smooth" });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allConversation]);
 
   useEffect(() => {
     let unsubscribe;
-
-    if (chatroomList.some(eachRoom => eachRoom.chatroomId === chatroomId)) {
-      (async function () {
+    if (isExistRoom) {
+      (async function(){
         unsubscribe = firebase
-          .firestore()
-          .collection("conversations")
-          .doc(chatroomId)
-          .onSnapshot((snapshot) => {
-            const data = snapshot.data()?.messages;
-            setAllConversation(data ? data : []);
-            setLoadDataFirstTime(true)
-          });
-      })();
+        .firestore()
+        .collection("conversations")
+        .doc(chatroomId)
+        .onSnapshot(async (snapshot) => {
+          const data = snapshot.data()?.messages;
+          await updateSeenMessage(snapshot.id, loggedInUser.userId);
+          setAllConversation(data ? data : []);
+          setLoadDataFirstTime(true);
+        });
+      })()
     }
 
     return () => {
-      if (loggedInUser.chatroomId.includes(chatroomId)) {
+      if (isExistRoom) {
         unsubscribe();
         setAllConversation(null);
         setDisplayMessages([]);
@@ -79,58 +89,52 @@ function DirectRoom() {
   }, [chatroomId]);
 
   useEffect(() => {
-    document.title = "Jvbergram - Direct"
+    document.title = "Jvbergram - Direct";
 
     return () => {
-      if (allConversation?.length === 0 ) {
-        deleteEmptyChatRoom(loggedInUser.userId, chatroomInfo.partnerId, chatroomId)
+      if (allConversation?.length === 0) {
+        deleteEmptyChatRoom(
+          loggedInUser.userId,
+          chatroomInfo.partnerId,
+          chatroomId
+        );
       }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadDataFirstTime]);
 
-
-  return !allConversation ? (
-    <div className="drRoom__wrapper">
-      <div className="drRoom__header">
-        <div className="flex h-full items-center">
-          <div className="">
-          </div>
-          <div className="ml-2">
-          </div>
-        </div>
-        <div className="">
-          
-        </div>
-      </div>
-    </div>
+  return !isExistRoom ? (
+    <></>
   ) : (
     <div ref={wrapperRef} className="drRoom__wrapper">
       <div className="drRoom__header">
-        <Link to={`/profile/${chatroomInfo.username}`} className="flex h-full items-center">
+        <Link
+          to={`/profile/${chatroomInfo.username}`}
+          className="flex h-full items-center"
+        >
           <div className="">
             <Avatar avatarUrl={chatroomInfo.avatarUrl} size={"xs"} />
           </div>
           <div className="ml-2">
-            <p className="text-sm font-medium">
-              {chatroomInfo.fullname}
-            </p>
+            <p className="text-sm font-medium">{chatroomInfo.fullname}</p>
           </div>
         </Link>
-        <div className="">
-          
-        </div>
+        <div className=""></div>
       </div>
       <div ref={contentRef} className="drRoom_content-wrapper">
-        {allConversation.map((message) => (
-          <Message
-            content={message.content}
-            loggedInUser={message.sender === loggedInUser.userId}
-            avatarUrl={chatroomInfo.avatarUrl}
-            username={chatroomInfo.username}
-            key={message.messageId}
-          />
-        ))}
+        {!allConversation ? (
+          <></>
+        ) : (
+          allConversation.map((message) => (
+            <Message
+              content={message.content}
+              loggedInUser={message.sender === loggedInUser.userId}
+              avatarUrl={chatroomInfo.avatarUrl}
+              username={chatroomInfo.username}
+              key={message.messageId}
+            />
+          ))
+        )}
       </div>
       <div ref={textareaRef} className="drRoom__chatInput-wrapper">
         <div className="chatInput__wrapper">

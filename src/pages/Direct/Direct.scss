@@ -43,10 +43,34 @@
 }
 
 .drSidebar__item {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 8px 24px 8px 20px;
   user-select: none;
+
+  &.notSeen {
+    .drSidebar__name-text {
+      color: #262626;
+      font-weight: 600;
+    }
+
+    .drSidebar__name-currentMessage {
+      color: #262626;
+      font-weight: 600;
+    }
+
+    .drSidebar__notSeen-notiSymbol {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: $blue-primary;
+    }
+  }
 
   &:hover,
   &.active {
@@ -65,7 +89,7 @@
 .drSidebar__name-text {
   font-size: 14px;
   color: #262626;
-  font-weight: 500;
+  font-weight: 400;
 }
 .drSidebar__name-currentMessage {
   display: block;

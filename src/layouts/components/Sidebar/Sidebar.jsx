@@ -1,7 +1,6 @@
 import {
   faSquarePlus,
   faHeart,
-  faPaperPlane,
   faCompass,
   faBookmark,
   faMoon,
@@ -19,7 +18,6 @@ import { Link, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Dropdown from "~/components/Dropdown/Dropdown";
-import "./Sidebar.scss";
 import SubSidebar from "./SubSidebar";
 import Avatar from "~/components/Avatar/Avatar";
 import { UserContext } from "~/context/user";
@@ -27,6 +25,8 @@ import { FirebaseContext } from "~/context/firebase";
 import { useDispatch } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import { CREATE_POST } from "~/constants/modalTypes";
+import NotiMessage from "./NotiMessage/NotiMessage";
+import "./Sidebar.scss";
 
 function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
@@ -132,10 +132,7 @@ function Sidebar() {
                 )}
               </a>
               <NavLink to="/direct/inbox" className="sidebarMain__item-wrapper">
-                <FontAwesomeIcon
-                  icon={faPaperPlane}
-                  className="sidebarMain__item-icon"
-                />
+                <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (

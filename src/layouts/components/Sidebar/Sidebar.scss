@@ -60,6 +60,26 @@
     }
 }
 
+.sidebarMain__item-message-wrapper {
+    position: relative;
+
+    .quantity-unseenMessage {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: -6px;
+        right: -8px;
+        font-size: 12px;
+        font-weight: 500;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        background-color: $red-primary;
+        border-radius: 50%;
+    }
+}
+
 .sidebarMain__item-text {
     font-size: 16px;
     font-weight: 500;

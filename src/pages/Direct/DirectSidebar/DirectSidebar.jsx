@@ -39,6 +39,7 @@ function DirectSidebar() {
         partnerId: data.partnerInfo.userId,
         username: data.partnerInfo.username,
         chatroomId: data.chatroomId,
+        seenStatus: data.seen.status
       })
     );
   };
@@ -87,7 +88,7 @@ function DirectSidebar() {
           {chatRooms.map((chatRoom) => (
             <NavLink
               to={`/direct/${chatRoom.chatroomId}`}
-              className="drSidebar__item"
+              className={`drSidebar__item ${chatRoom.seen.status || "notSeen"}`}
               key={chatRoom.chatroomId}
               onClick={() => {
                 handleSelectChatRoom(chatRoom);
@@ -102,6 +103,9 @@ function DirectSidebar() {
                   {chatRoom.lastMessage}
                 </p>
               </div>
+              {chatRoom.seen.status || <div className="drSidebar__notSeen-notiSymbol">
+                
+                </div>}
             </NavLink>
           ))}
         </ul>

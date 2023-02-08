@@ -22,48 +22,38 @@ function Direct() {
   useEffect(() => {
     document.title = "Hộp thư - Direct";
 
-    const unsubscribe = async () => {
-      let chatRoomWithUserInfo = [];
-      await firebase
-        .firestore()
-        .collection("userChats")
-        .doc(loggedInUser.userId)
-        .onSnapshot(async (snapshot) => {
-          const roomData = Object.entries(snapshot.data());
-          const promises = roomData.map(async (data) => {
-            const partnerInfo = await getUser({ //return an array contain user information
-              userId: [data[1].partnerId]
-            })
-            return {
-              chatroomId: data[0],
-              lastMessage: data[1].lastMessage,
-              date: data[1].date,
-              partnerInfo: partnerInfo[0],
-            }
-          })
-          chatRoomWithUserInfo = await Promise.all(promises);
-          chatRoomWithUserInfo.sort((a, b) => b.date - a.date);
-          dispatch(chatRoomListSlice.actions.add(chatRoomWithUserInfo));
-          // setChatRooms(chatRoomWithUserInfo)
-          setdataLoading(false)
-        });        
-    };
-    unsubscribe();
+    // const unsubscribe = async () => {
+    //   let chatRoomWithUserInfo = [];
+    //   await firebase
+    //     .firestore()
+    //     .collection("userChats")
+    //     .doc(loggedInUser.userId)
+    //     .onSnapshot(async (snapshot) => {
+    //       const roomData = Object.entries(snapshot.data());
+    //       const promises = roomData.map(async (data) => {
+    //         const partnerInfo = await getUser({ //return an array contain user information
+    //           userId: [data[1].partnerId]
+    //         })
+    //         return {
+    //           chatroomId: data[0],
+    //           ...data[1],
+    //           partnerInfo: partnerInfo[0],
+    //         }
+    //       })
+    //       chatRoomWithUserInfo = await Promise.all(promises);
+    //       chatRoomWithUserInfo.sort((a, b) => b.date - a.date);
+    //       dispatch(chatRoomListSlice.actions.add(chatRoomWithUserInfo));
+    //       setdataLoading(false)
+    //     });        
+    // };
+    // unsubscribe();
 
-    return () => unsubscribe();
+    // return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
 
-  return dataLoading ?
-    (
-      <div className="direct__wrapper">
-        <div className="direct__box lg:max-w-[935px]">
-          
-        </div>
-      </div>
-    )
-  : (
+  return (
     <div className='direct__wrapper'>
       <div className="direct__box lg:max-w-[935px]">
         <DirectSidebar />
