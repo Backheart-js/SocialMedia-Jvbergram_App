@@ -4,6 +4,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from '~/context/user';
 import conversationSlice from '~/redux/slice/conversationSlice';
+import chatRoomListSlice from "~/redux/slice/chatRoomListSlice";
 import { getUser } from '~/services/firebaseServices';
 import "./Direct.scss"
 import DirectSidebar from './DirectSidebar/DirectSidebar';
@@ -11,34 +12,47 @@ import DirectSidebar from './DirectSidebar/DirectSidebar';
 function Direct() {
   const { chatroomId } = useParams();
   const dispatch = useDispatch();
+  const loggedInUser = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
-  const { userId: loggedInUsersId } = useContext(UserContext);
-
+  // const { userId: loggedInUsersId } = useContext(UserContext);
+  
+  // const [chatRooms, setChatRooms] = useState(null);
   const [dataLoading, setdataLoading] = useState(true)
 
   useEffect(() => {
     document.title = "Hộp thư - Direct";
 
-    chatroomId && 
-    (async function(){
-      await firebase.firestore().collection("chatRooms").doc(chatroomId).onSnapshot(async snapshot => {
-        const partnerId = snapshot.data().combinedId.replace(loggedInUsersId, "")
-        const partnerInfo = await getUser({
-          userId: [partnerId]
-        })
-        dispatch(conversationSlice.actions.add({
-          avatarUrl: partnerInfo[0].avatarUrl,
-          fullname: partnerInfo[0].fullname,
-          partnerId,
-          chatroomId: chatroomId,
-          username: partnerInfo[0].username
-        }))
-      })
-    })()
-    setdataLoading(false)
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const unsubscribe = async () => {
+      let chatRoomWithUserInfo = [];
+      await firebase
+        .firestore()
+        .collection("userChats")
+        .doc(loggedInUser.userId)
+        .onSnapshot(async (snapshot) => {
+          const roomData = Object.entries(snapshot.data());
+          const promises = roomData.map(async (data) => {
+            const partnerInfo = await getUser({ //return an array contain user information
+              userId: [data[1].partnerId]
+            })
+            return {
+              chatroomId: data[0],
+              lastMessage: data[1].lastMessage,
+              date: data[1].date,
+              partnerInfo: partnerInfo[0],
+            }
+          })
+          chatRoomWithUserInfo = await Promise.all(promises);
+          chatRoomWithUserInfo.sort((a, b) => b.date - a.date);
+          dispatch(chatRoomListSlice.actions.add(chatRoomWithUserInfo));
+          // setChatRooms(chatRoomWithUserInfo)
+          setdataLoading(false)
+        });        
+    };
+    unsubscribe();
+
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
 
   return dataLoading ?

@@ -18,7 +18,6 @@ function SearchMessage({ userSelected, setUserSelected }) {
     const debounce = useDebounce(searchValue, 700);
 
     const handleSelectUser = (user) => {
-      console.log(user)
         const index = userSelected.findIndex((selected) => selected.userId === user.userId) //Check xem user đã có trong mảng chưa
         if (index >= 0) { //Có rồi thì xóa
           console.log('gỡ')
@@ -28,6 +27,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
         }
     }
     console.log(userSelected)
+    console.log(chatRoomList)
     const removeUserSelected = (index) => {
         setUserSelected(userSelected.filter((selected, i) => i !== index));
     }
@@ -46,6 +46,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounce])
     
+    console.log()
   return (
     <>
       <div className="createMessageModal__search-wrapper px-4 my-2">
@@ -62,7 +63,10 @@ function SearchMessage({ userSelected, setUserSelected }) {
                     {searchResult.map((user) => (
                         <li className="search__result-modal-item px-2 py-2" key={user.userId}>
                             <UserLabel avatarUrl={user.avatarUrl} fullname={user.fullname} username={user.username} size="small"/>
-                            <input checked={userSelected.some(uselect => uselect.userId === user.userId)} className="modal-select-checkbox" type="checkbox" onChange={() => handleSelectUser(user)}/>
+                            <input checked={userSelected.some(uselect => uselect.userId === user.userId)} className="modal-select-checkbox" type="checkbox" onChange={() => handleSelectUser({
+                              userId: user.userId,
+                              username: user.username
+                            })}/>
                         </li>
                     ))}
                 </ul>
@@ -91,10 +95,10 @@ function SearchMessage({ userSelected, setUserSelected }) {
             {
               chatRoomList.map(chatRoom => (
                 <li className="flex justify-between items-center py-2" key={chatRoom.chatroomId}>
-                    <UserLabel avatarUrl={chatRoom.avatarUrl} fullname={chatRoom.fullname} username={chatRoom.username} size="small"/>
-                    <input checked={userSelected.some(user => user.userId === chatRoom.partnerId)} className="modal-select-checkbox" type="checkbox" onChange={() => handleSelectUser({
-                      userId: chatRoom.partnerId,
-                      username: chatRoom.username
+                    <UserLabel avatarUrl={chatRoom.partnerInfo.avatarUrl} fullname={chatRoom.partnerInfo.fullname} username={chatRoom.partnerInfo.username} size="small"/>
+                    <input checked={userSelected.some(user => user.userId === chatRoom.partnerInfo.userId)} className="modal-select-checkbox" type="checkbox" onChange={() => handleSelectUser({
+                      userId: chatRoom.partnerInfo.userId,
+                      username: chatRoom.partnerInfo.username
                     })}/>
                 </li>
               ))

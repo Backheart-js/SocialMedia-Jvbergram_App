@@ -17,6 +17,7 @@ function DirectRoom() {
   const loggedInUser = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
   const chatroomInfo = useSelector(state => state.conversation)
+  const chatroomList = useSelector(state => state.chatRoomList)
   const [allConversation, setAllConversation] = useState(null);
   const [displayMessages, setDisplayMessages] = useState([]);
   const [messageValue, setMessageValue] = useState("");
@@ -33,7 +34,7 @@ function DirectRoom() {
       //Khoảng trắng
       return;
     }
-    sentMessage(chatroomId, messageValue, loggedInUser.userId);
+    sentMessage(chatroomId, messageValue, chatroomInfo.partnerId, loggedInUser.userId);
     setMessageValue("");
   };
 
@@ -51,11 +52,12 @@ function DirectRoom() {
 
   useEffect(() => {
     let unsubscribe;
-    if (loggedInUser.chatroomId.includes(chatroomId)) {
+
+    if (chatroomList.some(eachRoom => eachRoom.chatroomId === chatroomId)) {
       (async function () {
         unsubscribe = firebase
           .firestore()
-          .collection("conversation")
+          .collection("conversations")
           .doc(chatroomId)
           .onSnapshot((snapshot) => {
             const data = snapshot.data()?.messages;
@@ -93,10 +95,8 @@ function DirectRoom() {
       <div className="drRoom__header">
         <div className="flex h-full items-center">
           <div className="">
-            {/* <Skeleton circle width={25} height={25} /> */}
           </div>
           <div className="ml-2">
-            {/* <Skeleton height={18} width={100} /> */}
           </div>
         </div>
         <div className="">

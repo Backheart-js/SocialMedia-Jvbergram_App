@@ -1,6 +1,6 @@
 import { firebase, FieldValue } from "~/lib/firebase";
 import { getStorage, ref, deleteObject } from "firebase/storage";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import sortUserByFollower from "~/utils/sortUserByFollower";
 import { v4 } from "uuid";
 
@@ -24,19 +24,17 @@ export async function checkChatRoom(loggedInUserId, receiverIds) {
   const chatRooms = [];
   receiverIds.forEach((receiverId) => {
     const combinedId = loggedInUserId > receiverId ? loggedInUserId.concat(receiverId) : receiverId.concat(loggedInUserId);
-    const getRoom = db
-      .collection("chatRooms")
-      .where("combinedId", "==", combinedId)
-      .get();
+    const getRoom = db.collection('conversations').doc(combinedId).get()
     promises.push(getRoom);
   })
 
   const result = await Promise.all(promises);
 
+  
   for (const chatRoom of result) {
     chatRooms.push(chatRoom);
   }
-
+  
   return chatRooms;
 }
 
@@ -173,23 +171,42 @@ export async function createNewPost(photos, userId, caption) {
   }
 }
 
-export async function createNewChatRoom(loggedInUserId, receiverId, content) {
+export async function createNewChatRoom(loggedInUserId, loggedInUsername, receiverId, username, content) {
   const combinedId = loggedInUserId > receiverId ? loggedInUserId.concat(receiverId) : receiverId.concat(loggedInUserId);
-  return db.collection('chatRooms').add({
-    combinedId,
-    date: Date.now(),
-    lastMessage: content
+  await updateDoc(doc(db, "userChats", loggedInUserId), {
+    [combinedId+".partnerId"]: receiverId,
+    [combinedId+".username"]: username,
+    [combinedId+".date"]: Date.now(),
+    [combinedId+".lastMessage"]: content,
+    [combinedId+".lastSender"]: loggedInUserId,
+    [combinedId+".seen"]: {
+      time: Date.now(),
+      status: true
+    }
+  });
+  await updateDoc(doc(db, "userChats", receiverId), {
+    [combinedId+".partnerId"]: loggedInUserId,
+    [combinedId+".username"]: loggedInUsername,
+    [combinedId+".date"]: Date.now(),
+    [combinedId+".lastMessage"]: content,
+    [combinedId+".lastSender"]: loggedInUserId,
+    [combinedId+".seen"]: {
+      time: Date.now(),
+      status: false
+    }
   })
+
+  return combinedId;
 }
 
 export async function createNewConversation(chatroomId, newMessage) {
   //Tạo tin nhắn mới trong collection hội thoại, nếu có newMessage thì thêm vào, còn không thì để mảng rỗng
-  const conversationRef = db.collection("conversation");
+  const conversationRef = db.collection("conversations");
 
   return conversationRef.doc(chatroomId).set({ messages: newMessage ? [newMessage] : [] })
 }
 
-export async function createNewMessage(loggedInUserId, receiverIds, content) { 
+export async function createNewMessage(loggedInUserId, loggedInUsername, receiverIds, receiverUsernames, content) { 
   /*
     Gửi message khi click vào button, xảy ra 2 trường hợp
     - Trước đó chưa nhắn tin -> tạo chatroom mới 
@@ -197,26 +214,25 @@ export async function createNewMessage(loggedInUserId, receiverIds, content) {
   */
   //biến receiverIds: người nhận là mảng vì có thể gửi 1 tin cho nhiều người
   const chatRoomSnapshot = await checkChatRoom(loggedInUserId, receiverIds);
-  // console.log(chatRoomSnapshot);
   chatRoomSnapshot.forEach(async (room, index) => {
-    const newMessage = {
-      messageId: v4(),
-      content,
-      sender: loggedInUserId,
-      date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
-    }
-
-    if (room.empty) { //Chưa từng gửi tin nhắn trước đó
-      const newChatRoomRef = await createNewChatRoom(loggedInUserId, receiverIds[index], content) //Tạo room mới/Lấy RoomId
+    
+    if (!room.exists) { //Chưa từng gửi tin nhắn trước đó
+      const newMessage = {
+        messageId: v4(),
+        content,
+        sender: loggedInUserId,
+        date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
+      }
       
-      await createNewConversation(newChatRoomRef.id, newMessage)  //Tạo document mới trong conversation collection
+      const newChatRoomId = await createNewChatRoom(loggedInUserId, loggedInUsername, receiverIds[index], receiverUsernames[index], content) //Tạo room mới/Lấy RoomId
+      await createNewConversation(newChatRoomId, newMessage)  //Tạo document mới trong conversation collection
 
-      await updateChatRoomOfUser(loggedInUserId, newChatRoomRef.id, true)
-      await updateChatRoomOfUser(receiverIds[index], newChatRoomRef.id, true)
+      // await updateChatRoomOfUser(loggedInUserId, newChatRoomRef.id, true)
+      // await updateChatRoomOfUser(receiverIds[index], newChatRoomRef.id, true)
     }
     else { //Đã từng nhắn tin rồi
       const chatRoomId = room.docs[0].id;
-      sentMessage(chatRoomId, content, loggedInUserId)
+      sentMessage(chatRoomId, content, receiverIds[index], loggedInUserId)
     }
   })
 }
@@ -281,19 +297,36 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
     });
 }
 
-export async function sentMessage(chatRoomId, content, senderId) {
+export async function sentMessage(chatRoomId, content, receiverId, senderId) {
   const newMessage = {
     messageId: v4(),
     content,
     sender: senderId,
     date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
   }
-  await db.collection("conversation").doc(chatRoomId).update({
+  await db.collection("conversations").doc(chatRoomId).update({
     messages: FieldValue.arrayUnion(newMessage)
   })
-  await db.collection("chatRooms").doc(chatRoomId).update({
-    date: Date.now(),
-    lastMessage: newMessage.content
+  await db.collection("userChats").doc(receiverId).update({
+    [chatRoomId+".date"]: Date.now(),
+    [chatRoomId+".lastMessage"]: newMessage.content,
+    [chatRoomId+".lastSender"]: senderId,
+    [chatRoomId+".seen.status"]: false
+  });
+  await db.collection("userChats").doc(senderId).update({
+    [chatRoomId+".date"]: Date.now(),
+    [chatRoomId+".lastMessage"]: newMessage.content,
+    [chatRoomId+".lastSender"]: senderId,
+    [chatRoomId+".seen.time"]: Date.now()
+  });
+}
+
+export async function updateSeenMessage(chatRoomId, userId) {
+  await db.collection("userChats").doc(userId).update({
+    [chatRoomId+".seen"]: {
+      time: Date.now(),
+      status: true
+    }
   });
 }
 

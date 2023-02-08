@@ -13,8 +13,7 @@ function CreateDirect() {
 
   const handleCreateMessageModal = () => {
     dispatch(modalSlice.actions.openModal({
-      type: CREATE_MESSAGE,
-      currentUserId: loggedInUser.userId
+      type: CREATE_MESSAGE
     }))
   }
 

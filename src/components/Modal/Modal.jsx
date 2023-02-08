@@ -80,8 +80,6 @@ function Modal({ payload }) {
         (payload.type === CREATE_MESSAGE && (
           <CreateMessage
             closeModal={closeModal}
-            currentUserId={payload.currentUserId}
-            
           />
         ))
         }

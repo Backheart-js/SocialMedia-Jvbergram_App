@@ -14,9 +14,10 @@ function CreateMessage({ closeModal }) {
 
   const handleCreateNewMessage = async () => {
     const receiverIds = userSelected.map((user) => user.userId);
-    console.log(content)
+    const receiverUsername = userSelected.map((user) => user.username);
+
     try {
-      await createNewMessage(loggedInUser.userId, receiverIds, content);
+      await createNewMessage(loggedInUser.userId, loggedInUser.username, receiverIds, receiverUsername, content);
       closeModal()
     }
     catch (err) {
