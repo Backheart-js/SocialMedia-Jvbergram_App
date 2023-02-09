@@ -109,20 +109,16 @@ $leftside-width: 194px;
     align-items: center;
     margin-top: 32px;
 }
-.setting__avatar-img-wrapper {
-
-}
-.setting__avatar-func-wrapper {
-
-}
 
 .setting__birthday-wrapper {
-    @apply xl:pb-24 lg:pb-20 pb-16
+    padding-bottom: 8px;
 }
 
+
 .setting__input {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
+    color: #262626;
     min-width: 220px;
     padding: 4px 6px;
     background-color: $hover-color-light-theme;
@@ -130,9 +126,10 @@ $leftside-width: 194px;
     border-radius: 2px;
     @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px];
 
-    &:focus-visible {
+}
 
-    }
+.setting__story-input {
+    padding: 8px 8px;
 }
 
 .setting__subnote {

@@ -9,6 +9,8 @@ import {
   CREATE_MESSAGE,
   CREATE_POST,
   DELETE_POST,
+  FOLLOW_LIST,
+  LOGIN,
   UNFOLLOW,
   UPDATE_AVATAR,
 } from "~/constants/modalTypes";
@@ -18,6 +20,8 @@ import "./Modal.scss";
 import UpdateAvatar from "./ModalContent/UpdateAvatar";
 import { setFollowing } from "~/redux/slice/profileSlice";
 import CreateMessage from "./ModalContent/CreateMessage";
+import FollowersModal from "./ModalContent/Followers";
+import LoginModal from "./ModalContent/Login";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -78,11 +82,16 @@ function Modal({ payload }) {
           />
         )) ||
         (payload.type === CREATE_MESSAGE && (
-          <CreateMessage
+          <CreateMessage closeModal={closeModal} />
+        )) ||
+        (payload.type === FOLLOW_LIST && (
+          <FollowersModal
             closeModal={closeModal}
+            followType={payload.followType}
+            userIdList={payload.userIdList}
           />
-        ))
-        }
+        )) ||
+        (payload.type === LOGIN && <LoginModal closeModal={closeModal} />)}
     </div>
   );
 }

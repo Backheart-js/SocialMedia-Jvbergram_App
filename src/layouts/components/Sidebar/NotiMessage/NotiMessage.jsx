@@ -40,11 +40,6 @@ function NotiMessage() {
           setCountUnseenMessage(0)
           chatRoomWithUserInfo = await Promise.all(promises);
           chatRoomWithUserInfo.sort((a, b) => b.date - a.date);
-        //   chatRoomWithUserInfo.forEach(chatRoom => {
-        //     if (!chatRoom.seen.status) {
-                
-        //     }
-        //   })
           dispatch(chatRoomListSlice.actions.add(chatRoomWithUserInfo));
         });
     };
@@ -53,7 +48,7 @@ function NotiMessage() {
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(countUnseenMessage);
+  
   return (
     <div className="sidebarMain__item-message-wrapper">
       <FontAwesomeIcon icon={faPaperPlane} className="sidebarMain__item-icon" />

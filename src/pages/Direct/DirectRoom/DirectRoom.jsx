@@ -1,70 +1,58 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Button from "~/components/Button";
-import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
-import Loader from "~/components/Loader";
 import "../Direct.scss";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import Message from "./Message";
 import {
   deleteEmptyChatRoom,
-  sentMessage,
   updateSeenMessage,
 } from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
-import Skeleton from "react-loading-skeleton";
+import { RotatingLines } from "react-loader-spinner";
+import DirectInput from "./DirectInput";
 
 function DirectRoom() {
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
-  const chatroomInfo = useSelector((state) => state.conversation);
   const chatroomList = useSelector((state) => state.chatRoomList);
   const [allConversation, setAllConversation] = useState(null);
   const [displayMessages, setDisplayMessages] = useState([]);
-  const [messageValue, setMessageValue] = useState("");
   const [limit, setLimit] = useState(10);
   const [loadDataFirstTime, setLoadDataFirstTime] = useState(false);
 
-  const isExistRoom = chatroomList.some((eachRoom) => eachRoom.chatroomId === chatroomId);
+  console.log(chatroomList)
+
+  const conversationInfo = chatroomList.find(
+    (eachRoom) => eachRoom.chatroomId === chatroomId
+  );
+
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
   const textareaRef = useRef(null);
   const contentboxRef = useRef(null);
 
-  const handleSentMessage = (e) => {
-    if (!messageValue.trim()) {
-      //Khoảng trắng
-      return;
-    }
-    sentMessage(
-      chatroomId,
-      messageValue,
-      chatroomInfo.partnerId,
-      loggedInUser.userId
-    );
-    setMessageValue("");
-  };
+  
 
   function loadMoreMessages() {
     setLimit((prev) => prev + 20);
   }
 
   useEffect(() => {
-    if (isExistRoom) {
+    if (conversationInfo) {
       contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`;
     }
-    contentRef.current?.scrollIntoView({ behavior: "smooth" });
+    // contentRef.current?.scrollIntoView({ behavior: "smooth" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allConversation]);
 
   useEffect(() => {
+    console.log(conversationInfo)
     let unsubscribe;
-    if (isExistRoom) {
-      (async function(){
-        unsubscribe = firebase
+    (async function () {
+      unsubscribe = firebase
         .firestore()
         .collection("conversations")
         .doc(chatroomId)
@@ -74,15 +62,16 @@ function DirectRoom() {
           setAllConversation(data ? data : []);
           setLoadDataFirstTime(true);
         });
-      })()
+    })();
+    if (conversationInfo) {
     }
 
     return () => {
-      if (isExistRoom) {
-        unsubscribe();
-        setAllConversation(null);
-        setDisplayMessages([]);
-        setLimit(10);
+      unsubscribe();
+      setAllConversation(null);
+      setDisplayMessages([]);
+      setLimit(10);
+      if (conversationInfo) {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +84,7 @@ function DirectRoom() {
       if (allConversation?.length === 0) {
         deleteEmptyChatRoom(
           loggedInUser.userId,
-          chatroomInfo.partnerId,
+          conversationInfo.partnerInfo.userId,
           chatroomId
         );
       }
@@ -103,41 +92,54 @@ function DirectRoom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadDataFirstTime]);
 
-  return !isExistRoom ? (
+  console.log(allConversation)
+
+  return !conversationInfo ? (
     <></>
   ) : (
     <div ref={wrapperRef} className="drRoom__wrapper">
       <div className="drRoom__header">
         <Link
-          to={`/profile/${chatroomInfo.username}`}
+          to={`/profile/${conversationInfo.partnerInfo.username}`}
           className="flex h-full items-center"
         >
           <div className="">
-            <Avatar avatarUrl={chatroomInfo.avatarUrl} size={"xs"} />
+            <Avatar avatarUrl={conversationInfo.partnerInfo.avatarUrl} size={"xs"} />
           </div>
           <div className="ml-2">
-            <p className="text-sm font-medium">{chatroomInfo.fullname}</p>
+            <p className="text-sm font-medium">{conversationInfo.partnerInfo.fullname}</p>
           </div>
         </Link>
         <div className=""></div>
       </div>
-      <div ref={contentRef} className="drRoom_content-wrapper">
+      <div ref={contentRef} className="drRoom_content-wrapper flex-grow-1">
         {!allConversation ? (
-          <></>
+          <div className="absolute flex justify-center items-center inset-0">
+            <RotatingLines
+              display
+              className={""}
+              strokeColor="grey"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="30"
+              visible
+            />
+          </div>
         ) : (
           allConversation.map((message) => (
             <Message
-              content={message.content}
+              content={message?.content}
+              image={message?.image}
               loggedInUser={message.sender === loggedInUser.userId}
-              avatarUrl={chatroomInfo.avatarUrl}
-              username={chatroomInfo.username}
+              avatarUrl={conversationInfo.partnerInfo.avatarUrl}
+              username={conversationInfo.partnerInfo.username}
               key={message.messageId}
             />
           ))
         )}
       </div>
       <div ref={textareaRef} className="drRoom__chatInput-wrapper">
-        <div className="chatInput__wrapper">
+        {/* <div className="chatInput__wrapper">
           <div className="chatInput__icon">
             <button className="flex justify-center items-center px-3 py-2">
               <svg
@@ -183,7 +185,16 @@ function DirectRoom() {
               </Button>
             ) : (
               <div className="flex">
-                <button className="flex justify-center items-center px-2 py-2">
+                <input
+                  id="message-sentFile"
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                />
+                <label
+                  htmlFor="message-sentFile"
+                  className="flex justify-center items-center px-2 py-2"
+                >
                   <svg
                     aria-label="Thêm ảnh hoặc video"
                     className="_ab6-"
@@ -214,7 +225,7 @@ function DirectRoom() {
                       strokeWidth={2}
                     />
                   </svg>
-                </button>
+                </label>
                 <button className="flex justify-center items-center px-2 py-2">
                   <svg
                     aria-label="Thích"
@@ -232,7 +243,8 @@ function DirectRoom() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
+        <DirectInput conversationInfo={conversationInfo} />
       </div>
     </div>
   );

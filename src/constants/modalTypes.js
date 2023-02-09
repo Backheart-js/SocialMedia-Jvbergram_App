@@ -9,3 +9,7 @@ export const UNFOLLOW = 'unfollow';
 export const UPDATE_AVATAR = 'update_avatar';
 
 export const CREATE_MESSAGE = 'create_message';
+
+export const FOLLOW_LIST = 'follow_list';
+
+export const LOGIN = 'login';

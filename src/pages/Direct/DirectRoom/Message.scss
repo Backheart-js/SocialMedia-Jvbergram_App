@@ -52,6 +52,13 @@
     border-radius: 25px;
 }
 
+.message-image {
+    display: flex;
+    align-items: center;
+    max-width: 234px;
+    min-height: 44px;
+}
+
 .message-content {
     font-size: 14px;
     color: #262626;

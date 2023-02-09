@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
@@ -11,11 +11,13 @@ import "../Setting.scss";
 
 function Account() {
   const loggedInUser = useContext(UserContext);
-  const [avatar, setAvatar] = useState(loggedInUser.avatarUrl);
+  // const [avatar, setAvatar] = useState(loggedInUser.avatarUrl);
   const [userData, setUserData] = useState({
+    avatar: loggedInUser.avatarUrl,
     fullname: loggedInUser.fullname,
     birthday: loggedInUser.birthday,
-    gender: loggedInUser.gender
+    gender: loggedInUser.gender,
+    story: loggedInUser.story
   })
   const [showNoti, setShowNoti] = useState(false)
 
@@ -26,7 +28,7 @@ function Account() {
       modalSlice.actions.openModal({
         type: UPDATE_AVATAR,
         currentUserId: loggedInUser.userId,
-        avatarUrl: avatar
+        avatarUrl: loggedInUser.avatarUrl
       })
     );
   };
@@ -44,7 +46,7 @@ function Account() {
     <div className="">
       <div className="setting__avatar-wrapper setting__field-wrapper">
         <div className="setting__leftside setting__avatar-img-wrapper">
-          <Avatar avatarUrl={avatar} />
+          <Avatar avatarUrl={userData.avatar} />
         </div>
         <div className="setting__rightside setting__avatar-func-wrapper">
           <p className="font-medium text-gray-800 md:mt-1">
@@ -96,6 +98,27 @@ function Account() {
               }
             })}
           />
+        </div>
+      </div>
+      <div className="setting__story-wrapper setting__field-wrapper flex items-start">
+        <div className="setting__leftside">
+          <p className="font-medium text-gray-800 md:mt-1">Tiểu sử</p>
+        </div>
+        <div className="setting__rightside">
+          <textarea
+            value={userData.story}
+            type="text"
+            className="setting__story-input setting__input"
+            onChange={(e) => setUserData(prev => {
+              return {
+                ...prev,
+                story: e.target.value
+              }
+            })}
+          />
+          <p className="setting__subnote">
+            {userData.story.length} / 50
+          </p>
         </div>
       </div>
       <div className="setting__gender-wrapper setting__field-wrapper flex items-start">

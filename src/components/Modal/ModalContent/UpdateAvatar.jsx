@@ -40,10 +40,8 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     (snapshot) => {
       switch (snapshot.state) {
         case "paused":
-          console.log("Upload is paused");
           break;
         case "running":
-          console.log("Upload is running");
           break;
         default:
       }
@@ -61,7 +59,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     },
   () => {
     // Upload completed successfully, now we can get the download URL
-    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
       const newAvataUrl = avatarUrl.current ? {
         ...avatarUrl,
         current: downloadURL,
@@ -72,9 +70,11 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
         history: [...avatarUrl.history, downloadURL ]
       }
 
-      updateAvatar(currentUserId, newAvataUrl) //Lấy url trả về từ Storage và update tại firestore
+      await updateAvatar(currentUserId, newAvataUrl) //Lấy url trả về từ Storage và update tại firestore
       closeModal();
-      // window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     });
   }
 );
@@ -84,7 +84,6 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     setLoadingDisplay(true);
     try {
       await updateNewAvatarFirestore(image)
-      console.log('done');
     } catch (error) {
       setLoadingDisplay(false);
       alert(error.message);
@@ -194,7 +193,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
         strokeWidth="5"
         animationDuration="0.75"
         width="96"
-        visible={true}
+        visible
       />
     </div>
   );

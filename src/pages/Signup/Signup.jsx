@@ -72,6 +72,7 @@ function Signup() {
         username: info.username.toLowerCase(),
         gender: 0, //0: male, 1: female, 2: Không tiết lộ
         birthday: "",
+        story: "",
         avatarUrl: {
           default: avatars.default,
           history: [],

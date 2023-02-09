@@ -39,7 +39,7 @@ function Suggestion({ userId, following = [], min }) {
   ) : (
     <div className="w-full">
       {profiles.map((profile) => (
-        <SuggestionProfile profile={profile} key={profile.userId} min={min}/>
+        <SuggestionProfile profile={profile} followState={false} key={profile.userId} min={min}/>
       ))}
     </div>
   );

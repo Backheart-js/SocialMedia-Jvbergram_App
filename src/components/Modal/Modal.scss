@@ -314,6 +314,23 @@
   background-color: #e0f1ff;
 }
 
+.followModal__main {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  max-height: 390px;
+  overflow: auto;
+}
+
+.signup__modal-wrapper {
+  position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 40px;
+    border-top: 1px solid $border-color-light-theme;
+}
+
 @keyframes scaleModal {
   0% {
     transform: scale(0.9);

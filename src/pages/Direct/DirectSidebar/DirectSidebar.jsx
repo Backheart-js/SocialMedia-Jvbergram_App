@@ -1,4 +1,4 @@
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faImage, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -100,7 +100,11 @@ function DirectSidebar() {
               <div className="drSidebar__name-wrapper">
                 <p className="drSidebar__name-text">{chatRoom.partnerInfo.fullname}</p>
                 <p className="drSidebar__name-currentMessage">
-                  {chatRoom.lastMessage}
+                  {chatRoom.lastMessage?.image ? 
+                    <FontAwesomeIcon icon={faImage} />
+                  :
+                    chatRoom.lastMessage
+                  }
                 </p>
               </div>
               {chatRoom.seen.status || <div className="drSidebar__notSeen-notiSymbol">
