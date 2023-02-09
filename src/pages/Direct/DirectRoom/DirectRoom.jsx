@@ -23,7 +23,6 @@ function DirectRoom() {
   const [limit, setLimit] = useState(10);
   const [loadDataFirstTime, setLoadDataFirstTime] = useState(false);
 
-  console.log(chatroomList)
 
   const conversationInfo = chatroomList.find(
     (eachRoom) => eachRoom.chatroomId === chatroomId
@@ -49,29 +48,28 @@ function DirectRoom() {
   }, [allConversation]);
 
   useEffect(() => {
-    console.log(conversationInfo)
     let unsubscribe;
-    (async function () {
-      unsubscribe = firebase
-        .firestore()
-        .collection("conversations")
-        .doc(chatroomId)
-        .onSnapshot(async (snapshot) => {
-          const data = snapshot.data()?.messages;
-          await updateSeenMessage(snapshot.id, loggedInUser.userId);
-          setAllConversation(data ? data : []);
-          setLoadDataFirstTime(true);
-        });
-    })();
     if (conversationInfo) {
+      (async function () {
+        unsubscribe = firebase
+          .firestore()
+          .collection("conversations")
+          .doc(chatroomId)
+          .onSnapshot(async (snapshot) => {
+            const data = snapshot.data()?.messages;
+            await updateSeenMessage(snapshot.id, loggedInUser.userId);
+            setAllConversation(data ? data : []);
+            setLoadDataFirstTime(true);
+          });
+      })();
     }
 
     return () => {
-      unsubscribe();
-      setAllConversation(null);
-      setDisplayMessages([]);
-      setLimit(10);
       if (conversationInfo) {
+        unsubscribe();
+        setAllConversation(null);
+        setDisplayMessages([]);
+        setLimit(10);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

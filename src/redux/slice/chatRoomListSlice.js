@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const chatRoomListSlice = createSlice({
     name: 'chatRoomList',
-    initialState: [],
+    initialState: null,
     reducers: {
         add: (state, action) => {
             return action.payload

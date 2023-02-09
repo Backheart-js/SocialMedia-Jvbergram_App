@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from '~/context/user';
@@ -10,18 +10,27 @@ import "./Direct.scss"
 import DirectSidebar from './DirectSidebar/DirectSidebar';
 
 function Direct() {
+  const chatroomList = useSelector((state) => state.chatRoomList);
+
+  // const conversationInfo = chatroomList.find(
+  //   (eachRoom) => eachRoom.chatroomId === chatroomId
+  // );
+
 
   useEffect(() => {
     document.title = "Hộp thư - Direct";
 
   }, []);
   
+  console.log(chatroomList)
 
   return (
     <div className='direct__wrapper'>
       <div className="direct__box lg:max-w-[935px]">
         <DirectSidebar />
-        <Outlet />
+        {
+          chatroomList && <Outlet />
+        }
       </div>
     </div>
   )
