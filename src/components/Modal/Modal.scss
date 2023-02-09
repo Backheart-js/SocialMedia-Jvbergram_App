@@ -112,6 +112,35 @@
   }
 }
 
+.modal__avatar-store-wrapper {
+  display: flex;
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+.store__avatar-wrapper {
+  &+& {
+    margin-left: 8px;
+  }
+
+  & > button {
+    position: relative;
+    border-radius: 10px;
+
+    &.selected {
+      
+    }
+  }
+}
+
+.modal__avatar-store-img {
+  width: 100px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding-top: 100%;
+}
+
 .modal__image-area--nonImg {
   display: flex;
   flex-direction: column;
@@ -251,11 +280,17 @@
 
 .createMessageModal__content-input {
   width: 100%;
+  font-size: 14px;
+  font-weight: 500;
   resize: none;
   border-bottom: 1px solid $border-color-light-theme;
 
   &:focus-visible {
     outline: none;
+  }
+
+  &::placeholder {
+    font-size: 14px;
   }
 }
 
@@ -281,6 +316,10 @@
     color: #999;
     font-weight: 400;
   }
+}
+
+.createMessageModal__sent-btn.disabled {
+  opacity: .6;
 }
 
 .search__result-modal-list {

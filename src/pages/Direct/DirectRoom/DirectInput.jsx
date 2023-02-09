@@ -29,31 +29,33 @@ function DirectInput({ conversationInfo }) {
     setPreviewImage(null);
   };
 
-  const handleSentMessage = async () => {
+  const handleSentImage = async () => {
     setsentProcessing(true);
-    if (image) {
-      await sentMessageImage(
-        chatroomId,
-        image,
-        conversationInfo.partnerInfo.userId,
-        loggedInUser.userId
-      );
-      handleRemoveImage();
-    } else {
-      if (!messageValue.trim()) {
-        //Khoảng trắng
-        return;
+    await sentMessageImage(
+      chatroomId,
+      image,
+      conversationInfo.partnerInfo.userId,
+      loggedInUser.userId,
+      () => {
+        setsentProcessing(false);
+        handleRemoveImage();
       }
-      await sentMessage(
-        chatroomId,
-        messageValue,
-        conversationInfo.partnerInfo.userId,
-        loggedInUser.userId
-      );
-      setMessageValue("");
-    }
-    setsentProcessing(false);
+    );
   };
+
+  const handleSentMessage = () => {
+    if (!messageValue.trim()) {
+      //Khoảng trắng
+      return;
+    }
+    sentMessage(
+      chatroomId,
+      messageValue,
+      conversationInfo.partnerInfo.userId,
+      loggedInUser.userId
+    );
+    setMessageValue("");
+  }
 
   useEffect(() => {
     return () => {
@@ -84,7 +86,7 @@ function DirectInput({ conversationInfo }) {
       </div>
       <div className="chatInput__textarea-wrapper">
         {previewImage ? (
-          <div className="w-full py-2 pl-2">
+          <div className="w-full py-4 pl-2">
             <div className="relative w-fit">
               <img
                 src={previewImage}
@@ -129,7 +131,11 @@ function DirectInput({ conversationInfo }) {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                handleSentMessage();
+                if (image) {
+                  handleSentImage();
+                } else {
+                  handleSentMessage();
+                }
               }
             }}
           ></textarea>
@@ -137,7 +143,13 @@ function DirectInput({ conversationInfo }) {
       </div>
       <div className="chatInput__sentFunc">
         {messageValue.length > 0 || previewImage ? (
-          <Button className={"px-4 py-2"} btnWhite onClick={handleSentMessage}>
+          <Button className={"px-4 py-2"} btnWhite onClick={() => {
+            if (image) {
+              handleSentImage();
+            } else {
+              handleSentMessage();
+            }
+          }}>
             Gửi
           </Button>
         ) : (

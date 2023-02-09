@@ -16,7 +16,7 @@ import "../Direct.scss";
 function DirectSidebar() {
   // const { chatroomId } = useParams();
   const dispatch = useDispatch();
-  const chatRooms = useSelector(state => state.chatRoomList)
+  const chatRooms = useSelector((state) => state.chatRoomList);
   const loggedInUser = useContext(UserContext);
   const { firebase } = useContext(FirebaseContext);
   // const { chatroomId: chatroomIdList } = loggedInUser;
@@ -39,7 +39,7 @@ function DirectSidebar() {
         partnerId: data.partnerInfo.userId,
         username: data.partnerInfo.username,
         chatroomId: data.chatroomId,
-        seenStatus: data.seen.status
+        seenStatus: data.seen.status,
       })
     );
   };
@@ -95,21 +95,42 @@ function DirectSidebar() {
               }}
             >
               <div className="flex-shrink-0">
-                <Avatar avatarUrl={chatRoom.partnerInfo.avatarUrl} size={"medium"} />
+                <Avatar
+                  avatarUrl={chatRoom.partnerInfo.avatarUrl}
+                  size={"medium"}
+                />
               </div>
               <div className="drSidebar__name-wrapper">
-                <p className="drSidebar__name-text">{chatRoom.partnerInfo.fullname}</p>
-                <p className="drSidebar__name-currentMessage">
-                  {chatRoom.lastMessage?.image ? 
-                    <FontAwesomeIcon icon={faImage} />
-                  :
-                    chatRoom.lastMessage
-                  }
+                <p className="drSidebar__name-text">
+                  {chatRoom.partnerInfo.fullname}
                 </p>
+                {chatRoom.lastMessage?.image ? (
+                  <p className="drSidebar__name-currentMessage">
+                    {chatRoom.lastSender === loggedInUser.userId ?
+                      (
+                        <p className="drSidebar__name-currentMessage">
+                          Bạn:  <FontAwesomeIcon className="text-base ml-1" icon={faImage} />
+                        </p>
+                      )
+                    :
+                    (
+                      <p className="drSidebar__name-currentMessage">
+                        {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
+                      </p>
+                    )
+                    } 
+                  </p>
+                ) : (
+                  <p className="drSidebar__name-currentMessage">
+                    {(chatRoom.lastSender === loggedInUser.userId) &&
+                    <span className="">Bạn:</span>}{" "}
+                    {chatRoom.lastMessage}
+                  </p>
+                )}
               </div>
-              {chatRoom.seen.status || <div className="drSidebar__notSeen-notiSymbol">
-                
-                </div>}
+              {chatRoom.seen.status || (
+                <div className="drSidebar__notSeen-notiSymbol"></div>
+              )}
             </NavLink>
           ))}
         </ul>

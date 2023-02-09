@@ -12,6 +12,8 @@ function CreateMessage({ closeModal }) {
   const [userSelected, setUserSelected] = useState([]);
   const [content, setContent] = useState("");
 
+  const isDisabled = content && userSelected.length > 0
+
   const handleCreateNewMessage = async () => {
     const receiverIds = userSelected.map((user) => user.userId);
     const receiverUsername = userSelected.map((user) => user.username);
@@ -35,7 +37,7 @@ function CreateMessage({ closeModal }) {
             <span className="font-semibold">Tin nhắn mới</span>
           </div>
           <div className="">
-            <Button className={""} btnWhite onClick={handleCreateNewMessage}>
+            <Button disabled={!isDisabled} className={`createMessageModal__sent-btn ${!isDisabled ? "disabled" : ""}`} btnWhite onClick={handleCreateNewMessage}>
               Gửi
             </Button>
           </div>

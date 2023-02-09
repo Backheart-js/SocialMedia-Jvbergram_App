@@ -13,11 +13,13 @@ import {
 import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
-import { updateAvatar } from "~/services/firebaseServices";
+import { reuseAvatar, updateAvatar } from "~/services/firebaseServices";
 
 function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imagePreviewLink, setImagePreviewLink] = useState(null);
   const [image, setImage] = useState(null);
+  const [imageFromStore, setImageFromStore] = useState(null)
+  const [sourceImg, setSourceImg] = useState(null)
   const [loadingDisplay, setLoadingDisplay] = useState(false);
 
   const handleChangeImage = (e) => {
@@ -25,9 +27,22 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     // console.log(file);
     setImagePreviewLink(URL.createObjectURL(file));
     setImage(file);
+    setImageFromStore(null);
+    setSourceImg("local")
   };
 
+  const handleChoseImgFromStore = (imgUrl, index) => {
+    setImageFromStore({
+      url: imgUrl,
+      index
+    });
+    setImage(imgUrl);
+    setImagePreviewLink(null);
+    setSourceImg("store")
+  }
+
   const updateNewAvatarFirestore = async (imageFile) => {
+    
     const storage = getStorage();
     const metadata = {
       contentType: "image/*",
@@ -60,30 +75,51 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   () => {
     // Upload completed successfully, now we can get the download URL
     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-      const newAvataUrl = avatarUrl.current ? {
-        ...avatarUrl,
-        current: downloadURL,
-        history: [...avatarUrl.history, avatarUrl.current ]
-      } : {
-        ...avatarUrl,
-        current: downloadURL,
-        history: [...avatarUrl.history, downloadURL ]
+      const check = avatarUrl.history.some(url => url === avatarUrl.current)
+      let newAvataUrl;
+      if (check) {
+        newAvataUrl = {
+          ...avatarUrl,
+          current: downloadURL,
+          history: [...avatarUrl.history, downloadURL]
+        }
+      } else {
+        newAvataUrl = avatarUrl.current ? {
+          ...avatarUrl,
+          current: downloadURL,
+          history: [...avatarUrl.history, avatarUrl.current ]
+        } : {
+          ...avatarUrl,
+          current: downloadURL,
+          history: [...avatarUrl.history, downloadURL ]
+        }
       }
-
       await updateAvatar(currentUserId, newAvataUrl) //Lấy url trả về từ Storage và update tại firestore
       closeModal();
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 300);
     });
   }
 );
   }
 
+  const reuseAvatarFromStore = async (imageUrl) => {
+    await reuseAvatar(currentUserId, imageUrl);
+    closeModal();
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
+  };
+
   const handleUpdateAvatar = async () => {
     setLoadingDisplay(true);
     try {
-      await updateNewAvatarFirestore(image)
+      if (sourceImg === "local") {
+        await updateNewAvatarFirestore(image)
+      } else {
+        await reuseAvatarFromStore(image)
+      }
     } catch (error) {
       setLoadingDisplay(false);
       alert(error.message);
@@ -96,14 +132,16 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     };
   }, [imagePreviewLink]);
 
+  console.log(image)
+
   return (
     <div className={`modal__box-wrapper py-4 px-5 w-[500px]`}>
       <div className="modal__title-wrapper">
         <p className="text-lg font-semibold text-center">Thêm ảnh đại diện</p>
       </div>
       <div className="modal__body-wrapper">
-        <div className="modal__avatar-area--wrapper pt-4 pb-2">
-          {!imagePreviewLink ? (
+        <div className="modal__avatar-area--wrapper pb-2">
+          {(!imagePreviewLink && !imageFromStore) ? (
             <div className="modal__image-area--nonImg h-[300px]">
               <svg
                 aria-label="Biểu tượng thể hiện file phương tiện, chẳng hạn như hình ảnh hoặc video"
@@ -150,7 +188,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
           ) : (
             <div className="modal__avatar-area--haveImage">
               <Avatar
-                avatarUrl={{ current: imagePreviewLink }}
+                avatarUrl={{ current: (imagePreviewLink || imageFromStore?.url) }}
                 size="preview"
               />
               <div className="flex w-full justify-center mt-4">
@@ -172,7 +210,20 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
           )}
         </div>
         {avatarUrl?.history.length > 0 && (
-          <div className="modal__avatar-store-wrapper"></div>
+          <div className="modal__avatar-store">
+            <p className="my-2 font-semibold text-sm">Ảnh gợi ý</p>
+            <div className="modal__avatar-store-wrapper">
+              {
+                avatarUrl.history.map((img, index) => (
+                  <div className="store__avatar-wrapper" key={index}>
+                    <button className={imageFromStore?.index === index ? "selected" : ""} onClick={() => handleChoseImgFromStore(img, index)}>
+                      <div style={{ backgroundImage: `url(${img})` }} alt="" className="modal__avatar-store-img" />
+                    </button>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
         )}
       </div>
       <div className="modal__footer-wrapper mt-4">

@@ -1,6 +1,17 @@
 import { firebase, FieldValue } from "~/lib/firebase";
-import { getStorage, ref, deleteObject, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, deleteDoc, getDoc, updateDoc, deleteField  } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import {
+  doc,
+  deleteDoc,
+  updateDoc,
+  deleteField,
+} from "firebase/firestore";
 import sortUserByFollower from "~/utils/sortUserByFollower";
 import { v4 } from "uuid";
 
@@ -23,18 +34,20 @@ export async function checkChatRoom(loggedInUserId, receiverIds) {
   const promises = [];
   const chatRooms = [];
   receiverIds.forEach((receiverId) => {
-    const combinedId = loggedInUserId > receiverId ? loggedInUserId.concat(receiverId) : receiverId.concat(loggedInUserId);
-    const getRoom = db.collection('conversations').doc(combinedId).get()
+    const combinedId =
+      loggedInUserId > receiverId
+        ? loggedInUserId.concat(receiverId)
+        : receiverId.concat(loggedInUserId);
+    const getRoom = db.collection("conversations").doc(combinedId).get();
     promises.push(getRoom);
-  })
+  });
 
   const result = await Promise.all(promises);
 
-  
   for (const chatRoom of result) {
     chatRooms.push(chatRoom);
   }
-  
+
   return chatRooms;
 }
 
@@ -171,30 +184,39 @@ export async function createNewPost(photos, userId, caption) {
   }
 }
 
-export async function createNewChatRoom(loggedInUserId, loggedInUsername, receiverId, username, content) {
-  const combinedId = loggedInUserId > receiverId ? loggedInUserId.concat(receiverId) : receiverId.concat(loggedInUserId);
+export async function createNewChatRoom(
+  loggedInUserId,
+  loggedInUsername,
+  receiverId,
+  username,
+  content
+) {
+  const combinedId =
+    loggedInUserId > receiverId
+      ? loggedInUserId.concat(receiverId)
+      : receiverId.concat(loggedInUserId);
   await updateDoc(doc(db, "userChats", loggedInUserId), {
-    [combinedId+".partnerId"]: receiverId,
-    [combinedId+".username"]: username,
-    [combinedId+".date"]: Date.now(),
-    [combinedId+".lastMessage"]: content,
-    [combinedId+".lastSender"]: loggedInUserId,
-    [combinedId+".seen"]: {
+    [combinedId + ".partnerId"]: receiverId,
+    [combinedId + ".username"]: username,
+    [combinedId + ".date"]: Date.now(),
+    [combinedId + ".lastMessage"]: content,
+    [combinedId + ".lastSender"]: loggedInUserId,
+    [combinedId + ".seen"]: {
       time: Date.now(),
-      status: true
-    }
+      status: true,
+    },
   });
   await updateDoc(doc(db, "userChats", receiverId), {
-    [combinedId+".partnerId"]: loggedInUserId,
-    [combinedId+".username"]: loggedInUsername,
-    [combinedId+".date"]: Date.now(),
-    [combinedId+".lastMessage"]: content,
-    [combinedId+".lastSender"]: loggedInUserId,
-    [combinedId+".seen"]: {
+    [combinedId + ".partnerId"]: loggedInUserId,
+    [combinedId + ".username"]: loggedInUsername,
+    [combinedId + ".date"]: Date.now(),
+    [combinedId + ".lastMessage"]: content,
+    [combinedId + ".lastSender"]: loggedInUserId,
+    [combinedId + ".seen"]: {
       time: Date.now(),
-      status: false
-    }
-  })
+      status: false,
+    },
+  });
 
   return combinedId;
 }
@@ -203,10 +225,18 @@ export async function createNewConversation(chatroomId, newMessage) {
   //Tạo tin nhắn mới trong collection hội thoại, nếu có newMessage thì thêm vào, còn không thì để mảng rỗng
   const conversationRef = db.collection("conversations");
 
-  return conversationRef.doc(chatroomId).set({ messages: newMessage ? [newMessage] : [] })
+  return conversationRef
+    .doc(chatroomId)
+    .set({ messages: newMessage ? [newMessage] : [] });
 }
 
-export async function createNewMessage(loggedInUserId, loggedInUsername, receiverIds, receiverUsernames, content) { 
+export async function createNewMessage(
+  loggedInUserId,
+  loggedInUsername,
+  receiverIds,
+  receiverUsernames,
+  content
+) {
   /*
     Gửi message khi click vào button, xảy ra 2 trường hợp
     - Trước đó chưa nhắn tin -> tạo chatroom mới 
@@ -215,24 +245,30 @@ export async function createNewMessage(loggedInUserId, loggedInUsername, receive
   //biến receiverIds: người nhận là mảng vì có thể gửi 1 tin cho nhiều người
   const chatRoomSnapshot = await checkChatRoom(loggedInUserId, receiverIds);
   chatRoomSnapshot.forEach(async (room, index) => {
-    
-    if (!room.exists) { //Chưa từng gửi tin nhắn trước đó
+    if (!room.exists) {
+      //Chưa từng gửi tin nhắn trước đó
       const newMessage = {
         messageId: v4(),
         content,
         sender: loggedInUserId,
-        date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
-      }
-      
-      const newChatRoomId = await createNewChatRoom(loggedInUserId, loggedInUsername, receiverIds[index], receiverUsernames[index], content) //Tạo room mới/Lấy RoomId
-      await createNewConversation(newChatRoomId, newMessage)  //Tạo document mới trong conversation collection
-    }
-    else { //Đã từng nhắn tin rồi
-      console.log(room)
+        date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+      };
+
+      const newChatRoomId = await createNewChatRoom(
+        loggedInUserId,
+        loggedInUsername,
+        receiverIds[index],
+        receiverUsernames[index],
+        content
+      ); //Tạo room mới/Lấy RoomId
+      await createNewConversation(newChatRoomId, newMessage); //Tạo document mới trong conversation collection
+    } else {
+      //Đã từng nhắn tin rồi
+      console.log(room);
       const chatRoomId = room.id;
-      sentMessage(chatRoomId, content, receiverIds[index], loggedInUserId)
+      sentMessage(chatRoomId, content, receiverIds[index], loggedInUserId);
     }
-  })
+  });
 }
 
 // UPDATE
@@ -295,40 +331,66 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
     });
 }
 
+export async function reuseAvatar(loggedInUserId, avatarUrl) {
+  const snapshot = await db.collection("users")
+    .where("userId", "==", loggedInUserId)
+    .get();
+
+  snapshot.forEach((doc) => {
+    doc.ref.update({ "avatarUrl.current": avatarUrl });
+  });
+}
+
 export async function sentMessage(chatRoomId, content, receiverId, senderId) {
   const newMessage = {
     messageId: v4(),
     content,
     sender: senderId,
-    date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
-  }
-  await db.collection("conversations").doc(chatRoomId).update({
-    messages: FieldValue.arrayUnion(newMessage)
-  })
-  await db.collection("userChats").doc(receiverId).update({
-    [chatRoomId+".date"]: Date.now(),
-    [chatRoomId+".lastMessage"]: newMessage.content,
-    [chatRoomId+".lastSender"]: senderId,
-    [chatRoomId+".seen.status"]: false
-  });
-  await db.collection("userChats").doc(senderId).update({
-    [chatRoomId+".date"]: Date.now(),
-    [chatRoomId+".lastMessage"]: newMessage.content,
-    [chatRoomId+".lastSender"]: senderId,
-    [chatRoomId+".seen.time"]: Date.now()
-  });
+    date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+  };
+  await db
+    .collection("conversations")
+    .doc(chatRoomId)
+    .update({
+      messages: FieldValue.arrayUnion(newMessage),
+    });
+  await db
+    .collection("userChats")
+    .doc(receiverId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: newMessage.content,
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.status"]: false,
+    });
+  await db
+    .collection("userChats")
+    .doc(senderId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: newMessage.content,
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.time"]: Date.now(),
+    });
 }
 
-export async function sentMessageImage(chatRoomId, image, receiverId, senderId) {
+export async function sentMessageImage(
+  chatRoomId,
+  image,
+  receiverId,
+  senderId,
+  callbackReset
+) {
   const storage = getStorage();
-    const metadata = {
-      contentType: "image/*",
-    };
+  const metadata = {
+    contentType: "image/*",
+  };
 
-    const storageRef = ref(storage, `conversations/${image.name}-${v4()}`);
-    const uploadTask = uploadBytesResumable(storageRef, image, metadata);
+  const storageRef = ref(storage, `conversations/${image.name}-${v4()}`);
+  const uploadTask = uploadBytesResumable(storageRef, image, metadata);
 
-    uploadTask.on('state_changed',
+  uploadTask.on(
+    "state_changed",
     (snapshot) => {
       switch (snapshot.state) {
         case "paused":
@@ -349,76 +411,104 @@ export async function sentMessageImage(chatRoomId, image, receiverId, senderId) 
         default:
       }
     },
-  () => {
-    // Upload completed successfully, now we can get the download URL
-    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-      const newMessage = {
-        messageId: v4(),
-        image: downloadURL,
-        sender: senderId,
-        date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
-      }
-      await db.collection("conversations").doc(chatRoomId).update({
-        messages: FieldValue.arrayUnion(newMessage)
-      })
-      await db.collection("userChats").doc(receiverId).update({
-        [chatRoomId+".date"]: Date.now(),
-        [chatRoomId+".lastMessage"]: {image: downloadURL},
-        [chatRoomId+".lastSender"]: senderId,
-        [chatRoomId+".seen.status"]: false
+    () => {
+      // Upload completed successfully, now we can get the download URL
+      getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+        const newMessage = {
+          messageId: v4(),
+          image: downloadURL,
+          sender: senderId,
+          date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+        };
+        await db
+          .collection("conversations")
+          .doc(chatRoomId)
+          .update({
+            messages: FieldValue.arrayUnion(newMessage),
+          });
+        await db
+          .collection("userChats")
+          .doc(receiverId)
+          .update({
+            [chatRoomId + ".date"]: Date.now(),
+            [chatRoomId + ".lastMessage"]: { image: downloadURL },
+            [chatRoomId + ".lastSender"]: senderId,
+            [chatRoomId + ".seen.status"]: false,
+          });
+        await db
+          .collection("userChats")
+          .doc(senderId)
+          .update({
+            [chatRoomId + ".date"]: Date.now(),
+            [chatRoomId + ".lastMessage"]: { image: downloadURL },
+            [chatRoomId + ".lastSender"]: senderId,
+            [chatRoomId + ".seen.time"]: Date.now(),
+          });
+        callbackReset()
       });
-      await db.collection("userChats").doc(senderId).update({
-        [chatRoomId+".date"]: Date.now(),
-        [chatRoomId+".lastMessage"]: {image: downloadURL},
-        [chatRoomId+".lastSender"]: senderId,
-        [chatRoomId+".seen.time"]: Date.now()
-      });
-    });
-  })
-  
-  
-  
+    }
+  );
+
   const newMessage = {
     messageId: v4(),
     image,
     sender: senderId,
-    date: Date.now() //Không dùng được timestamp vì firebase không cho dùng trong array
-  }
-  await db.collection("conversations").doc(chatRoomId).update({
-    messages: FieldValue.arrayUnion(newMessage)
-  })
-  await db.collection("userChats").doc(receiverId).update({
-    [chatRoomId+".date"]: Date.now(),
-    [chatRoomId+".lastMessage"]: newMessage.content,
-    [chatRoomId+".lastSender"]: senderId,
-    [chatRoomId+".seen.status"]: false
-  });
-  await db.collection("userChats").doc(senderId).update({
-    [chatRoomId+".date"]: Date.now(),
-    [chatRoomId+".lastMessage"]: newMessage.content,
-    [chatRoomId+".lastSender"]: senderId,
-    [chatRoomId+".seen.time"]: Date.now()
-  });
+    date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+  };
+  await db
+    .collection("conversations")
+    .doc(chatRoomId)
+    .update({
+      messages: FieldValue.arrayUnion(newMessage),
+    });
+  await db
+    .collection("userChats")
+    .doc(receiverId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: newMessage.content,
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.status"]: false,
+    });
+  await db
+    .collection("userChats")
+    .doc(senderId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: newMessage.content,
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.time"]: Date.now(),
+    });
 }
 
 export async function updateSeenMessage(chatRoomId, userId) {
-  await db.collection("userChats").doc(userId).update({
-    [chatRoomId+".seen"]: {
-      time: Date.now(),
-      status: true
-    }
-  });
+  await db
+    .collection("userChats")
+    .doc(userId)
+    .update({
+      [chatRoomId + ".seen"]: {
+        time: Date.now(),
+        status: true,
+      },
+    });
 }
 
 export async function updateChatRoomOfUser(userId, chatroomId, isAddRoom) {
   //Thêm/Xóa chatroomId của user trong Users collection
-  return db.collection("users").where("userId", "==", userId).get().then((snapshot) => { //Thêm roomId vào người gửi
-    snapshot.forEach(doc => {
-      doc.ref.update({
-        chatroomId: isAddRoom ? FieldValue.arrayUnion(chatroomId) : FieldValue.arrayRemove(chatroomId)
-      })
-    })
-  })
+  return db
+    .collection("users")
+    .where("userId", "==", userId)
+    .get()
+    .then((snapshot) => {
+      //Thêm roomId vào người gửi
+      snapshot.forEach((doc) => {
+        doc.ref.update({
+          chatroomId: isAddRoom
+            ? FieldValue.arrayUnion(chatroomId)
+            : FieldValue.arrayRemove(chatroomId),
+        });
+      });
+    });
 }
 
 export async function updateUserInfo(loggedInUserId, newData) {
@@ -475,15 +565,19 @@ export async function deleteComment(postId, commentId) {
 
 export async function deleteChatRoom(userId, chatRoomId) {
   await updateDoc(doc(db, "userChats", userId), {
-    [chatRoomId]: deleteField()
-  })
+    [chatRoomId]: deleteField(),
+  });
 }
 
-export async function deleteEmptyChatRoom(loggedInUserId, partnerId, chatRoomId) {
+export async function deleteEmptyChatRoom(
+  loggedInUserId,
+  partnerId,
+  chatRoomId
+) {
   await deleteDoc(doc(db, "conversations", chatRoomId));
 
-  await deleteChatRoom(loggedInUserId, chatRoomId)
-  await deleteChatRoom(partnerId, chatRoomId)
+  await deleteChatRoom(loggedInUserId, chatRoomId);
+  await deleteChatRoom(partnerId, chatRoomId);
 }
 
 // SENT EMAIL VERIFY  ACCOUNT
@@ -509,8 +603,8 @@ export async function searchUserByFullname(searchKeyword) {
     .where("fullname", ">=", searchKeyword)
     .where("fullname", "<=", searchKeyword + "\uf8ff")
     .get()
-    .then(snapshot => {
-      return snapshot.docs.map(doc => {
+    .then((snapshot) => {
+      return snapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
     });
