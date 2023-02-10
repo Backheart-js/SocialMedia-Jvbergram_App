@@ -67,31 +67,22 @@ function Profile() {
       console.log(chatRoomSnapshot);
       if (!chatRoomSnapshot[0].exists) {
         //Chưa nhắn tin với người này -> Tạo chatroom mới
-        // const combinedId = userLoggedIn.userId > profileId ? userLoggedIn.userId.concat(profileId)
-        // : profileId.concat(userLoggedIn.userId);
-        // const newRoom = {
-        //   chatroomId: combinedId,
-        //   lastMessage: "",
-        //   date: Date.now(),
-        //   partnerId: profileId,
-        //   username: profileUsername,
-        //   seen: {status: true, time: Date.now()},
-        //   lastSender: userLoggedIn.userId,
-        //   partnerInfo: profile 
-        // }
-        // console.log(newRoom)
-        // reduxDispatch(chatRoomListSlice.actions.createNewRoom(newRoom))
-        const newChatRoomId = await createNewChatRoom(
-          userLoggedIn.userId,
-          userLoggedIn.username,
-          profileId,
-          profileUsername,
-          ""
-        ); //Chuỗi rỗng vì tạo chatroom chưa có tin nhắn
-        await createNewConversation(newChatRoomId);
-
+        const combinedId = userLoggedIn.userId > profileId ? userLoggedIn.userId.concat(profileId)
+        : profileId.concat(userLoggedIn.userId);
+        const newRoom = {
+          chatroomId: combinedId,
+          lastMessage: "",
+          date: Date.now(),
+          partnerId: profileId,
+          username: profileUsername,
+          seen: {status: true, time: Date.now()},
+          lastSender: userLoggedIn.userId,
+          partnerInfo: profile,
+          virtualRoom: true
+        }
+        reduxDispatch(chatRoomListSlice.actions.createNewRoom(newRoom))
         setCheckDirectLoading(false);
-        navigate(`/direct/${newChatRoomId}`);
+        navigate(`/direct/${combinedId}`);
       } else {
         setCheckDirectLoading(false);
         navigate(`/direct/${chatRoomSnapshot[0].id}`);

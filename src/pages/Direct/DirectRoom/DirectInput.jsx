@@ -3,22 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
+import { v4 } from "uuid";
 import Button from "~/components/Button";
 import { UserContext } from "~/context/user";
-import { sentMessage, sentMessageImage } from "~/services/firebaseServices";
+import {
+  createNewChatRoom,
+  createNewConversation,
+  sentMessage,
+  sentMessageImage,
+} from "~/services/firebaseServices";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 
-function DirectInput({ conversationInfo }) {
+function DirectInput({ isNewMessage, conversationInfo }) {
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const [messageValue, setMessageValue] = useState("");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [sentProcessing, setsentProcessing] = useState(false);
-
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
-    console.log(file);
     setPreviewImage(URL.createObjectURL(file));
     setImage(file);
     setMessageValue("");
@@ -31,31 +35,69 @@ function DirectInput({ conversationInfo }) {
 
   const handleSentImage = async () => {
     setsentProcessing(true);
-    await sentMessageImage(
-      chatroomId,
-      image,
-      conversationInfo.partnerInfo.userId,
-      loggedInUser.userId,
-      () => {
-        setsentProcessing(false);
-        handleRemoveImage();
-      }
-    );
+    if (isNewMessage) {
+      const newRoomId = await createNewChatRoom(
+        loggedInUser.userId,
+        loggedInUser.username,
+        conversationInfo.partnerInfo.userId,
+        conversationInfo.partnerInfo.username,
+        ""
+      );
+      await createNewConversation(newRoomId);
+      await sentMessageImage(
+        chatroomId,
+        image,
+        conversationInfo.partnerInfo.userId,
+        loggedInUser.userId,
+        () => {
+          setsentProcessing(false);
+          handleRemoveImage();
+        }
+      );
+    } else {
+      await sentMessageImage(
+        chatroomId,
+        image,
+        conversationInfo.partnerInfo.userId,
+        loggedInUser.userId,
+        () => {
+          setsentProcessing(false);
+          handleRemoveImage();
+        }
+      );
+    }
   };
 
-  const handleSentMessage = () => {
+  const handleSentMessage = async () => {
     if (!messageValue.trim()) {
       //Khoảng trắng
       return;
     }
-    sentMessage(
-      chatroomId,
-      messageValue,
-      conversationInfo.partnerInfo.userId,
-      loggedInUser.userId
-    );
+    if (isNewMessage) {
+      const newMessage = {
+        messageId: v4(),
+        content: messageValue,
+        sender: loggedInUser.userId,
+        date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+      };
+      const newRoomId = await createNewChatRoom(
+        loggedInUser.userId,
+        loggedInUser.username,
+        conversationInfo.partnerInfo.userId,
+        conversationInfo.partnerInfo.username,
+        messageValue
+      );
+      await createNewConversation(newRoomId, newMessage);
+    } else {
+      await sentMessage(
+        chatroomId,
+        messageValue,
+        conversationInfo.partnerInfo.userId,
+        loggedInUser.userId
+      );
+    }
     setMessageValue("");
-  }
+  };
 
   useEffect(() => {
     return () => {
@@ -143,13 +185,17 @@ function DirectInput({ conversationInfo }) {
       </div>
       <div className="chatInput__sentFunc">
         {messageValue.length > 0 || previewImage ? (
-          <Button className={"px-4 py-2"} btnWhite onClick={() => {
-            if (image) {
-              handleSentImage();
-            } else {
-              handleSentMessage();
-            }
-          }}>
+          <Button
+            className={"px-4 py-2"}
+            btnWhite
+            onClick={() => {
+              if (image) {
+                handleSentImage();
+              } else {
+                handleSentMessage();
+              }
+            }}
+          >
             Gửi
           </Button>
         ) : (

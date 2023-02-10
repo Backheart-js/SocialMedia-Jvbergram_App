@@ -10,7 +10,7 @@ function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...pro
     <Skeleton count={1} height={56} />
   ) : (
     <Link
-      to={`${username}`}
+      to={`/${username}`}
       className={`flex items-center userComp-${size} w-fit`}
       {...props}
     >

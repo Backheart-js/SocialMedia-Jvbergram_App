@@ -57,7 +57,7 @@ function DirectRoom() {
           .doc(chatroomId)
           .onSnapshot(async (snapshot) => {
             const data = snapshot.data()?.messages;
-            await updateSeenMessage(snapshot.id, loggedInUser.userId);
+            conversationInfo?.virtualRoom || await updateSeenMessage(snapshot.id, loggedInUser.userId);
             setAllConversation(data ? data : []);
             setLoadDataFirstTime(true);
           });
@@ -77,20 +77,9 @@ function DirectRoom() {
 
   useEffect(() => {
     document.title = "Jvbergram - Direct";
-
-    return () => {
-      if (allConversation?.length === 0) {
-        deleteEmptyChatRoom(
-          loggedInUser.userId,
-          conversationInfo.partnerInfo.userId,
-          chatroomId
-        );
-      }
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadDataFirstTime]);
+  }, []);
 
-  console.log(allConversation)
 
   return !conversationInfo ? (
     <></>
@@ -139,7 +128,7 @@ function DirectRoom() {
         )}
       </div>
       <div ref={textareaRef} className="drRoom__chatInput-wrapper">
-        <DirectInput conversationInfo={conversationInfo} />
+        <DirectInput isNewMessage={allConversation?.length === 0} conversationInfo={conversationInfo} />
       </div>
     </div>
   );

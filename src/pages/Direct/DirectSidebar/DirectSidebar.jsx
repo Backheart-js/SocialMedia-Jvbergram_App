@@ -104,28 +104,32 @@ function DirectSidebar() {
                 <p className="drSidebar__name-text">
                   {chatRoom.partnerInfo.fullname}
                 </p>
-                {chatRoom.lastMessage?.image ? (
-                  chatRoom.lastSender === loggedInUser.userId ? (
-                    <p className="drSidebar__name-currentMessage">
-                      Bạn:{" "}
-                      <FontAwesomeIcon
-                        className="text-base ml-1"
-                        icon={faImage}
-                      />
-                    </p>
+                {chatRoom.lastMessage ?
+                  chatRoom.lastMessage?.image ? (
+                    chatRoom.lastSender === loggedInUser.userId ? (
+                      <p className="drSidebar__name-currentMessage">
+                        Bạn:{" "}
+                        <FontAwesomeIcon
+                          className="text-base ml-1"
+                          icon={faImage}
+                        />
+                      </p>
+                    ) : (
+                      <p className="drSidebar__name-currentMessage">
+                        {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
+                      </p>
+                    )
                   ) : (
                     <p className="drSidebar__name-currentMessage">
-                      {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
+                      {chatRoom.lastSender === loggedInUser.userId && (
+                        <span className="">Bạn:</span>
+                      )}{" "}
+                      {chatRoom.lastMessage}
                     </p>
                   )
-                ) : (
-                  <p className="drSidebar__name-currentMessage">
-                    {chatRoom.lastSender === loggedInUser.userId && (
-                      <span className="">Bạn:</span>
-                    )}{" "}
-                    {chatRoom.lastMessage}
-                  </p>
-                )}
+                :
+                  <></>
+                }
               </div>
               {chatRoom.seen.status || (
                 <div className="drSidebar__notSeen-notiSymbol"></div>

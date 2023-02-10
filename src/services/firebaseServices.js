@@ -569,17 +569,6 @@ export async function deleteChatRoom(userId, chatRoomId) {
   });
 }
 
-export async function deleteEmptyChatRoom(
-  loggedInUserId,
-  partnerId,
-  chatRoomId
-) {
-  await deleteDoc(doc(db, "conversations", chatRoomId));
-
-  await deleteChatRoom(loggedInUserId, chatRoomId);
-  await deleteChatRoom(partnerId, chatRoomId);
-}
-
 // SENT EMAIL VERIFY  ACCOUNT
 export async function verifyAccout() {
   //Thực hiện gửi email xác minh tài khoản
