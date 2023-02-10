@@ -105,25 +105,24 @@ function DirectSidebar() {
                   {chatRoom.partnerInfo.fullname}
                 </p>
                 {chatRoom.lastMessage?.image ? (
-                  <p className="drSidebar__name-currentMessage">
-                    {chatRoom.lastSender === loggedInUser.userId ?
-                      (
-                        <p className="drSidebar__name-currentMessage">
-                          Bạn:  <FontAwesomeIcon className="text-base ml-1" icon={faImage} />
-                        </p>
-                      )
-                    :
-                    (
-                      <p className="drSidebar__name-currentMessage">
-                        {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
-                      </p>
-                    )
-                    } 
-                  </p>
+                  chatRoom.lastSender === loggedInUser.userId ? (
+                    <p className="drSidebar__name-currentMessage">
+                      Bạn:{" "}
+                      <FontAwesomeIcon
+                        className="text-base ml-1"
+                        icon={faImage}
+                      />
+                    </p>
+                  ) : (
+                    <p className="drSidebar__name-currentMessage">
+                      {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
+                    </p>
+                  )
                 ) : (
                   <p className="drSidebar__name-currentMessage">
-                    {(chatRoom.lastSender === loggedInUser.userId) &&
-                    <span className="">Bạn:</span>}{" "}
+                    {chatRoom.lastSender === loggedInUser.userId && (
+                      <span className="">Bạn:</span>
+                    )}{" "}
                     {chatRoom.lastMessage}
                   </p>
                 )}

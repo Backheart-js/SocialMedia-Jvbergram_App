@@ -7,6 +7,9 @@ const chatRoomListSlice = createSlice({
         add: (state, action) => {
             return action.payload
         },
+        createNewRoom: (state, action) => {
+            return [action.payload, ...state]
+        }
     }
 })
 

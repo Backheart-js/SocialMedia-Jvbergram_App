@@ -27,6 +27,7 @@ import {
 } from "~/redux/slice/profileSlice";
 import Loader from "~/components/Loader";
 import { RotatingLines } from "react-loader-spinner";
+import chatRoomListSlice from "~/redux/slice/chatRoomListSlice";
 
 function Profile() {
   const { profile, postsCollection, isFollowing } = useSelector(
@@ -66,7 +67,20 @@ function Profile() {
       console.log(chatRoomSnapshot);
       if (!chatRoomSnapshot[0].exists) {
         //Chưa nhắn tin với người này -> Tạo chatroom mới
-
+        // const combinedId = userLoggedIn.userId > profileId ? userLoggedIn.userId.concat(profileId)
+        // : profileId.concat(userLoggedIn.userId);
+        // const newRoom = {
+        //   chatroomId: combinedId,
+        //   lastMessage: "",
+        //   date: Date.now(),
+        //   partnerId: profileId,
+        //   username: profileUsername,
+        //   seen: {status: true, time: Date.now()},
+        //   lastSender: userLoggedIn.userId,
+        //   partnerInfo: profile 
+        // }
+        // console.log(newRoom)
+        // reduxDispatch(chatRoomListSlice.actions.createNewRoom(newRoom))
         const newChatRoomId = await createNewChatRoom(
           userLoggedIn.userId,
           userLoggedIn.username,

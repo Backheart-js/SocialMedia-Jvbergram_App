@@ -108,7 +108,9 @@ function DirectRoom() {
             <p className="text-sm font-medium">{conversationInfo.partnerInfo.fullname}</p>
           </div>
         </Link>
-        <div className=""></div>
+        <div className="">
+          
+        </div>
       </div>
       <div ref={contentRef} className="drRoom_content-wrapper flex-grow-1">
         {!allConversation ? (

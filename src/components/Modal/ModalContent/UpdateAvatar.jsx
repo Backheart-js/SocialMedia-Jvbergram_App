@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RotatingLines } from "react-loader-spinner";
 import { v4 } from "uuid";
@@ -14,6 +14,7 @@ import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
 import { reuseAvatar, updateAvatar } from "~/services/firebaseServices";
+import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 
 function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imagePreviewLink, setImagePreviewLink] = useState(null);
@@ -135,11 +136,11 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   console.log(image)
 
   return (
-    <div className={`modal__box-wrapper py-4 px-5 w-[500px]`}>
-      <div className="modal__title-wrapper">
+    <div className={`modal__box-wrapper py-4 w-[500px]`}>
+      <div className="modal__title-wrapper px-5">
         <p className="text-lg font-semibold text-center">Thêm ảnh đại diện</p>
       </div>
-      <div className="modal__body-wrapper">
+      <div className="modal__body-wrapper pl-5 pr-4">
         <div className="modal__avatar-area--wrapper pb-2">
           {(!imagePreviewLink && !imageFromStore) ? (
             <div className="modal__image-area--nonImg h-[300px]">
@@ -186,7 +187,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
               </div>
             </div>
           ) : (
-            <div className="modal__avatar-area--haveImage">
+            <div className="modal__avatar-area--haveImage mt-2">
               <Avatar
                 avatarUrl={{ current: (imagePreviewLink || imageFromStore?.url) }}
                 size="preview"
@@ -212,21 +213,22 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
         {avatarUrl?.history.length > 0 && (
           <div className="modal__avatar-store">
             <p className="my-2 font-semibold text-sm">Ảnh gợi ý</p>
-            <div className="modal__avatar-store-wrapper">
+            <div className="modal__avatar-store-wrapper grid grid-cols-4 gap-2">
               {
                 avatarUrl.history.map((img, index) => (
-                  <div className="store__avatar-wrapper" key={index}>
-                    <button className={imageFromStore?.index === index ? "selected" : ""} onClick={() => handleChoseImgFromStore(img, index)}>
+                    <button className={`store__avatar-wrapper col-span-1 ${imageFromStore?.index === index ? "selected" : ""}`} onClick={() => handleChoseImgFromStore(img, index)}>
                       <div style={{ backgroundImage: `url(${img})` }} alt="" className="modal__avatar-store-img" />
+                      <div className="store__avatar-overlay">
+                        <FontAwesomeIcon icon={faCheck} className={"store__avatar-selectIcon text-[40px] text-gray-100"}/>
+                      </div>
                     </button>
-                  </div>
                 ))
               }
             </div>
           </div>
         )}
       </div>
-      <div className="modal__footer-wrapper mt-4">
+      <div className="modal__footer-wrapper mt-4 px-5">
         <button
           disabled={!image}
           className={`modal__footer-btn ${!image ? "modal__btn-disabled" : ""}`}

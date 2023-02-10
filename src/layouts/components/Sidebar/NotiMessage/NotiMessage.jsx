@@ -49,6 +49,8 @@ function NotiMessage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
+  console.log('re-render')
+
   return (
     <div className="sidebarMain__item-message-wrapper">
       <FontAwesomeIcon icon={faPaperPlane} className="sidebarMain__item-icon" />

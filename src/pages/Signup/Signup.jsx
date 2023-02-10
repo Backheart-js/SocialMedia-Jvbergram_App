@@ -82,7 +82,6 @@ function Signup() {
         dateCreated: Date.now(),
         followers: [],
         following: ["SCx4yqNoa6OxMWcYTVYvkFsodNF2"],
-        chatroomId: []
       });
       await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
