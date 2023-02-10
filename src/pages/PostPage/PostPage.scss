@@ -15,10 +15,13 @@
 
 .postPage__follow-state {
     position: relative;
-    font-size: 14px;
-    font-weight: 600;
     margin-left: 10px;
     padding-left: 10px;
+    
+    span {
+        font-size: 13px;
+        font-weight: 600;
+    }
 
     &::before {
         content: "";
@@ -52,7 +55,10 @@
     border-top: 1px solid $border-color-light-theme;
 }
 
-.postPage__owner-wrapper,
+.postPage__owner-wrapper {
+    padding: 14px 4px 14px 14px;
+}
+
 .postPage__interactive-wrapper,
 .postPage__comment-input {
     padding: 14px 16px;
@@ -75,4 +81,10 @@
     width: 100%;
     font-size: 15px;
     padding: 8px 20px;
+}
+
+.postpage__option-button {
+    display: flex;justify-content: center;
+    align-items: center;
+    padding: 8px;
 }

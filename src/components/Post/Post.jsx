@@ -2,8 +2,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { formatDistance, format } from "date-fns";
-import vi from "date-fns/locale/vi";
+import moment from "moment";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 
@@ -18,12 +17,14 @@ import modalSlice from "~/redux/slice/modalSlide";
 import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
 import Comments from "./Comments";
 import formatDate from "~/utils/formatDate";
+import Notification from "../Notification/Notification";
 
 function Post({ data = {} }) {
   const navigate = useNavigate();
-  const { userId:currentUserId } = useContext(UserContext);
+  const { userId: currentUserId } = useContext(UserContext);
   const dispatch = useDispatch();
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
+  const [showNoti, setShowNoti] = useState(false);
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -55,6 +56,16 @@ function Post({ data = {} }) {
     navigate(`/p/${data.docId}`);
   };
 
+  const handleCopyUrl = async () => {
+    const link = `${window.location.origin}/p/${data.docId}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setShowNoti(true);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
   useEffect(() => {
     const handleFocusOnComment = () => {
       commentFieldRef.current.focus();
@@ -73,7 +84,7 @@ function Post({ data = {} }) {
             size={"small"}
           />
           <Tippy
-            content={format(data.dateCreated, "dd/MM/yyyy")}
+            content={moment(data.dateCreated).format("DD/MM/YYYY")}
             placement="bottom-end"
             delay={["400", "200"]}
             arrow={false}
@@ -119,7 +130,10 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button
+                      className="post__option-dropdown-btn"
+                      onClick={handleCopyUrl}
+                    >
                       Sao chép liên kết
                     </button>
                   </li>
@@ -142,11 +156,16 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold" onClick={() => handleUnFollowOtherUser(currentUserId, {
-                      avatar: data.avatarUrl,
-                      username: data.username,
-                      userId: data.userId
-                    })}>
+                    <button
+                      className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
+                      onClick={() =>
+                        handleUnFollowOtherUser(currentUserId, {
+                          avatar: data.avatarUrl,
+                          username: data.username,
+                          userId: data.userId,
+                        })
+                      }
+                    >
                       Bỏ theo dõi
                     </button>
                   </li>
@@ -164,7 +183,10 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button
+                      className="post__option-dropdown-btn"
+                      onClick={handleCopyUrl}
+                    >
                       Sao chép liên kết
                     </button>
                   </li>
@@ -205,10 +227,7 @@ function Post({ data = {} }) {
           comments={data.comments}
         ></PostInteractive>
         <div className="post__caption mb-1 mt-2">
-          <Link
-            className="font-semibold text-sm mr-1"
-            to={`${data.username}`}
-          >
+          <Link className="font-semibold text-sm mr-1" to={`/${data.username}`}>
             {data.username}
           </Link>
           <span className="text-[15px] font-normal wrap-text">
@@ -222,6 +241,11 @@ function Post({ data = {} }) {
           commentFieldRef={commentFieldRef}
         />
       </div>
+      <Notification
+        content={"Đã lưu đường dẫn vào bộ nhớ tạm"}
+        isShowing={showNoti}
+        setShowing={setShowNoti}
+      />
     </div>
   );
 }

@@ -9,7 +9,7 @@ function SlideImages({ imagesList, ...props }) {
 
   return (
     <div className="slider-container" {...props}>
-      <div className="slider__image-wrapper">
+      {/* <div className="slider__image-wrapper"> */}
         {imagesList.map((image, index) => (
             <div
               className={`${
@@ -19,7 +19,7 @@ function SlideImages({ imagesList, ...props }) {
               key={index}
             ></div>
           ))}
-      </div>
+      {/* </div> */}
       <button
         className={`slider-button prev ${
           currentIndex === 0 ? "hidden" : "flex"

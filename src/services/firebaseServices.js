@@ -88,9 +88,9 @@ export async function getPostWithOwnerById(docId) {
   });
   const { avatarUrl, username } = ownerInfo[0];
   return {
-    ...postInfo.data(),
     avatarUrl,
     username,
+    ...postInfo.data(),
   };
 }
 

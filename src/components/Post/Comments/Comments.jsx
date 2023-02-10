@@ -40,7 +40,7 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
               <div className="">
                 <Link
                   className="font-semibold text-sm mr-1"
-                  to={`${userComment.displayName}`}
+                  to={`/${userComment.displayName}`}
                 >
                   {userComment.displayName}
                 </Link>

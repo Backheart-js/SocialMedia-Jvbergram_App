@@ -14,10 +14,6 @@ function VerifyAccount() {
     setCountdown(60);
     setShowButton(false);
     setShowNoti(true)
-
-    setTimeout(() => {
-      setShowNoti(false);
-    }, 4000); 
   }
 
   useEffect(() => {
@@ -75,7 +71,7 @@ function VerifyAccount() {
         </Button>
       </a>
 
-      <Notification content="Đã gửi email xác nhận" isShowing={showNoti} />
+      <Notification content="Đã gửi email xác nhận" isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

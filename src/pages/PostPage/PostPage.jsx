@@ -2,7 +2,7 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import CommentTextField from "~/components/Post/Comments/CommentTextField";
@@ -21,16 +21,21 @@ import sortComments from "~/utils/sortComment";
 import CommentDetail from "./CommentDetail/CommentDetail";
 import "./PostPage.scss";
 import "~/components/Post/Post.scss";
+import Notification from "~/components/Notification/Notification";
+import { setFollowing } from "~/redux/slice/profileSlice";
 
 function PostPage() {
   const { docId } = useParams();
   const { userId: currentUserId, following: currentUserFollowing } =
     useContext(UserContext);
+  const isFollowing = useSelector(state => state.profile.isFollowing)
   const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
+  // const [isFollowing, setIsFollowing] = useState(false);
   const [userCommentList, setUserCommentList] = useState([]);
+  const [showNoti, setShowNoti] = useState(false)
+
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -51,7 +56,7 @@ function PostPage() {
   const handleFollowOtherUser = async (currentUserId, profileId) => {
     await updateCurrentUserFolling(currentUserId, profileId, false);
     await updateFollower(currentUserId, profileId, false);
-    setIsFollowing(true);
+    dispatch(setFollowing(true))
   };
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
     dispatch(
@@ -59,26 +64,36 @@ function PostPage() {
         type: UNFOLLOW,
         currentUserId,
         followingUserInfo: profileInfo,
-        setIsFollowing: setIsFollowing
       })
     );
   };
 
+  const handleCopyUrl = async () => {
+    const link = `${window.location.origin}/p/${docId}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setShowNoti(true)
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  }
+
   useEffect(() => {
     const getData = async () => {
       const response = await getPostWithOwnerById(docId);
-
       let youLikedThisPost = false;
       if (response.likes.includes(currentUserId)) {
         youLikedThisPost = true;
       }
 
       currentUserId !== response.userId &&
-        setIsFollowing(currentUserFollowing.includes(response.userId));
+        dispatch(setFollowing(currentUserFollowing.includes(response.userId)))
       setData({
         ...response,
         youLikedThisPost,
       });
+      console.log(sortComments(response.comments))
+
       setUserCommentList(sortComments(response.comments)); //sắp xếp comment theo thời gian từ mới nhất đến cũ nhất
     };
 
@@ -197,7 +212,7 @@ function PostPage() {
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn">
+                        <button className="post__option-dropdown-btn" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
@@ -250,7 +265,7 @@ function PostPage() {
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn">
+                        <button className="post__option-dropdown-btn" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
@@ -270,7 +285,7 @@ function PostPage() {
               }
             >
               <button
-                className="post__option-button"
+                className="postpage__option-button"
                 onClick={() => {
                   setToggleOptionDropdown((prev) => !prev);
                 }}
@@ -307,6 +322,7 @@ function PostPage() {
           </div>
         </div>
       </div>
+      <Notification content={"Đã lưu đường dẫn vào bộ nhớ tạm"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

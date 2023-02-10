@@ -36,10 +36,6 @@ function Account() {
   const handleUpdateInfo = () => {
     updateUserInfo(loggedInUser.userId, userData); 
     setShowNoti(true);
-
-    setTimeout(() => {
-      setShowNoti(false);
-    }, 4000); 
   }
 
   return (
@@ -161,7 +157,7 @@ function Account() {
           <Button className={"px-3 py-1"} btnPrimary onClick={handleUpdateInfo}>Lưu</Button>
         </div>
       </div>
-      <Notification content={"Đã cập nhật thông tin cá nhân"} isShowing={showNoti} />
+      <Notification content={"Đã cập nhật thông tin cá nhân"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

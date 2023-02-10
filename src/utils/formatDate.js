@@ -1,7 +1,6 @@
-import { formatDistance } from "date-fns";
-// import vi from "date-fns/locale/vi";
+import moment from 'moment';
 
-export default function formatDate(date) {
-
-    return formatDistance(date, new Date())
+export default function formatDate(time) {
+    const elapsedTime = moment().valueOf() - time;
+    return <span>{moment.duration(elapsedTime).humanize()} ago</span>;
 }

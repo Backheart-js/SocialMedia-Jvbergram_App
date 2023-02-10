@@ -11,6 +11,7 @@ function CreateMessage({ closeModal }) {
   const loggedInUser = useContext(UserContext);
   const [userSelected, setUserSelected] = useState([]);
   const [content, setContent] = useState("");
+  const [showNoti, setShowNoti] = useState(false)
 
   const isDisabled = content && userSelected.length > 0
 
@@ -24,6 +25,7 @@ function CreateMessage({ closeModal }) {
     }
     catch (err) {
       console.log(err);
+      setShowNoti(true)
     }
 
   };
@@ -58,9 +60,7 @@ function CreateMessage({ closeModal }) {
           />
         </main>
       </div>
-      <Notification >
-        Đã xảy ra lỗi
-      </Notification>
+      <Notification content={"Đã xảy ra lỗi, vui lòng thử lại"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

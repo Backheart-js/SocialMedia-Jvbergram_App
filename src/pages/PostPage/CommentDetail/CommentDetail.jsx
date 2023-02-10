@@ -55,10 +55,9 @@ function CommentDetail({
         const getNewCommentWithInfo = async () => {
           const [userInfo] = await getUser({ userId: [newComment.userId] });
           const newCommentWithInfo = {
-            ...newComment,
             ...userInfo,
+            ...newComment,
           };
-
           setCommentWithUserInfo((prev) => [newCommentWithInfo, ...prev]);
         };
 
@@ -82,8 +81,8 @@ function CommentDetail({
         const newDataPromises = newCommentLoaded.map(async (comment) => {
           const [userInfo] = await getUser({ userId: [comment.userId] });
           return {
-            ...comment,
             ...userInfo,
+            ...comment,
           };
         });
 
@@ -123,7 +122,7 @@ function CommentDetail({
         </div>
         <div className="comment__name-and-content">
           <div className="comment__name-and-content--wrapper">
-            <Link to={`${username}`} className="text-sm font-semibold">
+            <Link to={`/${username}`} className="text-sm font-semibold">
               {username}
             </Link>
             <span className="comment__content-text text-gray-700">
@@ -177,7 +176,6 @@ function CommentItem({
   ...props
 }) {
   const [toggleCommentDropdown, setToggleCommentDropdown] = useState(false);
-
   return (
     <li className="commentDetail__item" {...props}>
       <div className="flex items-start justify-between">
@@ -188,7 +186,7 @@ function CommentItem({
           <div className="comment__name-and-content">
             <div className="comment__name-and-content--wrapper">
               <Link
-                to={`${commentData.username}`}
+                to={`/${commentData.username}`}
                 className="text-sm font-semibold"
               >
                 {commentData.username}
