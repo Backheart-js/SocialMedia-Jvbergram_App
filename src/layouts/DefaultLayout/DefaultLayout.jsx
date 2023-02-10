@@ -7,8 +7,9 @@ import { getUser } from "~/services/firebaseServices";
 import { useSelector } from "react-redux";
 import { UserContext } from "~/context/user";
 import LoadingPage from "~/pages/LoadingPage/LoadingPage";
+import { Outlet } from "react-router-dom";
 
-function DefaultLayout({ children }) {
+function DefaultLayout() {
   const { user } = useAuthListener();
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const { isOpen, ...payload } = useSelector((state) => state.modal);
@@ -36,16 +37,12 @@ function DefaultLayout({ children }) {
           id="content"
           className="bg-main-bg min-h-screen h-full ml-[80px] xl:ml-[245px]"
         >
-          {children}
+          <Outlet />
         </main>
         {isOpen && <Modal payload={payload} />}
       </div>
     </UserContext.Provider>
   );
 }
-
-DefaultLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default DefaultLayout;

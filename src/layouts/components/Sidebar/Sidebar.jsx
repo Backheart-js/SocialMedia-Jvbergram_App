@@ -167,7 +167,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tạo</span>
                 )}
               </li>
-              <NavLink to={`/profile/${userLoggedIn?.username}`} className="sidebarMain__item-wrapper">
+              <NavLink to={`/${userLoggedIn?.username}`} className="sidebarMain__item-wrapper">
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar avatarUrl={userLoggedIn?.avatarUrl === undefined ? {} : userLoggedIn.avatarUrl} size={"xs"}/>
                 </div>

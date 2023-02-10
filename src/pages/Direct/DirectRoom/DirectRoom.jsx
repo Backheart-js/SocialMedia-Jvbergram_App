@@ -98,7 +98,7 @@ function DirectRoom() {
     <div ref={wrapperRef} className="drRoom__wrapper">
       <div className="drRoom__header">
         <Link
-          to={`/profile/${conversationInfo.partnerInfo.username}`}
+          to={`${conversationInfo.partnerInfo.username}`}
           className="flex h-full items-center"
         >
           <div className="">

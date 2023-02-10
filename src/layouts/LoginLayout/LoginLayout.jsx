@@ -1,12 +1,11 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import './LoginLayout.scss';
 
-function LoginLayout({ children }) {
+function LoginLayout() {
   return (
     <div className='flex justify-center items-center h-screen bg-gray-100'>
-        {
-            children
-        }
+        <Outlet />
     </div>
   )
 }

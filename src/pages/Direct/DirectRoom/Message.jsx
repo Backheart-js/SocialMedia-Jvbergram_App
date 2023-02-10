@@ -11,7 +11,7 @@ function Message({ content, image, avatarUrl, username, loggedInUser, ...props }
     >
       {loggedInUser || (
         <div className="message__avatar-wrapper">
-          <Link to={`/profile/${username}`} className="message__avatar-box">
+          <Link to={`${username}`} className="message__avatar-box">
             <Avatar avatarUrl={avatarUrl} size="sx" />
           </Link>
         </div>

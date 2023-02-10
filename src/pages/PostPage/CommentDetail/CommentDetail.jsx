@@ -123,7 +123,7 @@ function CommentDetail({
         </div>
         <div className="comment__name-and-content">
           <div className="comment__name-and-content--wrapper">
-            <Link to={`/profile/${username}`} className="text-sm font-semibold">
+            <Link to={`${username}`} className="text-sm font-semibold">
               {username}
             </Link>
             <span className="comment__content-text text-gray-700">
@@ -188,7 +188,7 @@ function CommentItem({
           <div className="comment__name-and-content">
             <div className="comment__name-and-content--wrapper">
               <Link
-                to={`/profile/${commentData.username}`}
+                to={`${commentData.username}`}
                 className="text-sm font-semibold"
               >
                 {commentData.username}

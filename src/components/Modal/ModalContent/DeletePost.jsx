@@ -19,7 +19,7 @@ function DeletePost({ closeModal, postId, imagesUrl, redirectToProfile }) {
             
             closeModal();
 
-            redirectToProfile && navigate(`/profile/${redirectToProfile}`);
+            redirectToProfile && navigate(`${redirectToProfile}`);
         } catch (error) {
             setLoadingDisplay(false)
             alert("Có lỗi xảy ra, vui lòng thử lại!")

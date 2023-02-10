@@ -207,7 +207,7 @@ function Post({ data = {} }) {
         <div className="post__caption mb-1 mt-2">
           <Link
             className="font-semibold text-sm mr-1"
-            to={`/profile/${data.username}`}
+            to={`${data.username}`}
           >
             {data.username}
           </Link>
