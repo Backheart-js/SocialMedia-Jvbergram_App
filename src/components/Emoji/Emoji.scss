@@ -1,0 +1,23 @@
+
+.emoji__wrapper {
+    max-height: 333px;
+    padding: 8px 4px 8px 8px;
+    overflow-y: auto;
+}
+
+.emoji-box {
+    &+& {
+        margin-top: 20px;
+    }
+}
+
+.emoji-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 0;
+
+    &:hover {
+        background-color: #d3d3d3;
+    }
+}

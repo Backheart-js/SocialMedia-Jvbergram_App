@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,6 +13,7 @@ import {
   LOGIN,
   UNFOLLOW,
   UPDATE_AVATAR,
+  VIEWIMAGE,
 } from "~/constants/modalTypes";
 import DeletePost from "./ModalContent/DeletePost";
 import UnFollow from "./ModalContent/UnFollow";
@@ -22,6 +23,7 @@ import { setFollowing } from "~/redux/slice/profileSlice";
 import CreateMessage from "./ModalContent/CreateMessage";
 import FollowersModal from "./ModalContent/Followers";
 import LoginModal from "./ModalContent/Login";
+import ViewImage from "./ModalContent/ViewImage";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
@@ -47,6 +49,22 @@ function Modal({ payload }) {
       closeModal();
     }
   };
+  const handleClickEsc = (e) => {
+    if(e.code === "Escape") {
+      closeModal();
+    }
+  }
+
+  useEffect(() => {
+     
+    document.addEventListener("keyup", handleClickEsc);
+    
+  
+    return () => {
+      document.removeEventListener("keyup", handleClickEsc);
+    }
+  }, [])
+  
 
   return (
     <div className={`modal`}>
@@ -91,7 +109,10 @@ function Modal({ payload }) {
             userIdList={payload.userIdList}
           />
         )) ||
-        (payload.type === LOGIN && <LoginModal closeModal={closeModal} />)}
+        (payload.type === LOGIN && <LoginModal closeModal={closeModal} />) ||
+        (payload.type === VIEWIMAGE && <ViewImage closeModal={closeModal} imageLink={payload.imageLink} fullname={payload.fullname} time={payload.time} />)
+        
+        }
     </div>
   );
 }

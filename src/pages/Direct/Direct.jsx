@@ -22,8 +22,6 @@ function Direct() {
 
   }, []);
   
-  console.log(chatroomList)
-
   return (
     <div className='direct__wrapper'>
       <div className="direct__box lg:max-w-[935px]">

@@ -5,6 +5,8 @@ import { RotatingLines } from "react-loader-spinner";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
 import Button from "~/components/Button";
+import Dropdown from "~/components/Dropdown/Dropdown";
+import DropdownEmoji from "~/components/Emoji/Emoji";
 import { UserContext } from "~/context/user";
 import {
   createNewChatRoom,
@@ -21,6 +23,7 @@ function DirectInput({ isNewMessage, conversationInfo }) {
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [sentProcessing, setsentProcessing] = useState(false);
+  const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false)
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
     setPreviewImage(URL.createObjectURL(file));
@@ -108,23 +111,35 @@ function DirectInput({ isNewMessage, conversationInfo }) {
   return (
     <div className="chatInput__wrapper">
       <div className="chatInput__icon">
-        <button
-          disabled={previewImage}
-          className="flex justify-center items-center px-3 py-2"
+        <Dropdown 
+          visible={toggleDropdownEmoji}
+          interactive
+          placement="top-start"
+          className="w-[335px] h-[325px]"
+          onClickOutside={() => setToggleDropdownEmoji(false)}
+          content={
+            <DropdownEmoji setValue={setMessageValue}/>
+          }
         >
-          <svg
-            aria-label="Biểu tượng cảm xúc"
-            className="_ab6-"
-            color="#262626"
-            fill="#262626"
-            height={24}
-            role="img"
-            viewBox="0 0 24 24"
-            width={24}
+          <button
+            disabled={previewImage}
+            className="flex justify-center items-center px-3 py-2"
+            onClick={() => setToggleDropdownEmoji(prev => !prev)}
           >
-            <path d="M15.83 10.997a1.167 1.167 0 1 0 1.167 1.167 1.167 1.167 0 0 0-1.167-1.167Zm-6.5 1.167a1.167 1.167 0 1 0-1.166 1.167 1.167 1.167 0 0 0 1.166-1.167Zm5.163 3.24a3.406 3.406 0 0 1-4.982.007 1 1 0 1 0-1.557 1.256 5.397 5.397 0 0 0 8.09 0 1 1 0 0 0-1.55-1.263ZM12 .503a11.5 11.5 0 1 0 11.5 11.5A11.513 11.513 0 0 0 12 .503Zm0 21a9.5 9.5 0 1 1 9.5-9.5 9.51 9.51 0 0 1-9.5 9.5Z" />
-          </svg>
-        </button>
+            <svg
+              aria-label="Biểu tượng cảm xúc"
+              className="_ab6-"
+              color="#262626"
+              fill="#262626"
+              height={24}
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+            >
+              <path d="M15.83 10.997a1.167 1.167 0 1 0 1.167 1.167 1.167 1.167 0 0 0-1.167-1.167Zm-6.5 1.167a1.167 1.167 0 1 0-1.166 1.167 1.167 1.167 0 0 0 1.166-1.167Zm5.163 3.24a3.406 3.406 0 0 1-4.982.007 1 1 0 1 0-1.557 1.256 5.397 5.397 0 0 0 8.09 0 1 1 0 0 0-1.55-1.263ZM12 .503a11.5 11.5 0 1 0 11.5 11.5A11.513 11.513 0 0 0 12 .503Zm0 21a9.5 9.5 0 1 1 9.5-9.5 9.51 9.51 0 0 1-9.5 9.5Z" />
+            </svg>
+          </button>
+        </Dropdown>
       </div>
       <div className="chatInput__textarea-wrapper">
         {previewImage ? (

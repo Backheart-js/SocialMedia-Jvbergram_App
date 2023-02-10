@@ -80,6 +80,7 @@ function DirectRoom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(conversationInfo)
 
   return !conversationInfo ? (
     <></>
@@ -122,6 +123,8 @@ function DirectRoom() {
               loggedInUser={message.sender === loggedInUser.userId}
               avatarUrl={conversationInfo.partnerInfo.avatarUrl}
               username={conversationInfo.partnerInfo.username}
+              fullname={conversationInfo.partnerInfo.fullname}
+              createdTime={conversationInfo.date}
               key={message.messageId}
             />
           ))

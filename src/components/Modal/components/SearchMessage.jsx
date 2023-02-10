@@ -36,6 +36,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
         const searchUser = async () => {
         const response = await searchUserByFullname(debounce)
         setSearchResult(response)
+        setShowResult(true)
       }
       
       debounce.length > 0 && searchUser();
@@ -71,6 +72,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
                     ))}
                 </ul>
             }
+            onClickOutside={() => setShowResult(false)}
         >
           <div className="createMessageModal__search-input flex flex-wrap flex-grow">
             {

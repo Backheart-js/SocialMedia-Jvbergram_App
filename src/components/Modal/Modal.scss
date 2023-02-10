@@ -414,6 +414,36 @@
     border-top: 1px solid $border-color-light-theme;
 }
 
+.viewImage__bg {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  .viewImage__overlay {
+    position: absolute;
+    background-color: rgba(#000000, .5);
+    backdrop-filter: blur(20px);
+
+
+    .viewImage__Info-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      padding: 6px 60px
+    }
+
+    .viewImage-close-btn {
+      background-color: rgba(#000000, .7);
+    }
+  }
+}
+
 @keyframes scaleModal {
   0% {
     transform: scale(0.9);

@@ -57,6 +57,10 @@
     align-items: center;
     max-width: 234px;
     min-height: 44px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .message-content {
