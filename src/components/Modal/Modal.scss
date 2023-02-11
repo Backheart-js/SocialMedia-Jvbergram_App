@@ -431,11 +431,12 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 80px;
+      height: 60px;
       display: flex;
       flex-direction: column;
       justify-content: start;
-      padding: 6px 60px
+      padding: 6px 60px;
+      background-color: rgba(#000000, .4);
     }
 
     .viewImage-close-btn {

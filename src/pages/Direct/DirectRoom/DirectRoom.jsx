@@ -23,7 +23,6 @@ function DirectRoom() {
   const [limit, setLimit] = useState(10);
   const [loadDataFirstTime, setLoadDataFirstTime] = useState(false);
 
-
   const conversationInfo = chatroomList.find(
     (eachRoom) => eachRoom.chatroomId === chatroomId
   );
@@ -58,6 +57,8 @@ function DirectRoom() {
           .onSnapshot(async (snapshot) => {
             const data = snapshot.data()?.messages;
             conversationInfo?.virtualRoom || await updateSeenMessage(snapshot.id, loggedInUser.userId);
+            data.sort((a, b) => b.date - a.date);
+
             setAllConversation(data ? data : []);
             setLoadDataFirstTime(true);
           });
@@ -79,9 +80,7 @@ function DirectRoom() {
     document.title = "Jvbergram - Direct";
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(conversationInfo)
-
+  console.log(allConversation)
   return !conversationInfo ? (
     <></>
   ) : (
@@ -120,10 +119,11 @@ function DirectRoom() {
             <Message
               content={message?.content}
               image={message?.image}
+              heartIcon={message?.heartIcon}
               loggedInUser={message.sender === loggedInUser.userId}
               avatarUrl={conversationInfo.partnerInfo.avatarUrl}
               username={conversationInfo.partnerInfo.username}
-              fullname={conversationInfo.partnerInfo.fullname}
+              fullname={message.sender === loggedInUser.userId ? loggedInUser.fullname : conversationInfo.partnerInfo.fullname}
               createdTime={conversationInfo.date}
               key={message.messageId}
             />
@@ -131,7 +131,7 @@ function DirectRoom() {
         )}
       </div>
       <div ref={textareaRef} className="drRoom__chatInput-wrapper">
-        <DirectInput isNewMessage={allConversation?.length === 0} conversationInfo={conversationInfo} />
+        <DirectInput isNewMessage={allConversation?.length === 0} conversationInfo={conversationInfo} contentRef={contentRef}/>
       </div>
     </div>
   );

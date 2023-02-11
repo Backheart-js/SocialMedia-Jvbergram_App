@@ -26,7 +26,7 @@ function Home() {
     const getTimeline = async () => {
         unsubscribe = firebase.firestore()
         .collection("posts")
-        .where("userId", "in", userLoggedIn.following.concat(userLoggedIn.userId))
+        .where("userId", "in", userLoggedIn.following.concat(userLoggedIn.userId)) //Lấy posts của mình và following
         .onSnapshot(async (snapshot) => { //Snapshot sẽ kiểm tra trạng thái trong firestore nếu có thay đổi
             let newPosts = snapshot.docs.map((doc) => {
                 return { docId: doc.id, ...doc.data() };
@@ -78,7 +78,10 @@ function Home() {
           }
         </div>
         <div className="col-span-5">
-          <div className="my-4"><UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} /></div>
+          <div className="my-4 flex justify-between">
+            <UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} />
+            <Button className={"text-[13px] py-2 pl-2 text-blue-primary hover:text-blue-bold"} onClick={() => firebase.auth().signOut()}>Đăng xuất</Button>
+          </div>
           <div className="suggestion__wrapper">
             <div className="suggestion__title-wrapper flex justify-between">
               <span className='text-[13px] text-gray-500 font-semibold'>

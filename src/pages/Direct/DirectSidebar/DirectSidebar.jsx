@@ -104,9 +104,9 @@ function DirectSidebar() {
                 <p className="drSidebar__name-text">
                   {chatRoom.partnerInfo.fullname}
                 </p>
-                {chatRoom.lastMessage ?
-                  chatRoom.lastMessage?.image ? (
-                    chatRoom.lastSender === loggedInUser.userId ? (
+                {chatRoom.lastMessage ? (
+                  (chatRoom.lastMessage?.image &&
+                    (chatRoom.lastSender === loggedInUser.userId ? (
                       <p className="drSidebar__name-currentMessage">
                         Bạn:{" "}
                         <FontAwesomeIcon
@@ -118,8 +118,15 @@ function DirectSidebar() {
                       <p className="drSidebar__name-currentMessage">
                         {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
                       </p>
-                    )
-                  ) : (
+                    ))) ||
+                  (chatRoom.lastMessage.heartIcon &&
+                    (chatRoom.lastSender === loggedInUser.userId ? (
+                      <p className="drSidebar__name-currentMessage">Bạn: ❤️</p>
+                    ) : (
+                      <p className="">
+                        ❤️
+                      </p>
+                    ))) || (
                     <p className="drSidebar__name-currentMessage">
                       {chatRoom.lastSender === loggedInUser.userId && (
                         <span className="">Bạn:</span>
@@ -127,9 +134,9 @@ function DirectSidebar() {
                       {chatRoom.lastMessage}
                     </p>
                   )
-                :
+                ) : (
                   <></>
-                }
+                )}
               </div>
               {chatRoom.seen.status || (
                 <div className="drSidebar__notSeen-notiSymbol"></div>

@@ -27,11 +27,12 @@ import modalSlice from "~/redux/slice/modalSlide";
 import { CREATE_POST } from "~/constants/modalTypes";
 import NotiMessage from "./NotiMessage/NotiMessage";
 import "./Sidebar.scss";
+import logo from "~/assets/logo";
 
 function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
   const userLoggedIn = useContext(UserContext);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);
@@ -56,10 +57,12 @@ function Sidebar() {
   };
 
   const handleOpenCreateNewPostModal = () => {
-    dispatch(modalSlice.actions.openModal({
-      type: CREATE_POST
-    }))
-  }
+    dispatch(
+      modalSlice.actions.openModal({
+        type: CREATE_POST,
+      })
+    );
+  };
 
   return (
     <aside id="sidebar" className="z-10">
@@ -71,7 +74,7 @@ function Sidebar() {
                 <></>
               ) : (
                 <a href="/" className="sidebarMain__logo">
-                  <svg
+                  {/* <svg
                     aria-label="Instagram"
                     className="_ab6-"
                     color="#262626"
@@ -87,16 +90,33 @@ function Sidebar() {
                       fill="currentColor"
                       fillRule="evenodd"
                     ></path>
-                  </svg>
+                  </svg> */}
+                  <img src={logo.logo_black} alt="" className="w-[80%] dark:hidden" />
+                  <img src={logo.logo_white} alt="" className="w-[80%] hidden dark:block" />
                 </a>
               )}
             </div>
             <ul className="sidebarMain__list-wrapper">
               <a href="/" className="sidebarMain__item-wrapper">
-                <FontAwesomeIcon
-                  icon={faHouse}
-                  className="sidebarMain__item-icon"
-                />
+                <svg
+                  aria-label="Trang chủ"
+                  className="_ab6-"
+                  color="#262626"
+                  fill="#262626"
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                >
+                  <path
+                    d="M9.005 16.545a2.997 2.997 0 0 1 2.997-2.997A2.997 2.997 0 0 1 15 16.545V22h7V11.543L12 2 2 11.543V22h7.005Z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                </svg>
+
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
@@ -156,7 +176,10 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Thông báo</span>
                 )}
               </li>
-              <li className="sidebarMain__item-wrapper" onClick={handleOpenCreateNewPostModal}>
+              <li
+                className="sidebarMain__item-wrapper"
+                onClick={handleOpenCreateNewPostModal}
+              >
                 <FontAwesomeIcon
                   icon={faSquarePlus}
                   className="sidebarMain__item-icon"
@@ -167,9 +190,19 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tạo</span>
                 )}
               </li>
-              <NavLink to={`/${userLoggedIn?.username}`} className="sidebarMain__item-wrapper">
+              <NavLink
+                to={`/${userLoggedIn?.username}`}
+                className="sidebarMain__item-wrapper"
+              >
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
-                  <Avatar avatarUrl={userLoggedIn?.avatarUrl === undefined ? {} : userLoggedIn.avatarUrl} size={"xs"}/>
+                  <Avatar
+                    avatarUrl={
+                      userLoggedIn?.avatarUrl === undefined
+                        ? {}
+                        : userLoggedIn.avatarUrl
+                    }
+                    size={"xs"}
+                  />
                 </div>
                 {toggleSubSidebar ? (
                   <></>

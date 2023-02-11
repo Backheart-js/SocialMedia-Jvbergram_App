@@ -11,12 +11,13 @@ import { UserContext } from "~/context/user";
 import {
   createNewChatRoom,
   createNewConversation,
+  sentHeartIcon,
   sentMessage,
   sentMessageImage,
 } from "~/services/firebaseServices";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 
-function DirectInput({ isNewMessage, conversationInfo }) {
+function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const [messageValue, setMessageValue] = useState("");
@@ -101,6 +102,32 @@ function DirectInput({ isNewMessage, conversationInfo }) {
     }
     setMessageValue("");
   };
+
+  const handleSentHeartIcon = async () => {
+    if (isNewMessage) {
+      const newMessage = {
+        messageId: v4(),
+        heartIcon:true,
+        sender: loggedInUser.userId,
+        date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+      };
+      const newRoomId = await createNewChatRoom(
+        loggedInUser.userId,
+        loggedInUser.username,
+        conversationInfo.partnerInfo.userId,
+        conversationInfo.partnerInfo.username,
+        {heartIcon: true}
+      );
+      await createNewConversation(newRoomId, newMessage);
+    }
+    else {
+      await sentHeartIcon(
+        chatroomId,
+        conversationInfo.partnerInfo.userId,
+        loggedInUser.userId
+      );
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -193,6 +220,7 @@ function DirectInput({ isNewMessage, conversationInfo }) {
                 } else {
                   handleSentMessage();
                 }
+                contentRef.current.scrollIntoView({behavior: 'smooth'});
               }
             }}
           ></textarea>
@@ -209,6 +237,7 @@ function DirectInput({ isNewMessage, conversationInfo }) {
               } else {
                 handleSentMessage();
               }
+              contentRef.current.scrollIntoView({behavior: 'smooth'});
             }}
           >
             Gửi
@@ -257,7 +286,7 @@ function DirectInput({ isNewMessage, conversationInfo }) {
                 />
               </svg>
             </label>
-            <button className="flex justify-center items-center px-2 py-2">
+            <button className="flex justify-center items-center px-2 py-2" onClick={handleSentHeartIcon}>
               <svg
                 aria-label="Thích"
                 className="_ab6-"

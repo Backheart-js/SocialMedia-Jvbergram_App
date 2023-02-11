@@ -373,7 +373,38 @@ export async function sentMessage(chatRoomId, content, receiverId, senderId) {
       [chatRoomId + ".seen.time"]: Date.now(),
     });
 }
-
+export async function sentHeartIcon(chatRoomId, receiverId, senderId) {
+  const newMessage = {
+    messageId: v4(),
+    heartIcon: true,
+    sender: senderId,
+    date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+  };
+  await db
+    .collection("conversations")
+    .doc(chatRoomId)
+    .update({
+      messages: FieldValue.arrayUnion(newMessage),
+    });
+  await db
+    .collection("userChats")
+    .doc(receiverId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: {heartIcon: true},
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.status"]: false,
+    });
+  await db
+    .collection("userChats")
+    .doc(senderId)
+    .update({
+      [chatRoomId + ".date"]: Date.now(),
+      [chatRoomId + ".lastMessage"]: {heartIcon: true},
+      [chatRoomId + ".lastSender"]: senderId,
+      [chatRoomId + ".seen.time"]: Date.now(),
+    });
+}
 export async function sentMessageImage(
   chatRoomId,
   image,
