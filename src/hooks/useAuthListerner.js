@@ -1,9 +1,6 @@
 import { useState, useEffect, useContext } from "react";
-import { useSelector } from "react-redux";
 import { FirebaseContext } from "~/context/firebase";
-import { rememberPasswordSelector } from "~/redux/selector";
 
-// const isRememberPassword = useSelector(rememberPasswordSelector);
 export default function useAuthListener() {
   const { firebase } = useContext(FirebaseContext);
   const [user, setUser] = useState(null);
@@ -15,6 +12,7 @@ export default function useAuthListener() {
         localStorage.setItem("authUser", JSON.stringify(authUser))
         setUser(authUser);
         setLoading(false);
+        console.log(authUser)
       } else {
         localStorage.removeItem("authUser");
         setUser(null);

@@ -1,7 +1,4 @@
-import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import EmojiPicker from 'emoji-picker-react';
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext,  useState } from 'react'
 import { v4 } from 'uuid';
 import Dropdown from '~/components/Dropdown/Dropdown';
 import DropdownEmoji from '~/components/Emoji/Emoji';
@@ -33,7 +30,7 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
       userId: userId,
       commentId: v4()
     }
-
+    commentFieldRef.current.style.height = "22px";
     try {
       setUserCommentList((prev) => [...prev, comment])
       setAllCommentsQuantity && setAllCommentsQuantity(prev => prev+1)

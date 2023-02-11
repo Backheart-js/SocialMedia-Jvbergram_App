@@ -30,9 +30,6 @@ function DirectRoom() {
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
   const textareaRef = useRef(null);
-  const contentboxRef = useRef(null);
-
-  
 
   function loadMoreMessages() {
     setLimit((prev) => prev + 20);
@@ -42,7 +39,7 @@ function DirectRoom() {
     if (conversationInfo) {
       contentRef.current.style.height = `calc(${wrapperRef.current.offsetHeight}px - 60px - ${textareaRef.current.offsetHeight}px)`;
     }
-    // contentRef.current?.scrollIntoView({ behavior: "smooth" });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allConversation]);
 
@@ -80,7 +77,7 @@ function DirectRoom() {
     document.title = "Jvbergram - Direct";
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(allConversation)
+
   return !conversationInfo ? (
     <></>
   ) : (

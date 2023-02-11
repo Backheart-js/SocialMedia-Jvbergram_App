@@ -75,7 +75,7 @@ function Post({ data = {} }) {
 
     commentBtn.current.addEventListener("click", handleFocusOnComment);
   }, []);
-  console.log(data);
+
   return (
     <div className="post__container py-3">
       <div className="flex justify-between items-center px-3 mb-3">

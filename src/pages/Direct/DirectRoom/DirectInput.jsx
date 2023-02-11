@@ -1,6 +1,6 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -21,15 +21,16 @@ import {
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 
 function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const [messageValue, setMessageValue] = useState("");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [sentProcessing, setsentProcessing] = useState(false);
-  const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false)
+  const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false);
 
+  const inputRef = useRef(null);
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
     if (INPUT_IMAGE_REGEX.test(file.name)) {
@@ -37,7 +38,7 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
       setImage(file);
       setMessageValue("");
     } else {
-      dispatch(openNoti({content: `Định dạng file không hợp lệ`}))
+      dispatch(openNoti({ content: `Định dạng file không hợp lệ` }));
     }
   };
 
@@ -79,9 +80,15 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
         }
       );
     }
+    contentRef.current.firstChild.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
   };
 
   const handleSentMessage = async () => {
+    setMessageValue("");
+    inputRef.current.style.height = "34px";
     if (!messageValue.trim()) {
       //Khoảng trắng
       return;
@@ -109,14 +116,17 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
         loggedInUser.userId
       );
     }
-    setMessageValue("");
+    contentRef.current.firstChild.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
   };
 
   const handleSentHeartIcon = async () => {
     if (isNewMessage) {
       const newMessage = {
         messageId: v4(),
-        heartIcon:true,
+        heartIcon: true,
         sender: loggedInUser.userId,
         date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
       };
@@ -125,18 +135,21 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
         loggedInUser.username,
         conversationInfo.partnerInfo.userId,
         conversationInfo.partnerInfo.username,
-        {heartIcon: true}
+        { heartIcon: true }
       );
       await createNewConversation(newRoomId, newMessage);
-    }
-    else {
+    } else {
       await sentHeartIcon(
         chatroomId,
         conversationInfo.partnerInfo.userId,
         loggedInUser.userId
       );
     }
-  }
+    contentRef.current.firstChild.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     return () => {
@@ -147,20 +160,18 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   return (
     <div className="chatInput__wrapper">
       <div className="chatInput__icon">
-        <Dropdown 
+        <Dropdown
           visible={toggleDropdownEmoji}
           interactive
           placement="top-start"
           className="w-[335px] h-[325px]"
           onClickOutside={() => setToggleDropdownEmoji(false)}
-          content={
-            <DropdownEmoji setValue={setMessageValue}/>
-          }
+          content={<DropdownEmoji setValue={setMessageValue} />}
         >
           <button
             disabled={previewImage}
             className="flex justify-center items-center px-3 py-2"
-            onClick={() => setToggleDropdownEmoji(prev => !prev)}
+            onClick={() => setToggleDropdownEmoji((prev) => !prev)}
           >
             <svg
               aria-label="Biểu tượng cảm xúc"
@@ -213,8 +224,8 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
           </div>
         ) : (
           <textarea
+            ref={inputRef}
             value={messageValue}
-            name=""
             className="chatInput__textarea"
             placeholder="Nhập tin..."
             onInput={(e) => autoGrowTextarea(e)}
@@ -224,12 +235,8 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                if (image) {
-                  handleSentImage();
-                } else {
-                  handleSentMessage();
-                }
-                contentRef.current.scrollIntoView({behavior: 'smooth'});
+
+                handleSentMessage();
               }
             }}
           ></textarea>
@@ -246,7 +253,6 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
               } else {
                 handleSentMessage();
               }
-              contentRef.current.scrollIntoView({behavior: 'smooth'});
             }}
           >
             Gửi
@@ -295,7 +301,10 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
                 />
               </svg>
             </label>
-            <button className="flex justify-center items-center px-2 py-2" onClick={handleSentHeartIcon}>
+            <button
+              className="flex justify-center items-center px-2 py-2"
+              onClick={handleSentHeartIcon}
+            >
               <svg
                 aria-label="Thích"
                 className="_ab6-"
@@ -316,4 +325,4 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   );
 }
 
-export default DirectInput;
+export default memo(DirectInput);
