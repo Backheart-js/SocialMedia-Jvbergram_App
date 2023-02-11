@@ -1,7 +1,15 @@
 .notification {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: -56px;
+    height: 56px;
+    padding: 0 40px;
+    background-color: #262626;
     transition: bottom .3s ease-in-out;
-    z-index: 99;
-    @apply flex items-center fixed left-0 right-0 bottom-[-56px] h-14 px-10 bg-[#262626];
+    z-index: 9999;
 
     &.show {
         bottom: 0;

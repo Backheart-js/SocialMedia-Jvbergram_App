@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "~/components/Button";
-import Loader from "~/components/Loader";
-import Notification from "~/components/Notification/Notification";
 import { UserContext } from "~/context/user";
+import { openNoti } from "~/redux/slice/notificationSlice";
 import { createNewMessage } from "~/services/firebaseServices";
 import SearchMessage from "../components/SearchMessage";
 import "../Modal.scss";
 
 function CreateMessage({ closeModal }) {
+  const dispatch = useDispatch()
+
   const loggedInUser = useContext(UserContext);
   const [userSelected, setUserSelected] = useState([]);
   const [content, setContent] = useState("");
-  const [showNoti, setShowNoti] = useState(false)
 
   const isDisabled = content && userSelected.length > 0
 
@@ -24,8 +25,8 @@ function CreateMessage({ closeModal }) {
       closeModal()
     }
     catch (err) {
-      console.log(err);
-      setShowNoti(true)
+      dispatch(openNoti({content: `Đã xảy ra lỗi, vui lòng thử lại`}))
+
     }
 
   };
@@ -60,7 +61,6 @@ function CreateMessage({ closeModal }) {
           />
         </main>
       </div>
-      <Notification content={"Đã xảy ra lỗi, vui lòng thử lại"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Notification from "~/components/Notification/Notification";
 import { UPDATE_AVATAR } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import modalSlice from "~/redux/slice/modalSlide";
+import { openNoti } from "~/redux/slice/notificationSlice";
 import { updateUserInfo } from "~/services/firebaseServices";
 import "../Setting.scss";
 
@@ -19,7 +20,6 @@ function Account() {
     gender: loggedInUser.gender,
     story: loggedInUser.story
   })
-  const [showNoti, setShowNoti] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ function Account() {
 
   const handleUpdateInfo = () => {
     updateUserInfo(loggedInUser.userId, userData); 
-    setShowNoti(true);
+    dispatch(openNoti({content: `Đã cập nhật thông tin cá nhân`}))
   }
 
   return (
@@ -157,7 +157,6 @@ function Account() {
           <Button className={"px-3 py-1"} btnPrimary onClick={handleUpdateInfo}>Lưu</Button>
         </div>
       </div>
-      <Notification content={"Đã cập nhật thông tin cá nhân"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

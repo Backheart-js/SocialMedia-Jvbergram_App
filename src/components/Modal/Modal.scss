@@ -11,7 +11,7 @@
   align-items: center;
   background-color: rgba($color: #000000, $alpha: 0.7);
   overflow-y: auto;
-  z-index: 9999;
+  z-index: 90;
 }
 
 .modal__close-icon {
@@ -31,6 +31,12 @@
   background-color: #fff;
   border-radius: 20px;
   animation: scaleModal .1s linear;
+}
+
+.modal__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal__title-wrapper {
@@ -275,6 +281,7 @@
 .selectImg__dropdown {
   position: absolute;
   height: 118px;
+  max-width: 460px;
   padding: 12px;
   right: 0;
   bottom: 42px;

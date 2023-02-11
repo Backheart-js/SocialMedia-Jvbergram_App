@@ -4,6 +4,7 @@ import passwordSlide from './slice/passwordSlide';
 import profileSlice from './slice/profileSlice';
 import conversationSlice from './slice/conversationSlice';
 import chatRoomListSlice from './slice/chatRoomListSlice';
+import notificationSlice from './slice/notificationSlice';
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         modal: modalSlice.reducer,
         profile: profileSlice.reducer,
         conversation: conversationSlice.reducer,
-        chatRoomList: chatRoomListSlice.reducer
+        chatRoomList: chatRoomListSlice.reducer,
+        notification: notificationSlice.reducer
     }
 })
 

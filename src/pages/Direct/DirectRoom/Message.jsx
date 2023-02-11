@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Avatar from "~/components/Avatar/Avatar";
 import { VIEWIMAGE } from "~/constants/modalTypes";
 import modalSlice from "~/redux/slice/modalSlide";
+import checklink from "~/utils/checklink";
 import "./Message.scss";
 
 function Message({
@@ -43,7 +44,7 @@ function Message({
       )}
       {(content && (
         <div className="message-bubble">
-          <p className="message-content">{content}</p>
+          <pre className="message-content">{content ? checklink(content) : content}</pre>
         </div>
       )) ||
         (image && (

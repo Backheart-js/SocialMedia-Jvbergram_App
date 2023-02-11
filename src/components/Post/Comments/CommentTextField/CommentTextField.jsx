@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EmojiPicker from 'emoji-picker-react';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { v4 } from 'uuid';
+import Dropdown from '~/components/Dropdown/Dropdown';
+import DropdownEmoji from '~/components/Emoji/Emoji';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
 import { autoGrowTextarea } from '~/utils/autoGrowTextarea';
@@ -11,18 +13,13 @@ import '../Comments.scss'
 function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCommentsQuantity }) {
   const { firebase, FieldValue } = useContext(FirebaseContext);
   const { userId, username } = useContext(UserContext);
-  const emojiDropdownRef = useRef(null)
+  const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false)
 
   const [commentValues, setCommentValues] = useState("");
-  const [openEmoji, setOpenEmoji] = useState(false);
 
   const handleCommentChange = (e) => {
     setCommentValues(e.target.value.trimStart());
   };
-
-  // const addEmoji = (emoji) => {
-  //   setCommentValues(commentValues + emoji.native);
-  // };
 
   const handleSubmitComment = async () => {
     if (!commentValues.trim()) {
@@ -51,23 +48,36 @@ function CommentTextField({ docId, commentFieldRef, setUserCommentList, setAllCo
     }
   }
 
-  // useEffect(() => {
-  //   console.log(emojiDropdownRef.current);
-  //   if (emojiDropdownRef.current) {
-  //     emojiDropdownRef.current.style.bottom = `${commentFieldRef.current.offsetHeight + 10}px`;
-  //   }
-
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [openEmoji, commentFieldRef.current])
-
   return (
     <form className="comment__input-wrapper relative flex items-center mt-2" onSubmit={(e) => e.preventDefault()}>
-        {/* <button className="" onClick={() => setOpenEmoji(true)}>
-          <FontAwesomeIcon icon={faFaceSmile} />
-        </button>
-        {
-          openEmoji && <div ref={emojiDropdownRef} className="dropdown-comment-emoji"><EmojiPicker searchDisabled	height={340} width={300} onEmojiClick={(emoji) => addEmoji(emoji)} lazyLoadEmojis	/></div>
-        } */}
+        <Dropdown 
+          visible={toggleDropdownEmoji}
+          interactive
+          placement="top-start"
+          className="w-[335px] h-[325px]"
+          onClickOutside={() => setToggleDropdownEmoji(false)}
+          content={
+            <DropdownEmoji setValue={setCommentValues}/>
+          }
+        >
+        <button
+            className="flex justify-center items-center pr-3 py-2"
+            onClick={() => setToggleDropdownEmoji(prev => !prev)}
+          >
+            <svg
+              aria-label="Biểu tượng cảm xúc"
+              className="_ab6-"
+              color="#262626"
+              fill="#262626"
+              height={24}
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+            >
+              <path d="M15.83 10.997a1.167 1.167 0 1 0 1.167 1.167 1.167 1.167 0 0 0-1.167-1.167Zm-6.5 1.167a1.167 1.167 0 1 0-1.166 1.167 1.167 1.167 0 0 0 1.166-1.167Zm5.163 3.24a3.406 3.406 0 0 1-4.982.007 1 1 0 1 0-1.557 1.256 5.397 5.397 0 0 0 8.09 0 1 1 0 0 0-1.55-1.263ZM12 .503a11.5 11.5 0 1 0 11.5 11.5A11.513 11.513 0 0 0 12 .503Zm0 21a9.5 9.5 0 1 1 9.5-9.5 9.51 9.51 0 0 1-9.5 9.5Z" />
+            </svg>
+          </button>
+        </Dropdown>
         <textarea
           ref={commentFieldRef}
           value={commentValues}

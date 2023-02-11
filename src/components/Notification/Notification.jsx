@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { closeNoti } from '~/redux/slice/notificationSlice';
 import './Notification.scss'
 
-function Notification({ content, isShowing, setShowing }) {
+function Notification() {
+  const notiState = useSelector(state => state.notification)
+  const dispatch = useDispatch()
   useEffect(() => {
-    if (isShowing) {
+    if (notiState.isOpen) {
       const timeoutId = setTimeout(() => {
-        setShowing(false);
+        dispatch(closeNoti())
       }, 4000);
 
       return () => clearTimeout(timeoutId);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isShowing]);
+  }, [notiState.isOpen]);
 
   return (
-    <div className={`notification ${isShowing ? "show" : ""}`}>
+    <div className={`notification ${notiState.isOpen ? "show" : ""}`}>
       <p className="text-white font-semibold text-[13px]">
-        {content}
+        {notiState.content}
       </p>
     </div>
   );

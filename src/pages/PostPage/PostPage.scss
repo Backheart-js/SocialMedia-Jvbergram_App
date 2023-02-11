@@ -38,7 +38,7 @@
 
 .postPage__comment-wrapper {
     flex-grow: 1;
-    max-height: 350px;
+    max-height: 392px;
     padding: 14px 0 14px 16px;
     overflow-y: overlay;
 
@@ -87,4 +87,19 @@
     display: flex;justify-content: center;
     align-items: center;
     padding: 8px;
+}
+
+.postpage__photo-bg {
+    display: flex!important;
+    max-height: 610px;
+    justify-content: center;
+    align-items: center;
+}
+
+.postpage__photo-img {
+    max-height: 610px;
+    max-width: 100%;
+    min-height: 310px;
+    width: 100%;
+    object-fit: contain;
 }

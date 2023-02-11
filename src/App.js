@@ -41,41 +41,6 @@ function App() {
     <Router>
       <Suspense fallback={<LoadingPage />}>
         <Routes>
-          {/* {publicRouter.map((router, index) => {
-            const Layout = router.layout || (user ? DefaultLayout : OnlyHeaderLayout);
-            const ProtectedRoute = router.protect;
-            const Page = router.component;
-
-            return (
-              <Route
-                key={index}
-                path={router.path}
-                element={
-                  <>
-                    {router.protect ? (
-                      <ProtectedRoute user={user}>
-                        <Layout>
-                          <Page />
-                        </Layout>
-                      </ProtectedRoute>
-                    ) : (
-                      <Layout>
-                        <Page />
-                      </Layout>
-                    )}
-                  </>
-                }
-              >
-                {
-                  router.nestedRoute && router.nestedRoute.map((nestedRoute, index) => {
-                    const Childlayout = nestedRoute.component;
-                    return <Route key={index} path={nestedRoute.path} element={<Childlayout/>}></Route>
-                  })
-                }
-              </Route>
-            );
-          })}
-          <Route path={} */}
           <Route path="/" element={<LoginLayout />}>
             <Route
               path="login"
@@ -127,7 +92,7 @@ function App() {
                 </ProtectedUserRouter>
               }
             >
-              <Route path="inbox" element={<CreateDirect />} />
+              <Route index element={<CreateDirect />} />
               <Route path=":chatroomId" element={<DirectRoom />} />
             </Route>
             <Route

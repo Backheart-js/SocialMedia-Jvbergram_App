@@ -151,7 +151,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct/inbox" className="sidebarMain__item-wrapper">
+              <NavLink to="/direct" className="sidebarMain__item-wrapper">
                 <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>

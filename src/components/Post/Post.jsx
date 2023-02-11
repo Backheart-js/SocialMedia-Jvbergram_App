@@ -6,7 +6,6 @@ import moment from "moment";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 
-import SlideImages from "../SlideImages";
 import UserLabel from "../UserLabel";
 import "./Post.scss";
 import PostInteractive from "./PostInteractive";
@@ -17,14 +16,15 @@ import modalSlice from "~/redux/slice/modalSlide";
 import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
 import Comments from "./Comments";
 import formatDate from "~/utils/formatDate";
-import Notification from "../Notification/Notification";
+import HeroSlider from "../Slider/Slider";
+import { openNoti } from "~/redux/slice/notificationSlice";
+import Caption from "../Caption/Caption";
 
 function Post({ data = {} }) {
   const navigate = useNavigate();
   const { userId: currentUserId } = useContext(UserContext);
   const dispatch = useDispatch();
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
-  const [showNoti, setShowNoti] = useState(false);
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -40,6 +40,7 @@ function Post({ data = {} }) {
         imagesUrl: data.photos,
       })
     );
+    setToggleOptionDropdown(false)
   };
 
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
@@ -60,10 +61,11 @@ function Post({ data = {} }) {
     const link = `${window.location.origin}/p/${data.docId}`;
     try {
       await navigator.clipboard.writeText(link);
-      setShowNoti(true);
+      dispatch(openNoti({content: "Đã lưu đường dẫn vào bộ nhớ tạm"}))
     } catch (err) {
-      console.error("Failed to copy text: ", err);
+      dispatch(openNoti({content: "Đã xảy ra lỗi!"}))
     }
+    setToggleOptionDropdown(false)
   };
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function Post({ data = {} }) {
 
     commentBtn.current.addEventListener("click", handleFocusOnComment);
   }, []);
-
+  console.log(data);
   return (
     <div className="post__container py-3">
       <div className="flex justify-between items-center px-3 mb-3">
@@ -216,7 +218,15 @@ function Post({ data = {} }) {
         </Dropdown>
       </div>
 
-      <SlideImages imagesList={data.photos} />
+      <div className="bg-black">
+        <HeroSlider speed={300} infinite={false} arrow>
+          {data.photos.map((photo, i) => (
+            <div className="post__photo-bg" key={i}>
+              <img src={photo} alt="" className="post-photo-img"/>
+            </div>
+          ))}
+        </HeroSlider>
+      </div>
 
       <div className="mt-3 px-3">
         <PostInteractive
@@ -226,14 +236,7 @@ function Post({ data = {} }) {
           youLikedThisPost={data.youLikedThisPost}
           comments={data.comments}
         ></PostInteractive>
-        <div className="post__caption mb-1 mt-2">
-          <Link className="font-semibold text-sm mr-1" to={`/${data.username}`}>
-            {data.username}
-          </Link>
-          <span className="text-[15px] font-normal wrap-text">
-            {data.caption}
-          </span>
-        </div>
+        <div className="mt-2"><Caption username={data.username} content={data.caption} /></div>
         <Comments
           docId={data.docId}
           allComments={data.comments}
@@ -241,11 +244,6 @@ function Post({ data = {} }) {
           commentFieldRef={commentFieldRef}
         />
       </div>
-      <Notification
-        content={"Đã lưu đường dẫn vào bộ nhớ tạm"}
-        isShowing={showNoti}
-        setShowing={setShowNoti}
-      />
     </div>
   );
 }

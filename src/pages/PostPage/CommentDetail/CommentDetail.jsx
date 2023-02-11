@@ -12,6 +12,7 @@ import "./CommentDetail.scss";
 import { memo } from "react";
 import Loader from "~/components/Loader";
 import { RotatingLines } from "react-loader-spinner";
+import Caption from "~/components/Caption/Caption";
 
 function CommentDetail({
   postId,
@@ -120,16 +121,17 @@ function CommentDetail({
         <div className="comment__avatar">
           <Avatar avatarUrl={avatarUrl} size="small" />
         </div>
-        <div className="comment__name-and-content">
+        {/* <div className="comment__name-and-content">
           <div className="comment__name-and-content--wrapper">
             <Link to={`/${username}`} className="text-sm font-semibold">
               {username}
             </Link>
-            <span className="comment__content-text text-gray-700">
+            <pre className="comment__content-text text-gray-700">
               {ownerCaption}
-            </span>
+            </pre>
           </div>
-        </div>
+        </div> */}
+        <div className="ml-3"><Caption username={username} content={ownerCaption} /></div>
       </div>
       {commentWithUserInfo && (
         <div className="commentDetail__list">
@@ -184,17 +186,18 @@ function CommentItem({
             <Avatar avatarUrl={commentData.avatarUrl} size="small" />
           </div>
           <div className="comment__name-and-content">
-            <div className="comment__name-and-content--wrapper">
+            {/* <div className="comment__name-and-content--wrapper">
               <Link
                 to={`/${commentData.username}`}
                 className="text-sm font-semibold"
               >
                 {commentData.username}
               </Link>
-              <span className="comment__content-text text-gray-700">
+              <pre className="comment__content-text text-gray-700">
                 {commentData.content}
-              </span>
-            </div>
+              </pre>
+            </div> */}
+            <Caption username={commentData.username} content={commentData.content} />
             <div className="comment__func-wrapper">
               <span className="text-[13px] text-gray-500">
                 {formatDate(commentData.dateCreated)}

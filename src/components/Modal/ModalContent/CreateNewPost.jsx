@@ -16,6 +16,11 @@ import { RotatingLines } from "react-loader-spinner";
 import Loader from "~/components/Loader";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 import "../Modal.scss";
+import { INPUT_IMAGE_REGEX } from "~/constants/Regex";
+import useOnClickOutside from "~/hooks/useClickOutside";
+import { useDispatch } from "react-redux";
+import { openNoti } from "~/redux/slice/notificationSlice";
+import HeroSlider from "~/components/Slider/Slider";
 
 function CreateNewPost({ closeModal }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]); //List ảnh preview
@@ -25,6 +30,10 @@ function CreateNewPost({ closeModal }) {
   const [loadingDisplay, setLoadingDisplay] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { user } = useAuthListener();
+  const dispatch = useDispatch()
+  const dropdownRef = useRef(null)
+
+  useOnClickOutside(dropdownRef, () => setShowDropdown(false))
 
   const handlePreviewImage = (filesInput) => {
     const files = Object.values(filesInput); //Vì input để multi nên trả về 1 Array ảnh
@@ -37,12 +46,19 @@ function CreateNewPost({ closeModal }) {
 
   const handleChangeImage = (e) => {
     const files = e.target.files;
-    handlePreviewImage(files);
+    const validatedFiles = [];
 
     for (let i = 0; i < files.length; i++) {
       const newImg = files[i];
-      setImageList((prev) => [...prev, newImg]);
+      if (INPUT_IMAGE_REGEX.test(newImg.name)) {
+        validatedFiles.push(newImg);
+        setImageList((prev) => [...prev, newImg]);
+      }
+      else {
+        dispatch(openNoti({content: `File ${newImg.name} không hợp lệ`}))
+      }
     }
+    handlePreviewImage(validatedFiles);
     e.target.value = null;
   };
 
@@ -123,7 +139,6 @@ function CreateNewPost({ closeModal }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   useEffect(() => {
     setOrderPreview(imagePreviewLink.length - 1);
   }, [imagePreviewLink.length]);
@@ -243,27 +258,34 @@ function CreateNewPost({ closeModal }) {
                       >
                         <FontAwesomeIcon icon={faClone} />
                       </button>
-                      <div
+                      <div 
+                        ref={dropdownRef}
                         className={`selectImg__dropdown ${
                           showDropdown ? "flex" : "hidden"
                         }`}
                       >
-                        {imagePreviewLink.map((imageLink, index) => (
-                          <button
-                            className="modal__image-preview-sub-btn"
-                            onClick={() => setOrderPreview(index)}
-                          >
-                            <div
-                              className={`modal__image-preview-sub`}
-                              style={{ backgroundImage: `url(${imageLink})` }}
-                              key={index}
-                            >
-                              {orderPreview !== index && (
-                                <div className={"overlay"} />
-                              )}
-                            </div>
-                          </button>
-                        ))}
+                        <HeroSlider 
+                          speed={500}
+                          slidesToShow={4}
+                          slidesToScroll={1}
+                        >
+                          {imagePreviewLink.map((imageLink, index) => (
+                            // <button
+                            //   className="modal__image-preview-sub-btn"
+                            //   onClick={() => setOrderPreview(index)}
+                            //   key={index}
+                            // >
+                            // </button>
+                              <div
+                                className={`modal__image-preview-sub`}
+                                style={{ backgroundImage: `url(${imageLink})` }}
+                              >
+                                {orderPreview !== index && (
+                                  <div className={"overlay"} />
+                                )}
+                              </div>
+                          ))}
+                        </HeroSlider>
                       </div>
                     </div>
                   )}
@@ -295,6 +317,7 @@ function CreateNewPost({ closeModal }) {
         width="96"
         visible
       />
+      
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "./Comments.scss";
 import CommentTextField from "./CommentTextField";
 import '../Post.scss'
+import Caption from "~/components/Caption/Caption";
 
 function Comments({ docId, allComments = [], userId, commentFieldRef }) {
   //Comment preview hiển thị với những cmt của user
@@ -38,7 +39,7 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
               key={index}
             >
               <div className="">
-                <Link
+                {/* <Link
                   className="font-semibold text-sm mr-1"
                   to={`/${userComment.displayName}`}
                 >
@@ -46,7 +47,8 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
                 </Link>
                 <span className="text-[15px] font-normal wrap-text">
                   {userComment.content}
-                </span>
+                </span> */}
+                <Caption username={userComment.displayName} content={userComment.content} />
               </div>
               <button className="pl-2">
                 <FontAwesomeIcon className="text-xs" icon={faHeart} />

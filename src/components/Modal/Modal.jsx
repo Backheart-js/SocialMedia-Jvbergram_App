@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,11 +24,14 @@ import CreateMessage from "./ModalContent/CreateMessage";
 import FollowersModal from "./ModalContent/Followers";
 import LoginModal from "./ModalContent/Login";
 import ViewImage from "./ModalContent/ViewImage";
+import useOnClickOutside from "~/hooks/useClickOutside";
 
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
   const [captionValue, setCaptionValue] = useState("");
   const dispatch = useDispatch();
+
+  const modalRef = useRef()
 
   const unFollowingUser = () => {
     dispatch(setFollowing(false));
@@ -37,6 +40,8 @@ function Modal({ payload }) {
   const closeModal = () => {
     dispatch(modalSlice.actions.closeModal());
   };
+
+  useOnClickOutside(modalRef, closeModal)
 
   const handleCloseModalWithCondition = () => {
     if (imagePreviewLink.length > 0 || captionValue.length > 0) {
@@ -50,21 +55,19 @@ function Modal({ payload }) {
     }
   };
   const handleClickEsc = (e) => {
-    if(e.code === "Escape") {
+    if (e.code === "Escape") {
       closeModal();
     }
-  }
+  };
 
   useEffect(() => {
-     
     document.addEventListener("keyup", handleClickEsc);
-    
-  
+
     return () => {
       document.removeEventListener("keyup", handleClickEsc);
-    }
-  }, [])
-  
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={`modal`}>
@@ -73,46 +76,53 @@ function Modal({ payload }) {
         icon={faXmark}
         onClick={handleCloseModalWithCondition}
       />
-      {(payload.type === CREATE_POST && (
-        <CreateNewPost closeModal={closeModal} />
-      )) ||
-        (payload.type === DELETE_POST && (
-          <DeletePost
-            closeModal={closeModal}
-            postId={payload.postId}
-            imagesUrl={payload.imagesUrl}
-            redirectToProfile={payload.redirectToProfile}
-          />
+      <div ref={modalRef} className="modal__content">
+        {(payload.type === CREATE_POST && (
+          <CreateNewPost closeModal={closeModal} />
         )) ||
-        (payload.type === UNFOLLOW && (
-          <UnFollow
-            closeModal={closeModal}
-            currentUserId={payload.currentUserId}
-            followingUserInfo={payload.followingUserInfo}
-            setUnfollowFunc={unFollowingUser}
-          />
-        )) ||
-        (payload.type === UPDATE_AVATAR && (
-          <UpdateAvatar
-            closeModal={closeModal}
-            currentUserId={payload.currentUserId}
-            avatarUrl={payload.avatarUrl}
-          />
-        )) ||
-        (payload.type === CREATE_MESSAGE && (
-          <CreateMessage closeModal={closeModal} />
-        )) ||
-        (payload.type === FOLLOW_LIST && (
-          <FollowersModal
-            closeModal={closeModal}
-            followType={payload.followType}
-            userIdList={payload.userIdList}
-          />
-        )) ||
-        (payload.type === LOGIN && <LoginModal closeModal={closeModal} />) ||
-        (payload.type === VIEWIMAGE && <ViewImage closeModal={closeModal} imageLink={payload.imageLink} fullname={payload.fullname} time={payload.time} />)
-        
-        }
+          (payload.type === DELETE_POST && (
+            <DeletePost
+              closeModal={closeModal}
+              postId={payload.postId}
+              imagesUrl={payload.imagesUrl}
+              redirectToProfile={payload.redirectToProfile}
+            />
+          )) ||
+          (payload.type === UNFOLLOW && (
+            <UnFollow
+              closeModal={closeModal}
+              currentUserId={payload.currentUserId}
+              followingUserInfo={payload.followingUserInfo}
+              setUnfollowFunc={unFollowingUser}
+            />
+          )) ||
+          (payload.type === UPDATE_AVATAR && (
+            <UpdateAvatar
+              closeModal={closeModal}
+              currentUserId={payload.currentUserId}
+              avatarUrl={payload.avatarUrl}
+            />
+          )) ||
+          (payload.type === CREATE_MESSAGE && (
+            <CreateMessage closeModal={closeModal} />
+          )) ||
+          (payload.type === FOLLOW_LIST && (
+            <FollowersModal
+              closeModal={closeModal}
+              followType={payload.followType}
+              userIdList={payload.userIdList}
+            />
+          )) ||
+          (payload.type === LOGIN && <LoginModal closeModal={closeModal} />) ||
+          (payload.type === VIEWIMAGE && (
+            <ViewImage
+              closeModal={closeModal}
+              imageLink={payload.imageLink}
+              fullname={payload.fullname}
+              time={payload.time}
+            />
+          ))}
+      </div>
     </div>
   );
 }

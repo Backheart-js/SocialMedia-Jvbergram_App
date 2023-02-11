@@ -2,12 +2,15 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { v4 } from "uuid";
 import Button from "~/components/Button";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import DropdownEmoji from "~/components/Emoji/Emoji";
+import { INPUT_IMAGE_REGEX } from "~/constants/Regex";
 import { UserContext } from "~/context/user";
+import { openNoti } from "~/redux/slice/notificationSlice";
 import {
   createNewChatRoom,
   createNewConversation,
@@ -18,6 +21,7 @@ import {
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 
 function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
+  const dispatch = useDispatch()
   const { chatroomId } = useParams();
   const loggedInUser = useContext(UserContext);
   const [messageValue, setMessageValue] = useState("");
@@ -25,11 +29,16 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   const [previewImage, setPreviewImage] = useState(null);
   const [sentProcessing, setsentProcessing] = useState(false);
   const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false)
+
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
-    setPreviewImage(URL.createObjectURL(file));
-    setImage(file);
-    setMessageValue("");
+    if (INPUT_IMAGE_REGEX.test(file.name)) {
+      setPreviewImage(URL.createObjectURL(file));
+      setImage(file);
+      setMessageValue("");
+    } else {
+      dispatch(openNoti({content: `Định dạng file không hợp lệ`}))
+    }
   };
 
   const handleRemoveImage = () => {

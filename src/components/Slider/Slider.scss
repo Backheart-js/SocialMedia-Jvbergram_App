@@ -1,0 +1,22 @@
+.slick-next {
+  right: 10px !important;
+  z-index: 1;
+  width: 30px!important;
+  height: 30px!important;
+}
+
+.slick-prev {
+  left: 10px !important;
+  z-index: 1;
+  width: 30px!important;
+  height: 30px!important;
+
+}
+
+.slick-prev:before,
+.slick-next:before {
+    font-size: 24px;
+    color: #e5e5e5;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+

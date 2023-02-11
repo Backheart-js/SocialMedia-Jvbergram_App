@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import CommentTextField from "~/components/Post/Comments/CommentTextField";
 import PostInteractive from "~/components/Post/PostInteractive";
-import SlideImages from "~/components/SlideImages";
 import UserLabel from "~/components/UserLabel";
 import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
@@ -21,8 +20,9 @@ import sortComments from "~/utils/sortComment";
 import CommentDetail from "./CommentDetail/CommentDetail";
 import "./PostPage.scss";
 import "~/components/Post/Post.scss";
-import Notification from "~/components/Notification/Notification";
 import { setFollowing } from "~/redux/slice/profileSlice";
+import { openNoti } from "~/redux/slice/notificationSlice";
+import HeroSlider from "~/components/Slider/Slider";
 
 function PostPage() {
   const { docId } = useParams();
@@ -34,7 +34,6 @@ function PostPage() {
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
   // const [isFollowing, setIsFollowing] = useState(false);
   const [userCommentList, setUserCommentList] = useState([]);
-  const [showNoti, setShowNoti] = useState(false)
 
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
@@ -72,7 +71,8 @@ function PostPage() {
     const link = `${window.location.origin}/p/${docId}`;
     try {
       await navigator.clipboard.writeText(link);
-      setShowNoti(true)
+      dispatch(openNoti({content: `Đã lưu đường dẫn vào bộ nhớ tạm`}))
+
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
@@ -142,8 +142,16 @@ function PostPage() {
   ) : (
     <div className="pt-10 mx-auto lg:min-w-[935px] lg:max-w-[950px]">
       <div className="postPage__wrapper flex bg-white">
-        <div className="w-[590px] h-[590px]">
-          <SlideImages imagesList={data.photos} />
+        <div className="w-[590px] h-[610px]">
+          <div className="bg-black">
+            <HeroSlider speed={300} infinite={false} arrow>
+              {data.photos.map((photo, i) => (
+                <div className="postpage__photo-bg" key={i}>
+                  <img src={photo} alt="" className="postpage__photo-img"/>
+                </div>
+              ))}
+            </HeroSlider>
+          </div>
         </div>
         <div className="relative flex flex-col flex-grow w-[334px]">
           <div className="postPage__owner-wrapper">
@@ -322,7 +330,6 @@ function PostPage() {
           </div>
         </div>
       </div>
-      <Notification content={"Đã lưu đường dẫn vào bộ nhớ tạm"} isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

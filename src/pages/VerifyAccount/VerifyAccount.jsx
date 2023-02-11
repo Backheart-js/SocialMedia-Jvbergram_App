@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "~/components/Button";
-import Notification from "~/components/Notification/Notification";
+import { openNoti } from "~/redux/slice/notificationSlice";
 import { verifyAccout } from "~/services/firebaseServices";
 
 function VerifyAccount() {
+  const dispatch = useDispatch()
   const [countdown, setCountdown] = useState(60);
   const [showButton, setShowButton] = useState(false);
-  const [showNoti, setShowNoti] = useState(false)
   let intervalId = useRef(null);
 
   const handleResentBtn = () => {
     verifyAccout();
     setCountdown(60);
     setShowButton(false);
-    setShowNoti(true)
+    dispatch(openNoti({content: `Đã gửi email xác nhận`}))
+
   }
 
   useEffect(() => {
@@ -71,7 +73,6 @@ function VerifyAccount() {
         </Button>
       </a>
 
-      <Notification content="Đã gửi email xác nhận" isShowing={showNoti} setShowing={setShowNoti}/>
     </div>
   );
 }

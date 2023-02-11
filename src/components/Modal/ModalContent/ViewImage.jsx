@@ -21,7 +21,7 @@ function ViewImage({ closeModal, imageLink, fullname, time }) {
         </div>
         <div className="viewImage__Info-wrapper">
           <p className="text-gray-300 font-semibold text-sm mb-1">{fullname}</p>
-          <p className="text-gray-300 font-semibold text-sm">Đã gửi: {moment(time).format("DD/MM/YYYY")}</p>
+          <p className="text-gray-300 font-medium text-[13px]">Đã gửi: {moment(time).format("DD/MM/YYYY")}</p>
         </div>
         <button className="viewImage-close-btn absolute top-3 right-5 flex justify-center items-center rounded-full w-9 h-9 bg-gray-600" onClick={closeModal}>
           <FontAwesomeIcon className="text-gray-200 text-xl" icon={faXmark} />

@@ -1,0 +1,17 @@
+.post__caption .see-more {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  padding: 4px 8px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.caption-text {
+  display: inline;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+}
