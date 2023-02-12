@@ -44,6 +44,8 @@
 .modal__title-wrapper {
   padding: 0 0 12px 0;
   border-bottom: 1px solid $border-color-light-theme;
+  @apply dark:border-b-[#262626];
+
 }
 
 .modal__body-wrapper {
@@ -116,8 +118,11 @@
 .modal__image-area--wrapper {
   min-height: 300px;
   width: 100%;
-  border: 1px solid $border-color-light-theme;
+  border: 1px solid;
+  border-color: $border-color-light-theme;
   border-radius: 10px;
+
+  @apply dark:border-[#262626];
 }
 
 .modal__avatar-area--wrapper {
@@ -134,7 +139,6 @@
   font-weight: 500;
   border-radius: 10px;
   background-color: $border-color-light-theme;
-  // border: 2px solid $border-color-light-theme;
 
   &:hover {
     cursor: pointer;
@@ -346,12 +350,15 @@
 }
 
 .modal__delete-item {
-  border-top: 1px solid $border-color-light-theme;
+  border-top: 1px solid rgb(218, 221, 225);
+  // @apply dark:border-t-[#262626];
 }
 
 // Create message Modal
 .createMessageModal__header-wrapper {
-  border-bottom: 1px solid $border-color-light-theme;
+  border-bottom: 1px solid rgb(218, 221, 225);
+  // @apply dark:border-b-[#262626];
+
 }
 
 .createMessageModal__content-input {
@@ -359,7 +366,8 @@
   font-size: 14px;
   font-weight: 500;
   resize: none;
-  border-bottom: 1px solid $border-color-light-theme;
+  border-bottom: 1px solid rgb(218, 221, 225);
+  // @apply dark:border-b-[#262626];
 
   &:focus-visible {
     outline: none;
@@ -373,6 +381,8 @@
 .createMessageModal__search-wrapper {
   display: flex;
   border-bottom: 1px solid $border-color-light-theme;
+  // @apply dark:border-b-[#262626];
+
 }
 
 .createMessage__search-input {
@@ -410,13 +420,37 @@
 
   &+& {
     border-top: 1px solid $border-color-light-theme;
+  @apply dark:border-t-[#262626];
+
   }
 }
 
 .modal-select-checkbox {
-  width: 20px;
-  height: 20px;
+  position: relative;
+  -webkit-appearance: none; /* Remove default appearance */
+  -moz-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
+  border: 2px solid #666;
+
+
+  &:checked::before {
+    position: absolute;
+    content: "\2713";
+    font-size: 22px;
+    line-height: 16px;
+    text-align: center;
+    color: #fff;
+    background-color: #0077b6;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 21px;
+    height: 21px;
+  }
 }
 
 .createMessageModal__suggestion-wrapper {
@@ -445,6 +479,9 @@
     right: 0;
     padding: 20px 40px;
     border-top: 1px solid $border-color-light-theme;
+  @apply dark:border-b-[#262626];
+
+
 }
 
 .viewImage__bg {

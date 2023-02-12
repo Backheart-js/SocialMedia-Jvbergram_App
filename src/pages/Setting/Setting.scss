@@ -18,6 +18,8 @@ $leftside-width: 194px;
     background-color: #fff;
     border-radius: 5px;
     border: 1px solid $border-color-light-theme;
+  @apply dark:border-[#262626];
+
 }
 
 // Sidebar
@@ -25,6 +27,8 @@ $leftside-width: 194px;
     width: 230px;
     height: 100%;
     border-right: 1px solid $border-color-light-theme;
+  @apply dark:border-[#262626];
+
 }
 
 
@@ -35,6 +39,7 @@ $leftside-width: 194px;
     align-items: flex-start;
     padding: 28px 20px 28px 32px;
     border-bottom: 1px solid $border-color-light-theme;
+  @apply dark:border-b-[#262626];
 }
 .settingSidebar__logo-wrapper {
     padding-bottom: 8px;
@@ -65,7 +70,7 @@ $leftside-width: 194px;
     
     &:hover {
         background-color: $hover-color-light-theme;
-        @apply dark:text-[#FAFAFA];
+        @apply dark:text-[#FAFAFA] dark:bg-[#121212];
 
         &::before {
             content: "";
@@ -130,8 +135,7 @@ $leftside-width: 194px;
     border: 1px solid $border-color-light-theme;
     border-radius: 2px;
 
-    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA];
-
+    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626];
 }
 
 .setting__story-input {

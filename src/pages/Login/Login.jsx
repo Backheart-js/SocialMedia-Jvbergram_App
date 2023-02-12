@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import logo from "~/assets/logo";
 import { FirebaseContext } from "~/context/firebase";
 import passwordSlide from "~/redux/slice/passwordSlide";
 import loginImgs from "./images";
@@ -55,7 +56,9 @@ function Login() {
         />
       </div>
       <div className="login__right">
-        <div className="login__logo-wrapper"></div>
+        <div className="login__logo-wrapper flex justify-center items-center">
+          <div className="w-[240px] ml-10 mt-5"><img src={logo.logo_black} alt="" className="" /></div>
+        </div>
         <form onSubmit={handleLogin} className="login__form">
           <input
             value={email}

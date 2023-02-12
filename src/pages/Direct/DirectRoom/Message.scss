@@ -20,6 +20,8 @@
 
         .message-bubble {
             border: 1px solid $border-color-light-theme;
+             @apply dark:border-[#262626];
+
         }
 
         &+& {

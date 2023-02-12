@@ -46,7 +46,7 @@ function UnFollow({ closeModal }) {
       >
         <Avatar avatarUrl={followingUserInfo.avatar} size={"medium"} />
       </Link>
-      <p className="text-sm font-medium">
+      <p className="text-sm font-medium dark:text-[#FAFAFA]">
         Bỏ theo dõi {followingUserInfo.username}
       </p>
       <ul className="mt-4 w-full">
@@ -60,7 +60,7 @@ function UnFollow({ closeModal }) {
         </li>
         <li className="modal__delete-item">
           <button
-            className="py-3 w-full text-sm font-medium"
+            className="py-3 w-full text-sm font-medium dark:text-[#FAFAFA]"
             onClick={closeModal}
           >
             Hủy

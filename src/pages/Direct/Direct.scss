@@ -16,6 +16,8 @@
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid $border-color-light-theme;
+  @apply dark:border-[#262626];
+
 }
 
 // Sidebar
@@ -24,6 +26,8 @@
   width: 350px;
   height: 100%;
   border-right: 1px solid $border-color-light-theme;
+  @apply dark:border-r-[#262626];
+
 }
 
 .drSidebar__header-wrapper {
@@ -32,6 +36,7 @@
   padding: 10px 20px;
   border-bottom: 1px solid $border-color-light-theme;
   user-select: none;
+  @apply dark:border-b-[#262626];
 }
 
 
@@ -77,6 +82,8 @@
   &.active {
     cursor: pointer;
     background-color: $hover-color-light-theme;
+    @apply dark:bg-[#121212];
+
   }
 
   & + & {
@@ -119,8 +126,9 @@
   width: 100%;
   height: 60px;
   padding: 0 20px;
-  border-bottom: 1px solid $border-color-light-theme;
+  border-bottom: 1px solid $border-color-light-theme;  
   z-index: 1;
+  @apply dark:border-b-[#262626];
 }
 
 .drRoom_content-wrapper {
@@ -170,6 +178,8 @@
   padding: 6px 10px;
   border-radius: 20px;
   border: 1px solid $border-color-light-theme;
+  @apply dark:border-[#262626];
+
 }
 .chatInput__icon {
 }

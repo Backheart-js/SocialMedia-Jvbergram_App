@@ -11,6 +11,12 @@ import {
   deleteDoc,
   updateDoc,
   deleteField,
+  getDocs,
+  collection,
+  query,
+  limit,
+  startAt,
+  orderBy,
 } from "firebase/firestore";
 import sortUserByFollower from "~/utils/sortUserByFollower";
 import { v4 } from "uuid";
@@ -20,6 +26,18 @@ var _ = require("lodash");
 const db = firebase.firestore();
 
 // GET
+export async function getRandomPost() {
+  const totalDocs = await getDocs(collection(db, "posts"));
+  const randomOffset = Math.floor(Math.random() * totalDocs.size);
+  const q = query(collection(db, "posts"), orderBy('dateCreated'), startAt(randomOffset), limit(10));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => {
+    return {...doc.data(), docId: doc.id}
+  });
+}
+
+
+
 export async function checkUserNameExist(username) {
   //Check tên user đã có trong firestore chưa
   const responses = await db
@@ -332,7 +350,8 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
 }
 
 export async function reuseAvatar(loggedInUserId, avatarUrl) {
-  const snapshot = await db.collection("users")
+  const snapshot = await db
+    .collection("users")
     .where("userId", "==", loggedInUserId)
     .get();
 
@@ -391,7 +410,7 @@ export async function sentHeartIcon(chatRoomId, receiverId, senderId) {
     .doc(receiverId)
     .update({
       [chatRoomId + ".date"]: Date.now(),
-      [chatRoomId + ".lastMessage"]: {heartIcon: true},
+      [chatRoomId + ".lastMessage"]: { heartIcon: true },
       [chatRoomId + ".lastSender"]: senderId,
       [chatRoomId + ".seen.status"]: false,
     });
@@ -400,7 +419,7 @@ export async function sentHeartIcon(chatRoomId, receiverId, senderId) {
     .doc(senderId)
     .update({
       [chatRoomId + ".date"]: Date.now(),
-      [chatRoomId + ".lastMessage"]: {heartIcon: true},
+      [chatRoomId + ".lastMessage"]: { heartIcon: true },
       [chatRoomId + ".lastSender"]: senderId,
       [chatRoomId + ".seen.time"]: Date.now(),
     });
@@ -475,7 +494,7 @@ export async function sentMessageImage(
             [chatRoomId + ".lastSender"]: senderId,
             [chatRoomId + ".seen.time"]: Date.now(),
           });
-        callbackReset()
+        callbackReset();
       });
     }
   );

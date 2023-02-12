@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import logo from "~/assets/logo";
 import { FirebaseContext } from "~/context/firebase";
 import "~/pages/Login/Login.scss";
 import "../Modal.scss"
@@ -25,8 +26,12 @@ function LoginModal({closeModal}) {
       }
 
     return (
-        <div className="modal__box-wrapper py-4 w-[400px] max-h-[600px] min-h-[300px]">
-            <div className="login__logo-wrapper"></div>
+        <div className="modal__box-wrapper py-4 w-[400px] max-h-[600px] min-h-[300px] mb-10">
+            <div className="login__logo-wrapper flex justify-center items-center">
+              <div className="w-[240px] ml-10">
+                <img src={logo.logo_black} alt="" className="" />
+              </div>
+            </div>
         <form onSubmit={handleLogin} className="flex flex-col items-center pb-20 px-16">
           <input
             value={email}

@@ -5,7 +5,7 @@ import Timeline from '~/components/Timeline';
 import UserLabel from '~/components/UserLabel';
 import { FirebaseContext } from '~/context/firebase';
 import { UserContext } from "~/context/user";
-import { getUser } from '~/services/firebaseServices';
+import { getRandomPost, getUser } from '~/services/firebaseServices';
 
 import './Home.scss'
 
@@ -28,9 +28,15 @@ function Home() {
         .collection("posts")
         .where("userId", "in", userLoggedIn.following.concat(userLoggedIn.userId)) //Lấy posts của mình và following
         .onSnapshot(async (snapshot) => { //Snapshot sẽ kiểm tra trạng thái trong firestore nếu có thay đổi
-            let newPosts = snapshot.docs.map((doc) => {
-                return { docId: doc.id, ...doc.data() };
-            });
+          let newPosts;  
+          if (snapshot.empty === true) {
+            newPosts = await getRandomPost();
+            } else {
+              newPosts = snapshot.docs.map((doc) => {
+                  return { docId: doc.id, ...doc.data() };
+              });
+            }
+            console.log(newPosts)
             const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
                 let youLikedThisPost = false;
