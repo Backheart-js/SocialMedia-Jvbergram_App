@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
-import Notification from "~/components/Notification/Notification";
 import { UPDATE_AVATAR } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import modalSlice from "~/redux/slice/modalSlide";

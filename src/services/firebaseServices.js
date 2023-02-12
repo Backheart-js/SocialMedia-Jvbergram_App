@@ -599,6 +599,18 @@ export async function updateUserInfo(loggedInUserId, newData) {
     });
 }
 
+export async function updateFirstTime(userId) {
+  return db.collection('users').where("userId", "==", userId)
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach((doc) => {
+      doc.ref.update({
+        firstTime: false,
+      });
+    });
+  });
+}
+
 // DELETE
 export async function deletePost(postId, imageUrls) {
   const storage = getStorage();

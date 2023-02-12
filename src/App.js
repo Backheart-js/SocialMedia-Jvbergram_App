@@ -30,6 +30,7 @@ const Setting = lazy(() => import("~/pages/Setting/Setting"));
 const SettingAccount = lazy(() =>
   import("~/pages/Setting/SettingOption/Account")
 );
+const NewMember = lazy(() => import("~/pages/NewMember/NewMember"));
 const NotFound = lazy(() => import("~/pages/NotFound/NotFound"));
 
 function App() {
@@ -121,6 +122,15 @@ function App() {
             >
               <Route path="account" element={<SettingAccount />} />
             </Route>
+
+            <Route
+              path="new-member"
+              element={
+                <ProtectedUserRouter user={user}>
+                  <NewMember />
+                </ProtectedUserRouter>
+              }
+            ></Route>
             <Route path=":username" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Route>

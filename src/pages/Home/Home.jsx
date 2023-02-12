@@ -46,6 +46,7 @@ function Home() {
                 const ownerPost = await getUser({
                   userId: [photo.userId]
                 });
+                console.log(ownerPost)
                 const { avatarUrl, username } = ownerPost[0];
                 return {
                 avatarUrl,

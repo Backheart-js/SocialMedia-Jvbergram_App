@@ -31,7 +31,8 @@ function DefaultLayout() {
     <LoadingPage />
   ) : (
     <UserContext.Provider value={userLoggedIn}>
-      <div className={darkMode ? "dark" : ""}>
+      {
+        !userLoggedIn.firstTime ? (<div className={darkMode ? "dark" : ""}>
         <Sidebar />
         <main
           id="content"
@@ -40,7 +41,10 @@ function DefaultLayout() {
           <Outlet />
         </main>
         {isOpen && <Modal payload={payload} />}
-      </div>
+      </div>) : (
+        <Outlet />
+      )
+      }
     </UserContext.Provider>
   );
 }

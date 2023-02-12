@@ -1,0 +1,62 @@
+@import "../../styles/variable";
+
+$leftside-width: 194px;
+
+.newMem__box {
+    border: 1px solid $border-color-light-theme;
+    min-width: 600px;
+    max-width: 800px;
+    min-height: 550px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 0 auto;
+    transform: translateY(80px);
+}
+
+.newMen__top {
+    border-bottom: 1px solid $border-color-light-theme;
+}
+
+.setting__field-wrapper {
+    @apply flex-col md:flex-row;
+
+    &+& {
+        margin-top: 24px;
+    }
+}
+.setting__rightside  {
+    width: calc(100% - $leftside-width);
+    @apply xl:pr-16 lg:pr-10 sm:pr-0
+}
+.setting__leftside {
+    display: flex;
+    justify-content: flex-end;
+    width: $leftside-width;
+    padding: 0 32px;
+}
+
+.setting__input {
+    font-size: 14px;
+    font-weight: 500;
+    color: #262626;
+    min-width: 220px;
+    padding: 4px 6px;
+    background-color: $hover-color-light-theme;
+    border: 1px solid $border-color-light-theme;
+    border-radius: 2px;
+
+    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626];
+}
+
+.setting__story-input {
+    padding: 8px 8px;
+}
+
+.setting__subnote {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #777;
+    @apply xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400;
+}

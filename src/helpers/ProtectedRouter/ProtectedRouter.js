@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { UserContext } from '~/context/user';
 import LoadingPage from '~/pages/LoadingPage/LoadingPage';
 
 function ProtectedUserRouter({ user, children }) {
     const navigate = useNavigate()
+    const loggedInUser = useContext(UserContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const location = useLocation();
 
@@ -13,6 +15,10 @@ function ProtectedUserRouter({ user, children }) {
         }
         else if (user.emailVerified === false) {
             navigate('/notify')
+        }
+
+        if (loggedInUser?.firstTime) {
+            navigate('/new-member')
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
