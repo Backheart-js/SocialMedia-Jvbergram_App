@@ -12,14 +12,18 @@ import {
 
 import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
+import {
+  reuseAvatar,
+  updateAvatar,
+  updateDefaultAvatar,
+} from "~/services/firebaseServices";
 import "../Modal.scss";
-import { reuseAvatar, updateAvatar } from "~/services/firebaseServices";
 
 function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imagePreviewLink, setImagePreviewLink] = useState(null);
   const [image, setImage] = useState(null);
-  const [imageFromStore, setImageFromStore] = useState(null)
-  const [sourceImg, setSourceImg] = useState(null)
+  const [imageFromStore, setImageFromStore] = useState(null);
+  const [sourceImg, setSourceImg] = useState(null);
   const [loadingDisplay, setLoadingDisplay] = useState(false);
 
   const handleChangeImage = (e) => {
@@ -27,21 +31,20 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     setImagePreviewLink(URL.createObjectURL(file));
     setImage(file);
     setImageFromStore(null);
-    setSourceImg("local")
+    setSourceImg("local");
   };
 
   const handleChoseImgFromStore = (imgUrl, index) => {
     setImageFromStore({
       url: imgUrl,
-      index
+      index,
     });
     setImage(imgUrl);
     setImagePreviewLink(null);
-    setSourceImg("store")
-  }
+    setSourceImg("store");
+  };
 
   const updateNewAvatarFirestore = async (imageFile) => {
-    
     const storage = getStorage();
     const metadata = {
       contentType: "image/*",
@@ -50,74 +53,88 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     const storageRef = ref(storage, `avatars/${imageFile.name}-${v4()}`);
     const uploadTask = uploadBytesResumable(storageRef, imageFile, metadata);
 
-    uploadTask.on('state_changed',
-    (snapshot) => {
-      switch (snapshot.state) {
-        case "paused":
-          break;
-        case "running":
-          break;
-        default:
-      }
-    },
-    (error) => {
-      switch (error.code) {
-        case "storage/unauthorized":
-          break;
-        case "storage/canceled":
-          break;
-        case "storage/unknown":
-          break;
-        default:
-      }
-    },
-  () => {
-    // Upload completed successfully, now we can get the download URL
-    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-      const check = avatarUrl.history.some(url => url === avatarUrl.current)
-      let newAvataUrl;
-      if (check) {
-        newAvataUrl = {
-          ...avatarUrl,
-          current: downloadURL,
-          history: [...avatarUrl.history, downloadURL]
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        switch (snapshot.state) {
+          case "paused":
+            break;
+          case "running":
+            break;
+          default:
         }
-      } else {
-        newAvataUrl = avatarUrl.current ? {
-          ...avatarUrl,
-          current: downloadURL,
-          history: [...avatarUrl.history, avatarUrl.current ]
-        } : {
-          ...avatarUrl,
-          current: downloadURL,
-          history: [...avatarUrl.history, downloadURL ]
+      },
+      (error) => {
+        switch (error.code) {
+          case "storage/unauthorized":
+            break;
+          case "storage/canceled":
+            break;
+          case "storage/unknown":
+            break;
+          default:
         }
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          const check = avatarUrl.history.some(
+            (url) => url === avatarUrl.current
+          );
+          let newAvataUrl;
+          if (check) {
+            newAvataUrl = {
+              ...avatarUrl,
+              current: downloadURL,
+              history: [...avatarUrl.history, downloadURL],
+            };
+          } else {
+            newAvataUrl = avatarUrl.current
+              ? {
+                  ...avatarUrl,
+                  current: downloadURL,
+                  history: [...avatarUrl.history, avatarUrl.current],
+                }
+              : {
+                  ...avatarUrl,
+                  current: downloadURL,
+                  history: [...avatarUrl.history, downloadURL],
+                };
+          }
+          await updateAvatar(currentUserId, newAvataUrl); //Lấy url trả về từ Storage và update tại firestore
+          setTimeout(() => {
+            closeModal();
+            window.location.reload();
+          }, 500);
+        });
       }
-      await updateAvatar(currentUserId, newAvataUrl) //Lấy url trả về từ Storage và update tại firestore
-      closeModal();
-      setTimeout(() => {
-        window.location.reload();
-      }, 300);
-    });
-  }
-);
-  }
+    );
+  };
 
   const reuseAvatarFromStore = async (imageUrl) => {
     await reuseAvatar(currentUserId, imageUrl);
-    closeModal();
     setTimeout(() => {
+      closeModal();
       window.location.reload();
-    }, 300);
+    }, 500);
+  };
+
+  const handleRemoveAvatar = async () => {
+    setLoadingDisplay(true);
+    await updateDefaultAvatar(currentUserId);
+    setTimeout(() => {
+      closeModal();
+      window.location.reload();
+    }, 500);
   };
 
   const handleUpdateAvatar = async () => {
     setLoadingDisplay(true);
     try {
       if (sourceImg === "local") {
-        await updateNewAvatarFirestore(image)
+        await updateNewAvatarFirestore(image);
       } else {
-        await reuseAvatarFromStore(image)
+        await reuseAvatarFromStore(image);
       }
     } catch (error) {
       setLoadingDisplay(false);
@@ -127,18 +144,28 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
 
   useEffect(() => {
     return () => {
-      URL.revokeObjectURL(imagePreviewLink)
+      URL.revokeObjectURL(imagePreviewLink);
     };
   }, [imagePreviewLink]);
 
   return (
     <div className={`modal__box-wrapper py-4 w-[500px]`}>
-      <div className="modal__title-wrapper px-5">
-        <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">Thêm ảnh đại diện</p>
+      <div className="modal__title-wrapper px-5 flex justify-between items-center">
+        <div className="w-14"></div>
+        <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">
+          Thêm ảnh đại diện
+        </p>
+        <button
+          disabled={avatarUrl.current === ""}
+          className="text-base text-blue-primary font-semibold px-4"
+          onClick={handleRemoveAvatar}
+        >
+          Gỡ
+        </button>
       </div>
       <div className="modal__body-wrapper pl-5 pr-4">
         <div className="modal__avatar-area--wrapper pb-2">
-          {(!imagePreviewLink && !imageFromStore) ? (
+          {!imagePreviewLink && !imageFromStore ? (
             <div className="modal__image-area--nonImg h-[300px]">
               <svg
                 className="dark:text-[#FAFAFA]"
@@ -184,41 +211,56 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
           ) : (
             <div className="modal__avatar-area--haveImage mt-2">
               <Avatar
-                avatarUrl={{ current: (imagePreviewLink || imageFromStore?.url) }}
+                avatarUrl={{ current: imagePreviewLink || imageFromStore?.url }}
                 size="preview"
               />
               <div className="flex w-full justify-center mt-4">
                 <input
-                    id="modal__select-file"
-                    className="hidden"
-                    type="file"
-                    onChange={handleChangeImage}
-                    accept="image/*"
-                  />
-                  <label
-                    htmlFor="modal__select-file"
-                    className="modal__avatar-change-btn"
-                  >
-                    <FontAwesomeIcon icon={faPlus} /> Chọn ảnh
-                  </label>
+                  id="modal__select-file"
+                  className="hidden"
+                  type="file"
+                  onChange={handleChangeImage}
+                  accept="image/*"
+                />
+                <label
+                  htmlFor="modal__select-file"
+                  className="modal__avatar-change-btn"
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Chọn ảnh
+                </label>
               </div>
             </div>
           )}
         </div>
         {avatarUrl?.history.length > 0 && (
           <div className="modal__avatar-store">
-            <p className="my-2 font-semibold text-sm dark:text-[#FAFAFA]">Ảnh gợi ý</p>
+            <p className="my-2 font-semibold text-sm dark:text-[#FAFAFA]">
+              Ảnh gợi ý
+            </p>
             <div className="modal__avatar-store-wrapper grid grid-cols-4 gap-2">
-              {
-                avatarUrl.history.map((img, index) => (
-                    <button className={`store__avatar-wrapper col-span-1 ${imageFromStore?.index === index ? "selected" : ""}`} onClick={() => handleChoseImgFromStore(img, index)}>
-                      <div style={{ backgroundImage: `url(${img})` }} alt="" className="modal__avatar-store-img" />
-                      <div className="store__avatar-overlay">
-                        <FontAwesomeIcon icon={faCheck} className={"store__avatar-selectIcon text-[40px] text-gray-100"}/>
-                      </div>
-                    </button>
-                ))
-              }
+              {avatarUrl.history.map((img, index) => (
+                <button
+                  className={`store__avatar-wrapper col-span-1 ${
+                    imageFromStore?.index === index ? "selected" : ""
+                  }`}
+                  onClick={() => handleChoseImgFromStore(img, index)}
+                  key={index}
+                >
+                  <div
+                    style={{ backgroundImage: `url(${img})` }}
+                    alt=""
+                    className="modal__avatar-store-img"
+                  />
+                  <div className="store__avatar-overlay">
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      className={
+                        "store__avatar-selectIcon text-[40px] text-gray-100"
+                      }
+                    />
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         )}

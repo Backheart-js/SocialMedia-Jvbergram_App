@@ -73,9 +73,9 @@ function Home() {
   }, [])
 
   return (
-    <div className='pt-8 mx-auto w-[820px]'>
+    <div className='md:pt-8 mx-auto w-[820px]'>
       <div className='grid grid-cols-12 gap-8'>
-        <div className="col-span-7 relative">
+        <div className="md:col-span-7 col-span-12 relative">
           <div className="mt-4">
             <Timeline posts={posts} />
           </div>
@@ -83,7 +83,7 @@ function Home() {
             showUpdateButton && <Button className={'reloadTimeLine-btn'} onClick={handleReload}>Bài viết mới</Button>
           }
         </div>
-        <div className="col-span-5">
+        <div className="col-span-5 md:block hidden">
           <div className="my-4 flex justify-between">
             <UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} />
             <Button className={"text-[13px] py-2 pl-2 text-blue-primary hover:text-blue-bold"} onClick={() => firebase.auth().signOut()}>Đăng xuất</Button>

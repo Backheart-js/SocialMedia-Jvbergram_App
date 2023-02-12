@@ -62,8 +62,6 @@
     transition: all .3s linear;
 
     &.active {
-        border-radius: 50%;
-        background-color: rgb(250, 250, 250);
         transform: scale(1.1);
     }
 }

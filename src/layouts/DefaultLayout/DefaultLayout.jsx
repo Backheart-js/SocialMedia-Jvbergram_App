@@ -35,7 +35,7 @@ function DefaultLayout() {
         <Sidebar />
         <main
           id="content"
-          className="bg-main-bg dark:bg-dark-bg min-h-screen h-full ml-[80px] xl:ml-[245px]"
+          className="bg-main-bg dark:bg-dark-bg min-h-screen h-full md:ml-[80px] xl:ml-[245px]"
         >
           <Outlet />
         </main>

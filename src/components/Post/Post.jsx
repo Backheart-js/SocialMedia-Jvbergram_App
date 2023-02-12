@@ -19,14 +19,17 @@ import formatDate from "~/utils/formatDate";
 import HeroSlider from "../Slider/Slider";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import Caption from "../Caption/Caption";
+import { updateCurrentUserFolling, updateFollower } from "~/services/firebaseServices";
 
 function Post({ data = {} }) {
   const navigate = useNavigate();
-  const { userId: currentUserId } = useContext(UserContext);
+  const { userId: currentUserId, following: currentUserFollowing } = useContext(UserContext);
   const dispatch = useDispatch();
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
+  const [isFolling, setisFolling] = useState(currentUserFollowing.includes(data.userId))
+
 
   const handleCloseDropdown = () => {
     setToggleOptionDropdown(false);
@@ -44,6 +47,7 @@ function Post({ data = {} }) {
   };
 
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
+    setToggleOptionDropdown(false)
     dispatch(
       modalSlice.actions.openModal({
         type: UNFOLLOW,
@@ -52,6 +56,12 @@ function Post({ data = {} }) {
       })
     );
   };
+
+  const handleFollowOtherUser = async (currentUserId, profileId) => {
+    await updateCurrentUserFolling(currentUserId, profileId, false)
+    await updateFollower(currentUserId, profileId, false)
+    setisFolling(true)
+  }
 
   const handleGoToPost = () => {
     navigate(`/p/${data.docId}`);
@@ -158,7 +168,7 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button
+                    {/* <button
                       className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
                       onClick={() =>
                         handleUnFollowOtherUser(currentUserId, {
@@ -168,8 +178,41 @@ function Post({ data = {} }) {
                         })
                       }
                     >
-                      Bỏ theo dõi
-                    </button>
+                      {
+                        currentUserFollowing.includes(data.userId) ?
+                          <span className="">
+                            Bỏ theo dõi
+                          </span>
+                        :
+                          <span className="">
+                            Theo dõi
+                          </span>
+                      }
+                    </button> */}
+                    {
+                      isFolling ?
+                        (
+                          <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
+                          onClick={() =>
+                            handleUnFollowOtherUser(currentUserId, {
+                              avatar: data.avatarUrl,
+                              username: data.username,
+                              userId: data.userId,
+                            })
+                          }>
+                            Bỏ theo dõi
+                          </button>
+                        )
+                      :
+                      (
+                        <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
+                        onClick={() =>
+                          handleFollowOtherUser(currentUserId, data.userId)
+                        }>
+                          Theo dõi
+                        </button>
+                      )
+                    }
                   </li>
                   <li className="post__option-dropdown--item">
                     <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">

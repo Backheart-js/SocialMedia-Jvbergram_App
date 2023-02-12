@@ -28,7 +28,7 @@ function Account() {
       modalSlice.actions.openModal({
         type: UPDATE_AVATAR,
         currentUserId: loggedInUser.userId,
-        avatarUrl: loggedInUser.avatarUrl
+        avatarUrl: loggedInUser.avatarUrl,
       })
     );
   };
@@ -134,13 +134,13 @@ function Account() {
               }
             })}
           >
-            <option value={0} className="">
+            <option value={0} className="dark:text-[#FAFAFA] dark:bg-[#262626]">
               Nam
             </option>
-            <option value={1} className="">
+            <option value={1} className="dark:text-[#FAFAFA] dark:bg-[#262626]">
               Nữ
             </option>
-            <option value={2} className="">
+            <option value={2} className="dark:text-[#FAFAFA] dark:bg-[#262626]">
               Không muốn tiết lộ
             </option>
           </select>

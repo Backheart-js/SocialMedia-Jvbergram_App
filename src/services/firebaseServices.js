@@ -349,6 +349,18 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
     });
 }
 
+export async function updateDefaultAvatar(loggedInUserId) {
+  return db
+  .collection("users")
+  .where("userId", "==", loggedInUserId)
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach((doc) => {
+      doc.ref.update({ "avatarUrl.current": "" });
+    });
+  });
+}
+
 export async function reuseAvatar(loggedInUserId, avatarUrl) {
   const snapshot = await db
     .collection("users")

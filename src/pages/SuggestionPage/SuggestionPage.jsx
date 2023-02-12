@@ -8,11 +8,11 @@ function SuggestionPage() {
   return (
     <div className="lg:max-w-[600px] mx-auto pt-20">
       <div className='ml-3 py-2'>
-        <p className="font-semibold text-sm">
+        <p className="font-semibold text-sm dark:text-[#FAFAFA]">
           Gợi ý
         </p>
       </div>
-      <div className="py-5 px-4 bg-white rounded-lg">
+      <div className="py-5 px-4 bg-white rounded-lg dark:bg-black">
         <Suggestion userId={LoggedInUserId} following={LoggedInUserFollowing} />
       </div>
     </div>

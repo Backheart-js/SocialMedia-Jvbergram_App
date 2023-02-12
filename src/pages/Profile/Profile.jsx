@@ -146,7 +146,7 @@ function Profile() {
   return (
     (!profile && !postsCollection) || (
       <div className="pt-10 mx-auto lg:w-[935px]">
-        <div className="profile__top-wrapper grid grid-cols-12 lg:h-[200px] pb-6">
+        <div className="profile__top-wrapper grid grid-cols-12 lg:min-h-[200px] pb-6">
           <div className="col-span-4 flex justify-center items-center">
             <Avatar avatarUrl={profile.avatarUrl} size={"big"} />
           </div>
