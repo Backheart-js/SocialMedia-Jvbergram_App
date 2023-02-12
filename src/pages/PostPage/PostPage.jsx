@@ -140,9 +140,9 @@ function PostPage() {
       </div>
     </div>
   ) : (
-    <div className="pt-10 mx-auto lg:min-w-[935px] lg:max-w-[950px]">
-      <div className="postPage__wrapper flex bg-white">
-        <div className="w-[590px] h-[610px]">
+    <div className="pt-10 mx-auto lg:min-w-[800px] lg:max-w-[950px]">
+      <div className="postPage__wrapper flex bg-white dark:bg-black">
+        <div className="max-w-[590px] min-w-[480px]">
           <div className="bg-black">
             <HeroSlider speed={300} infinite={false} arrow>
               {data.photos.map((photo, i) => (
@@ -153,7 +153,7 @@ function PostPage() {
             </HeroSlider>
           </div>
         </div>
-        <div className="relative flex flex-col flex-grow w-[334px]">
+        <div className="postPage__right relative flex flex-col w-[360px] h-[610px]">
           <div className="postPage__owner-wrapper">
             <div className="flex">
               <UserLabel
@@ -173,7 +173,7 @@ function PostPage() {
                       })
                     }
                   >
-                    <span className="isfollowing text-sm hover:text-gray-500">
+                    <span className="isfollowing text-sm hover:text-gray-500 dark:text-[#FAFAFA]">
                       Đang theo dõi
                     </span>{" "}
                   </button>
@@ -293,12 +293,12 @@ function PostPage() {
               }
             >
               <button
-                className="postpage__option-button"
+                className="postpage__option-button icon"
                 onClick={() => {
                   setToggleOptionDropdown((prev) => !prev);
                 }}
               >
-                <FontAwesomeIcon icon={faEllipsis} />
+                <FontAwesomeIcon className="icon" icon={faEllipsis} />
               </button>
             </Dropdown>
           </div>

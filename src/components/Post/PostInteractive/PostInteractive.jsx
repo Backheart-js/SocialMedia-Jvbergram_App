@@ -62,14 +62,14 @@ function PostInteractive({
             >
               <FontAwesomeIcon
                 icon={faHeart}
-                className="postInteractive__icon"
+                className="postInteractive__icon icon"
               />
             </button>
           )}
           <button ref={commentBtnRef} className="postInteractive__button">
             <svg
               aria-label="Bình luận"
-              className="postInteractive__icon"
+              className="postInteractive__icon icon"
               color="#262626"
               fill="#262626"
               height={24}
@@ -89,7 +89,7 @@ function PostInteractive({
           <button className="postInteractive__button">
             <svg
               aria-label="Chia sẻ bài viết"
-              className="postInteractive__icon"
+              className="postInteractive__icon icon"
               color="#262626"
               fill="#262626"
               height={24}
@@ -121,7 +121,7 @@ function PostInteractive({
           <button className="postInteractive__button">
             <FontAwesomeIcon
               icon={faBookmark}
-              className="postInteractive__icon"
+              className="postInteractive__icon icon"
             />
           </button>
         </div>
@@ -129,7 +129,7 @@ function PostInteractive({
       {likesQuantity > 0 && (
         <div className="postInteractive__likeQuantity-wrapper mt-2">
           <button>
-            <span className="text-sm font-semibold">
+            <span className="text-sm font-semibold dark:text-[#FAFAFA]">
               {likesQuantity} lượt thích
             </span>
           </button>

@@ -5,6 +5,7 @@ import profileSlice from './slice/profileSlice';
 import conversationSlice from './slice/conversationSlice';
 import chatRoomListSlice from './slice/chatRoomListSlice';
 import notificationSlice from './slice/notificationSlice';
+import themeSlice from './slice/themeSlice';
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         profile: profileSlice.reducer,
         conversation: conversationSlice.reducer,
         chatRoomList: chatRoomListSlice.reducer,
-        notification: notificationSlice.reducer
+        notification: notificationSlice.reducer,
+        theme: themeSlice.reducer
     }
 })
 

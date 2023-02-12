@@ -33,6 +33,10 @@
     animation: heartScaled .2s ease-in-out;
 }
 
+.icon {
+    @apply dark:text-[#FAFAFA]
+}
+
 @keyframes heartScaled {
     0% {
         transform: scale(1);

@@ -25,7 +25,7 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
     <div className="w-full">
       {allCommentsQuantity >= 1 && (
         <Link to={`/p/${docId}`} className="">
-          <span className="text-gray-500 text-sm font-normal hover:text-gray-700">
+          <span className="text-gray-500 text-sm font-normal hover:text-gray-700 dark:text-gray-400">
             Xem{allCommentsQuantity > 1 ? " tất cả" : ""} {allCommentsQuantity}{" "}
             bình luận
           </span>
@@ -39,19 +39,10 @@ function Comments({ docId, allComments = [], userId, commentFieldRef }) {
               key={index}
             >
               <div className="">
-                {/* <Link
-                  className="font-semibold text-sm mr-1"
-                  to={`/${userComment.displayName}`}
-                >
-                  {userComment.displayName}
-                </Link>
-                <span className="text-[15px] font-normal wrap-text">
-                  {userComment.content}
-                </span> */}
                 <Caption username={userComment.displayName} content={userComment.content} />
               </div>
               <button className="pl-2">
-                <FontAwesomeIcon className="text-xs" icon={faHeart} />
+                <FontAwesomeIcon className="text-xs dark:text-[#FAFAFA]" icon={faHeart} />
               </button>
             </div>
           )

@@ -12,7 +12,6 @@ export default function useAuthListener() {
         localStorage.setItem("authUser", JSON.stringify(authUser))
         setUser(authUser);
         setLoading(false);
-        console.log(authUser)
       } else {
         localStorage.removeItem("authUser");
         setUser(null);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import Sidebar from "../components/Sidebar";
 import Modal from "~/components/Modal";
 import { useAuthListener } from "~/hooks";
@@ -13,6 +12,7 @@ function DefaultLayout() {
   const { user } = useAuthListener();
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const { isOpen, ...payload } = useSelector((state) => state.modal);
+  const { darkMode } = useSelector(state => state.theme)
 
   useEffect(() => { 
     const getData = async () => {
@@ -31,11 +31,11 @@ function DefaultLayout() {
     <LoadingPage />
   ) : (
     <UserContext.Provider value={userLoggedIn}>
-      <div>
+      <div className={darkMode ? "dark" : ""}>
         <Sidebar />
         <main
           id="content"
-          className="bg-main-bg min-h-screen h-full ml-[80px] xl:ml-[245px]"
+          className="bg-main-bg dark:bg-dark-bg min-h-screen h-full ml-[80px] xl:ml-[245px]"
         >
           <Outlet />
         </main>

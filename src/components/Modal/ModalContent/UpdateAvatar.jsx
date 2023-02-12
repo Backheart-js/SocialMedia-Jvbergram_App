@@ -14,7 +14,6 @@ import Avatar from "~/components/Avatar/Avatar";
 import Loader from "~/components/Loader";
 import "../Modal.scss";
 import { reuseAvatar, updateAvatar } from "~/services/firebaseServices";
-import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 
 function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imagePreviewLink, setImagePreviewLink] = useState(null);
@@ -25,7 +24,6 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
 
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
-    // console.log(file);
     setImagePreviewLink(URL.createObjectURL(file));
     setImage(file);
     setImageFromStore(null);
@@ -133,20 +131,17 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
     };
   }, [imagePreviewLink]);
 
-  console.log(image)
-
   return (
     <div className={`modal__box-wrapper py-4 w-[500px]`}>
       <div className="modal__title-wrapper px-5">
-        <p className="text-lg font-semibold text-center">Thêm ảnh đại diện</p>
+        <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">Thêm ảnh đại diện</p>
       </div>
       <div className="modal__body-wrapper pl-5 pr-4">
         <div className="modal__avatar-area--wrapper pb-2">
           {(!imagePreviewLink && !imageFromStore) ? (
             <div className="modal__image-area--nonImg h-[300px]">
               <svg
-                aria-label="Biểu tượng thể hiện file phương tiện, chẳng hạn như hình ảnh hoặc video"
-                className="_ab6-"
+                className="dark:text-[#FAFAFA]"
                 color="#262626"
                 fill="#262626"
                 height="77"
@@ -167,7 +162,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
                   fill="currentColor"
                 ></path>
               </svg>
-              <span className="mt-4 font-medium text-base">
+              <span className="mt-4 font-medium text-base dark:text-[#FAFAFA]">
                 Kéo thả ảnh vào đây
               </span>
               <div className="modal__select-wrapper mt-4">
@@ -212,7 +207,7 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
         </div>
         {avatarUrl?.history.length > 0 && (
           <div className="modal__avatar-store">
-            <p className="my-2 font-semibold text-sm">Ảnh gợi ý</p>
+            <p className="my-2 font-semibold text-sm dark:text-[#FAFAFA]">Ảnh gợi ý</p>
             <div className="modal__avatar-store-wrapper grid grid-cols-4 gap-2">
               {
                 avatarUrl.history.map((img, index) => (

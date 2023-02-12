@@ -86,7 +86,7 @@ function SearchInput() {
           value={searchValue}
           placeholder="Tìm kiếm"
           type="text"
-          className="search__input bg-gray-100"
+          className="search__input bg-gray-100 dark:bg-[#262626] dark:text-[#FAFAFA]"
           onFocus={() => {
             setShowResult(true);
           }}

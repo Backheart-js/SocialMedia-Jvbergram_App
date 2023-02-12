@@ -20,14 +20,11 @@ function SearchMessage({ userSelected, setUserSelected }) {
     const handleSelectUser = (user) => {
         const index = userSelected.findIndex((selected) => selected.userId === user.userId) //Check xem user đã có trong mảng chưa
         if (index >= 0) { //Có rồi thì xóa
-          console.log('gỡ')
             setUserSelected(userSelected.filter((selected) => selected.userId !== user.userId));
         } else { //Chưa có thì thêm vào
         setUserSelected([...userSelected, user]);
         }
     }
-    console.log(userSelected)
-    console.log(chatRoomList)
     const removeUserSelected = (index) => {
         setUserSelected(userSelected.filter((selected, i) => i !== index));
     }
@@ -47,12 +44,11 @@ function SearchMessage({ userSelected, setUserSelected }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debounce])
     
-    console.log()
   return (
     <>
       <div className="createMessageModal__search-wrapper px-4 my-2">
         <div className="pr-3">
-          <span className="font-semibold text-sm">Tới:</span>
+          <span className="font-semibold text-sm dark:text-[#FAFAFA]">Tới:</span>
         </div>
         <Dropdown
             visible={showResult && searchResult.length > 0 && searchValue.length > 0}
@@ -85,7 +81,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
                     </div>
                 ))
             }
-            <input value={searchValue} type="text" className="createMessage__search-input" placeholder="Tìm kiếm" onChange={e => setSearchValue(e.target.value)}/>
+            <input value={searchValue} type="text" className="createMessage__search-input dark:bg-transparent dark:text-[#FAFAFA]" placeholder="Tìm kiếm" onChange={e => setSearchValue(e.target.value)}/>
           </div>
         </Dropdown>
       </div>

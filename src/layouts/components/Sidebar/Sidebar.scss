@@ -8,6 +8,10 @@
     bottom: 0;
 }
 
+.icon {
+    @apply dark:text-[#FAFAFA];
+}
+
 .sidebar__main-wrapper {
     height: 100%;
     border-right: 1px solid $border-color-light-theme;
@@ -132,7 +136,6 @@
     width: 397px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    background-color: #fff;
     border-left: 1px solid $border-color-light-theme;
     border-right: 1px solid $border-color-light-theme;
     box-shadow: rgba(100, 100, 111, 0.2) 10px 7px 15px -6px;

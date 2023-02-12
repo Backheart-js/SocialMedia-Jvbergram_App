@@ -1,7 +1,7 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
@@ -77,7 +77,7 @@ function Post({ data = {} }) {
   }, []);
 
   return (
-    <div className="post__container py-3">
+    <div className="post__container py-3 dark:bg-black">
       <div className="flex justify-between items-center px-3 mb-3">
         <div className="flex items-center">
           <UserLabel
@@ -91,7 +91,7 @@ function Post({ data = {} }) {
             delay={["400", "200"]}
             arrow={false}
           >
-            <span className="post__dateCreated text-gray-500 text-[14px] select-none">
+            <span className="post__dateCreated text-gray-500 dark:text-gray-400 text-[14px] select-none">
               {formatDate(data.dateCreated)}
             </span>
           </Tippy>
@@ -119,13 +119,13 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                       Thêm vào mục yêu thích
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleGoToPost}
                     >
                       Đi tới bài viết
@@ -133,7 +133,7 @@ function Post({ data = {} }) {
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleCopyUrl}
                     >
                       Sao chép liên kết
@@ -141,7 +141,7 @@ function Post({ data = {} }) {
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={() => {
                         setToggleOptionDropdown(false);
                       }}
@@ -172,13 +172,13 @@ function Post({ data = {} }) {
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
-                    <button className="post__option-dropdown-btn">
+                    <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                       Thêm vào mục yêu thích
                     </button>
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleGoToPost}
                     >
                       Đi tới bài viết
@@ -186,7 +186,7 @@ function Post({ data = {} }) {
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleCopyUrl}
                     >
                       Sao chép liên kết
@@ -194,7 +194,7 @@ function Post({ data = {} }) {
                   </li>
                   <li className="post__option-dropdown--item">
                     <button
-                      className="post__option-dropdown-btn"
+                      className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={() => {
                         setToggleOptionDropdown(false);
                       }}
@@ -213,7 +213,7 @@ function Post({ data = {} }) {
               setToggleOptionDropdown((prev) => !prev);
             }}
           >
-            <FontAwesomeIcon icon={faEllipsis} />
+            <FontAwesomeIcon icon={faEllipsis} className={"dark:text-[#FAFAFA]"}/>
           </button>
         </Dropdown>
       </div>

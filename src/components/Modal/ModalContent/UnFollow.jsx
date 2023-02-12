@@ -17,8 +17,6 @@ function UnFollow({ closeModal }) {
   );
   const dispatch = useDispatch();
 
-  console.log(currentUserId);
-  console.log(followingUserInfo);
   const [loadingDisplay, setLoadingDisplay] = useState(false);
 
   const handleUnFollowOtherUser = async () => {
@@ -35,7 +33,6 @@ function UnFollow({ closeModal }) {
       closeModal();
     } catch (error) {
       setLoadingDisplay(false);
-      console.log(error);
       alert("Có lỗi xảy ra, vui lòng thử lại!");
     }
   };

@@ -87,7 +87,7 @@ function Home() {
               <span className='text-[13px] text-gray-500 font-semibold'>
                 Gợi ý cho bạn
               </span>
-              <a href={"/explore/people"} className="text-xs font-semibold hover:text-gray-500">
+              <a href={"/explore/people"} className="text-xs font-semibold hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-200">
                 Xem tất cả
               </a>
             </div>

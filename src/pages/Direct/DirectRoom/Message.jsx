@@ -44,7 +44,7 @@ function Message({
       )}
       {(content && (
         <div className="message-bubble">
-          <pre className="message-content">{content ? checklink(content) : content}</pre>
+          <pre className="message-content dark:text-[#FAFAFA]">{content ? checklink(content) : content}</pre>
         </div>
       )) ||
         (image && (

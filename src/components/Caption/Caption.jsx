@@ -5,10 +5,10 @@ function Caption({ username, content }) {
     
   return (
     <div className="post__caption mb-1">
-        <Link className="font-semibold text-sm mr-1 inline" to={`/${username}`}> 
+        <Link className="font-semibold text-sm mr-1 inline dark:text-[#FAFAFA]" to={`/${username}`}> 
             {username}
         </Link>
-        <pre className="caption-text text-[15px] font-normal">
+        <pre className="caption-text text-[15px] font-normal dark:text-[#FAFAFA]">
             {
                 content ? checklink(content) : content
             }

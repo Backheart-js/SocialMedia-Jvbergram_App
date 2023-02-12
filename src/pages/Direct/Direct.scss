@@ -51,12 +51,13 @@
 
   &.notSeen {
     .drSidebar__name-text {
-      color: #262626;
+      @apply dark:text-gray-300 text-[#262626];
       font-weight: 600;
+
     }
 
     .drSidebar__name-currentMessage {
-      color: #262626;
+      @apply dark:text-gray-300 text-[#262626];
       font-weight: 600;
     }
 
@@ -88,7 +89,7 @@
 }
 .drSidebar__name-text {
   font-size: 14px;
-  color: #262626;
+  @apply dark:text-gray-300 text-[#262626];
   font-weight: 400;
 }
 .drSidebar__name-currentMessage {
@@ -136,18 +137,21 @@
 
   /* Track */
   &::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background-color: #f1f1f1;
+    @apply dark:bg-[#424242];
   }
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: #999;
+    background-color: #999;
     border-radius: 10px;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background-color: #555;
+
+    @apply dark:bg-[#333232]
   }
 
 //   .drRoom_content-box {
@@ -198,5 +202,7 @@
     }
   }
 }
-.chatInput__setImage {
+
+.icon {
+  @apply dark:text-[#FAFAFA]
 }

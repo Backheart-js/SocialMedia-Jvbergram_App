@@ -104,11 +104,12 @@ function Profile() {
     }))
   }
 
-  const openFollowModal = (followType, userIdList) => {
+  const openFollowModal = (followType, userIdList, fullname) => {
     reduxDispatch(modalSlice.actions.openModal({
       type: FOLLOW_LIST,
       followType,
-      userIdList
+      userIdList,
+      fullname
     }));
   }
 
@@ -152,7 +153,7 @@ function Profile() {
           <div className="col-span-8 flex flex-col items-start justify-center">
             <div className="profile__info-wrapper flex">
               <div className="min-w-[120px] select-none">
-                <span className="font-medium text-[20px]">
+                <span className="font-medium text-[20px] dark:text-[#FAFAFA]">
                   {profile.username}
                 </span>
               </div>
@@ -246,33 +247,33 @@ function Profile() {
             </div>
             <div className="profile__info-wrapper flex">
               <div className="profile__info-2">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium dark:text-[#FAFAFA]">
                   {postsCollection.length} bài viết
                 </span>
               </div>
               <div className="profile__info-2">
-                <button className="w-full text-sm font-medium" onClick={()=>openFollowModal("followers", profile.followers)}>
+                <button className="w-full text-sm font-medium dark:text-[#FAFAFA]" onClick={()=>openFollowModal("followers", profile.followers)}>
                   {profile.followers.length} người theo dõi
                 </button>
               </div>
               <div className="profile__info-2">
-                <button className="w-full text-sm font-medium" onClick={()=>openFollowModal("following", profile.following)}>
+                <button className="w-full text-sm font-medium dark:text-[#FAFAFA]" onClick={()=>openFollowModal("following", profile.following, profile.fullname)}>
                   Đang theo dõi {profile.following.length} người dùng
                 </button>
               </div>
             </div>
             <div className="profile__info-wrapper">
-              <p className="text-sm font-semibold">{profile.fullname}</p>
-              <p className="text-sm font-normal">
+              <p className="text-sm font-semibold dark:text-[#FAFAFA]">{profile.fullname}</p>
+              <pre className="text-sm font-normal dark:text-gray-300">
                 {profile.story}
-              </p>
+              </pre>
             </div>
           </div>
         </div>
         <div className="profile__bottom-wrapper mt-6">
           {postsCollection.length === 0 ? (
             <div className="flex justify-center items-center">
-              <span>Hiện chưa có bài viết nào</span>
+              <span className="dark:text-[#FAFAFA]">Hiện chưa có bài viết nào</span>
             </div>
           ) : (
             <div className="grid grid-cols-12 gap-8">

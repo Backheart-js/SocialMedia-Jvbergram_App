@@ -6,11 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import Avatar from "~/components/Avatar/Avatar";
 import { CREATE_MESSAGE } from "~/constants/modalTypes";
-import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import conversationSlice from "~/redux/slice/conversationSlice";
 import modalSlice from "~/redux/slice/modalSlide";
-import { getUser } from "~/services/firebaseServices";
 import "../Direct.scss";
 
 function DirectSidebar() {
@@ -18,10 +16,6 @@ function DirectSidebar() {
   const dispatch = useDispatch();
   const chatRooms = useSelector((state) => state.chatRoomList);
   const loggedInUser = useContext(UserContext);
-  const { firebase } = useContext(FirebaseContext);
-  // const { chatroomId: chatroomIdList } = loggedInUser;
-
-  // const [chatRooms, setChatRooms] = useState(null);
   const handleCreateMessageModal = () => {
     dispatch(
       modalSlice.actions.openModal({
@@ -50,11 +44,11 @@ function DirectSidebar() {
         <div className="flex items-center justify-end h-full">
           <div className="w-[60px]"></div>
           <div className="flex items-center justify-center flex-grow">
-            <p className="font-medium text-base">{loggedInUser.username}</p>
+            <p className="font-medium text-base dark:text-[#FAFAFA]">{loggedInUser.username}</p>
           </div>
           <div className="w-[60px] flex justify-end">
             <button className="p-2" onClick={handleCreateMessageModal}>
-              <FontAwesomeIcon className="text-[22px]" icon={faPenToSquare} />
+              <FontAwesomeIcon className="text-[22px] dark:text-[#FAFAFA]" icon={faPenToSquare} />
             </button>
           </div>
         </div>

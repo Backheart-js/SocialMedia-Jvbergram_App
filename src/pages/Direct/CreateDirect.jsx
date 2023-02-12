@@ -19,15 +19,15 @@ function CreateDirect() {
 
   return (
     <div className='flex flex-col justify-center items-center h-full w-full'>
-      <div className="flex justify-center items-center p-6 rounded-full border-gray-800 border-2">
+      <div className="flex justify-center items-center p-6 rounded-full border-gray-800 dark:border-gray-200 border-2">
       <FontAwesomeIcon
                   icon={faPaperPlane}
-                  className="text-5xl text-gray-800"
+                  className="text-5xl text-gray-800 dark:text-gray-200"
                 />
       </div>
       <div className="text-center my-4">
-        <p className="font-medium text-gray-800 text-lg">Tin nhắn của bạn</p>
-        <p className="font-normal text-gray-500 text-sm">
+        <p className="font-medium text-gray-800 dark:text-gray-100 text-lg">Tin nhắn của bạn</p>
+        <p className="font-normal text-gray-500 dark:text-gray-400 text-sm">
           Gửi ảnh và tin nhắn riêng tư cho bạn bè
         </p>
       </div>

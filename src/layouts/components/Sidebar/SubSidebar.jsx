@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types';
 import SearchSubSidebar from './SearchSubSidebar';
 import NotiSubSidebar from './NotiSubSidebar';
 
-function SubSidebar({ type }) {
+function SubSidebar({ subRef, type }) {
   return (
-    <aside id="subSidebar">
+    <aside ref={subRef} id="subSidebar" className='bg-white dark:bg-black'>
         {
           type === 'search' ? 
           <>
@@ -24,4 +24,4 @@ SubSidebar.propTypes = {
   type: PropTypes.string.isRequired
 }
 
-export default SubSidebar
+export default forwardRef(SubSidebar)

@@ -60,9 +60,12 @@ $leftside-width: 194px;
     font-size: 14px;
     font-weight: 400;
     padding: 8px 0px 8px 32px;
+
+    @apply dark:text-[#FAFAFA];
     
     &:hover {
         background-color: $hover-color-light-theme;
+        @apply dark:text-[#FAFAFA];
 
         &::before {
             content: "";
@@ -72,6 +75,7 @@ $leftside-width: 194px;
             left: 0;
             top: 0;
             background-color: rgb(182, 181, 181);
+            @apply dark:bg-white;
         }
     }
 
@@ -86,6 +90,7 @@ $leftside-width: 194px;
             left: 0;
             top: 0;
             background-color: #222;
+            @apply dark:bg-[#F5F5F5];
         }
     }
 }
@@ -124,7 +129,8 @@ $leftside-width: 194px;
     background-color: $hover-color-light-theme;
     border: 1px solid $border-color-light-theme;
     border-radius: 2px;
-    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px];
+
+    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA];
 
 }
 
@@ -138,7 +144,7 @@ $leftside-width: 194px;
     font-size: 13px;
     font-weight: 400;
     color: #777;
-    @apply xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px];
+    @apply xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400;
 }
 
 .setting__rightside  {

@@ -91,7 +91,7 @@ function DirectRoom() {
             <Avatar avatarUrl={conversationInfo.partnerInfo.avatarUrl} size={"xs"} />
           </div>
           <div className="ml-2">
-            <p className="text-sm font-medium">{conversationInfo.partnerInfo.fullname}</p>
+            <p className="text-sm font-semibold dark:text-[#FAFAFA]">{conversationInfo.partnerInfo.fullname}</p>
           </div>
         </Link>
         <div className="">

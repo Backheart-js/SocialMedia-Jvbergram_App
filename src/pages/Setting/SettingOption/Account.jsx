@@ -45,11 +45,11 @@ function Account() {
           <Avatar avatarUrl={userData.avatar} />
         </div>
         <div className="setting__rightside setting__avatar-func-wrapper">
-          <p className="font-medium text-gray-800 md:mt-1">
+          <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">
             {loggedInUser.username}
           </p>
           <Button
-            className={"text-[13px]"}
+            className={"text-[13px] dark:bg-transparent"}
             btnWhite
             onClick={openUpdateAvatarModal}
           >
@@ -59,7 +59,7 @@ function Account() {
       </div>
       <div className="setting__fullname-wrapper setting__field-wrapper flex items-start">
         <div className="setting__leftside">
-          <p className="font-medium text-gray-800 md:mt-1">Tên đầy đủ</p>
+          <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tên đầy đủ</p>
         </div>
         <div className="setting__rightside">
           <input
@@ -80,7 +80,7 @@ function Account() {
       </div>
       <div className="setting__birthday-wrapper setting__field-wrapper flex items-start">
         <div className="setting__leftside">
-          <p className="font-medium text-gray-800 md:mt-1">Ngày sinh</p>
+          <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Ngày sinh</p>
         </div>
         <div className="setting__rightside">
           <input
@@ -98,7 +98,7 @@ function Account() {
       </div>
       <div className="setting__story-wrapper setting__field-wrapper flex items-start">
         <div className="setting__leftside">
-          <p className="font-medium text-gray-800 md:mt-1">Tiểu sử</p>
+          <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tiểu sử</p>
         </div>
         <div className="setting__rightside">
           <textarea
@@ -119,7 +119,7 @@ function Account() {
       </div>
       <div className="setting__gender-wrapper setting__field-wrapper flex items-start">
         <div className="setting__leftside">
-          <p className="font-medium text-gray-800 md:mt-1">Giới tính</p>
+          <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Giới tính</p>
         </div>
         <div className="setting__rightside">
           <select

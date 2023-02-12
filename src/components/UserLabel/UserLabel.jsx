@@ -22,9 +22,9 @@ function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...pro
         />
       </div>
       <div className="flex flex-col justify-center">
-        <span className="text-[14px] font-semibold">{username}</span>
+        <span className="text-[14px] font-semibold dark:text-[#FAFAFA]">{username}</span>
         {fullname !== "" && (
-          <span className={`userLabel__name-${size} text-gray-500 font-medium`}>
+          <span className={`userLabel__name-${size} text-gray-500 dark:text-gray-400 font-medium`}>
             {fullname}
           </span>
         )}

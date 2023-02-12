@@ -1,105 +1,112 @@
-@import '../../styles/variable';
+@import "../../styles/variable";
 
 .postPage__wrapper {
-    display: flex;
-    background-color: #fff;
-    border: 1px solid $border-color-light-theme;
-    border-radius: 2px;
+  display: flex;
+  background-color: #fff;
+  border: 1px solid $border-color-light-theme;
+  border-radius: 2px;
+}
+
+.postPage__right {
+  border-left: 1px solid $border-color-light-theme;
 }
 
 .postPage__owner-wrapper {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid $border-color-light-theme;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid $border-color-light-theme;
 }
 
 .postPage__follow-state {
-    position: relative;
-    margin-left: 10px;
-    padding-left: 10px;
-    
-    span {
-        font-size: 13px;
-        font-weight: 600;
-    }
+  position: relative;
+  margin-left: 10px;
+  padding-left: 10px;
 
-    &::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 4px;
-        height: 4px;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        background-color: #666;
-    }
+  span {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: #666;
+  }
 }
 
 .postPage__comment-wrapper {
-    flex-grow: 1;
-    max-height: 392px;
-    padding: 14px 0 14px 16px;
-    overflow-y: overlay;
+  flex-grow: 1;
+  max-height: 392px;
+  padding: 14px 0 14px 16px;
+  overflow-y: overlay;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .postPage__bottom {
-    border-top: 1px solid $border-color-light-theme;
+  border-top: 1px solid $border-color-light-theme;
 }
 
 .postPage__comment-input {
-    border-top: 1px solid $border-color-light-theme;
+  border-top: 1px solid $border-color-light-theme;
 }
 
 .postPage__owner-wrapper {
-    padding: 14px 4px 14px 14px;
+  padding: 14px 4px 14px 14px;
 }
 
 .postPage__interactive-wrapper,
 .postPage__comment-input {
-    padding: 14px 16px;
+  padding: 14px 16px;
 }
 
 .post__option-dropdown--item {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 
-    &:hover {
-        background-color: $hover-color-light-theme;
-    }
+  &:hover {
+    background-color: $hover-color-light-theme;
+  }
 
-    &+& {
-        margin-top: 4px;
-    }
+  & + & {
+    margin-top: 4px;
+  }
 }
 
 .post__option-dropdown-btn {
-    width: 100%;
-    font-size: 15px;
-    padding: 8px 20px;
+  width: 100%;
+  font-size: 15px;
+  padding: 8px 20px;
 }
 
 .postpage__option-button {
-    display: flex;justify-content: center;
-    align-items: center;
-    padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
 }
 
 .postpage__photo-bg {
-    display: flex!important;
-    max-height: 610px;
-    justify-content: center;
-    align-items: center;
+  display: flex !important;
+  max-height: 610px;
+  justify-content: center;
+  align-items: center;
 }
 
 .postpage__photo-img {
-    max-height: 610px;
-    max-width: 100%;
-    min-height: 310px;
-    width: 100%;
-    object-fit: contain;
+  max-height: 610px;
+  min-height: 310px;
+  object-fit: contain;
+}
+
+.icon {
+  @apply dark:text-[#FAFAFA]
 }

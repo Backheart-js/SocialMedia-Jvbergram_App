@@ -41,7 +41,7 @@ function Modal({ payload }) {
     dispatch(modalSlice.actions.closeModal());
   };
 
-  useOnClickOutside(modalRef, closeModal)
+  useOnClickOutside([modalRef], closeModal)
 
   const handleCloseModalWithCondition = () => {
     if (imagePreviewLink.length > 0 || captionValue.length > 0) {
@@ -72,7 +72,7 @@ function Modal({ payload }) {
   return (
     <div className={`modal`}>
       <FontAwesomeIcon
-        className="modal__close-icon"
+        className="modal__close-icon dark:text-[#FAFAFA]"
         icon={faXmark}
         onClick={handleCloseModalWithCondition}
       />
@@ -111,6 +111,7 @@ function Modal({ payload }) {
               closeModal={closeModal}
               followType={payload.followType}
               userIdList={payload.userIdList}
+              fullname={payload.fullname}
             />
           )) ||
           (payload.type === LOGIN && <LoginModal closeModal={closeModal} />) ||

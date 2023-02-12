@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -22,22 +22,30 @@ import SubSidebar from "./SubSidebar";
 import Avatar from "~/components/Avatar/Avatar";
 import { UserContext } from "~/context/user";
 import { FirebaseContext } from "~/context/firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import modalSlice from "~/redux/slice/modalSlide";
 import { CREATE_POST } from "~/constants/modalTypes";
 import NotiMessage from "./NotiMessage/NotiMessage";
 import "./Sidebar.scss";
 import logo from "~/assets/logo";
+import useOnClickOutside from "~/hooks/useClickOutside";
+import { setDarkMode } from "~/redux/slice/themeSlice"
 
 function Sidebar() {
   const { firebase } = useContext(FirebaseContext);
   const userLoggedIn = useContext(UserContext);
+  const subRef = useRef(null);
+  const searchRef = useRef(null);
+  const notiRef = useRef(null);
   const dispatch = useDispatch();
 
+  const { darkMode } = useSelector((state) => state.theme);
+  
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleSubSidebar, setToggleSubSidebar] = useState(false);
   const [typeSubSidebar, settypeSubSidebar] = useState("");
-
+  useOnClickOutside([subRef, searchRef, notiRef], () => setToggleSubSidebar(false));
+  
   const handleToggleDropdown = () => {
     setToggleDropdown((prev) => !prev);
   };
@@ -64,8 +72,12 @@ function Sidebar() {
     );
   };
 
+  const toggleDarkMode = () => {
+    dispatch(setDarkMode(!darkMode))
+  }
+
   return (
-    <aside id="sidebar" className="z-10">
+    <aside id="sidebar" className={`z-10 dark:bg-black`}>
       <div className="sidebar__main-wrapper xl:w-[245px] w-[80px]">
         <div className="flex flex-col justify-between h-full px-3 py-8">
           <div className="sidebarMain__function-wrapper">
@@ -97,10 +109,10 @@ function Sidebar() {
               )}
             </div>
             <ul className="sidebarMain__list-wrapper">
-              <a href="/" className="sidebarMain__item-wrapper">
+              <a href="/" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
                 <svg
                   aria-label="Trang chủ"
-                  className="_ab6-"
+                  className="icon"
                   color="#262626"
                   fill="#262626"
                   height={24}
@@ -124,13 +136,14 @@ function Sidebar() {
                 )}
               </a>
               <li
+                ref={searchRef}
                 data-type="search"
-                className="sidebarMain__item-wrapper"
+                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
-                  className={`sidebarMain__item-icon ${
+                  className={`sidebarMain__item-icon icon ${
                     toggleSubSidebar ? "active" : ""
                   }`}
                 />
@@ -140,10 +153,10 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tìm kiếm</span>
                 )}
               </li>
-              <a href="/explore/people" className="sidebarMain__item-wrapper">
+              <a href="/explore/people" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
                 <FontAwesomeIcon
                   icon={faCompass}
-                  className="sidebarMain__item-icon"
+                  className="sidebarMain__item-icon icon"
                 />
                 {toggleSubSidebar ? (
                   <></>
@@ -151,7 +164,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct" className="sidebarMain__item-wrapper">
+              <NavLink to="/direct" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
                 <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>
@@ -160,13 +173,14 @@ function Sidebar() {
                 )}
               </NavLink>
               <li
+              ref={notiRef}
                 data-type="noti"
-                className="sidebarMain__item-wrapper"
+                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
                   icon={faHeart}
-                  className={`sidebarMain__item-icon ${
+                  className={`sidebarMain__item-icon icon ${
                     toggleSubSidebar ? "active" : ""
                   }`}
                 />
@@ -177,12 +191,12 @@ function Sidebar() {
                 )}
               </li>
               <li
-                className="sidebarMain__item-wrapper"
+                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
                 onClick={handleOpenCreateNewPostModal}
               >
                 <FontAwesomeIcon
                   icon={faSquarePlus}
-                  className="sidebarMain__item-icon"
+                  className="sidebarMain__item-icon icon"
                 />
                 {toggleSubSidebar ? (
                   <></>
@@ -192,7 +206,7 @@ function Sidebar() {
               </li>
               <NavLink
                 to={`/${userLoggedIn?.username}`}
-                className="sidebarMain__item-wrapper"
+                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
               >
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar
@@ -218,22 +232,22 @@ function Sidebar() {
               onClickOutside={handleClickoutsideDropdown}
               interactive={true}
               content={
-                <ul className="dropdown__list">
-                  <Link to="/setting/account" className="dropdown__item">
+                <ul className="dropdown__list dark:bg-[#262626]">
+                  <Link to="/setting/account" className="dropdown__item dark:text-[#FAFAFA]">
                     <span className="">Cài đặt</span>
-                    <FontAwesomeIcon icon={faGear} />
+                    <FontAwesomeIcon icon={faGear} className="dark:text-[#FAFAFA]"/>
                   </Link>
-                  <button className="dropdown__item">
+                  <button className="dropdown__item dark:text-[#FAFAFA]">
                     <span className="">Đã lưu</span>
-                    <FontAwesomeIcon icon={faBookmark} />
+                    <FontAwesomeIcon icon={faBookmark} className="dark:text-[#FAFAFA]"/>
                   </button>
-                  <button className="dropdown__item">
+                  <button className="dropdown__item dark:text-[#FAFAFA]" onClick={toggleDarkMode}>
                     <span className="">Chuyển chế độ</span>
-                    <FontAwesomeIcon icon={faMoon} />
+                    <FontAwesomeIcon icon={faMoon} className="dark:text-[#FAFAFA]"/>
                   </button>
                   <hr />
                   <button
-                    className="dropdown__item"
+                    className="dropdown__item dark:text-[#FAFAFA]"
                     onClick={() => {
                       firebase.auth().signOut();
                     }}
@@ -244,12 +258,12 @@ function Sidebar() {
               }
             >
               <div
-                className="sidebarMain__item-wrapper"
+                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
                 onClick={handleToggleDropdown}
               >
                 <FontAwesomeIcon
                   icon={faBars}
-                  className="sidebarMain__item-icon"
+                  className="sidebarMain__item-icon icon"
                 />
                 {toggleSubSidebar ? (
                   <></>
@@ -261,7 +275,7 @@ function Sidebar() {
           </div>
         </div>
       </div>
-      {toggleSubSidebar ? <SubSidebar type={typeSubSidebar} /> : <></>}
+      {toggleSubSidebar ? <SubSidebar subRef={subRef} type={typeSubSidebar} /> : <></>}
     </aside>
   );
 }

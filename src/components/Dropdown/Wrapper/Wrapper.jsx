@@ -5,7 +5,7 @@ import './Wrapper.scss'
 
 function Wrapper({ children }) {
   return (
-    <div className="dropdown__wrapper">
+    <div className="dropdown__wrapper dark:bg-[#262626]">
         {children}
     </div>
   )

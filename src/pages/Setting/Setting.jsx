@@ -7,7 +7,7 @@ function Setting() {
 
   return (
     <div className='setting__wrapper'>
-        <div className='setting__box'>
+        <div className='setting__box dark:bg-black'>
             <SettingSidebar />
             <main className='settingContent__wrapper'>
                 <Outlet />

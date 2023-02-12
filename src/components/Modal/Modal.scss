@@ -31,6 +31,8 @@
   background-color: #fff;
   border-radius: 20px;
   animation: scaleModal .1s linear;
+
+  @apply dark:bg-[#262626];
 }
 
 .modal__content {
@@ -281,12 +283,18 @@
 .selectImg__dropdown {
   position: absolute;
   height: 118px;
-  max-width: 460px;
+  max-width: 420px;
   padding: 12px;
   right: 0;
   bottom: 42px;
   border-radius: 5px;
   background-color: rgba($color: #000000, $alpha: 0.5);
+  overflow: hidden;
+
+  .slider__container {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+  }
 }
 
 .modal__image-preview-sub-btn {
@@ -314,10 +322,27 @@
   }
 }
 
+.modal__slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.modal__slide-btn.btn-prev {
+  left: 14px;
+}
+.modal__slide-btn.btn-next {
+  right: 14px;
+}
+
 // Delete modal
 .delete__logo-wrapper {
   width: 250px;
-
 }
 
 .modal__delete-item {
@@ -371,6 +396,7 @@
 
 .createMessageModal__sent-btn.disabled {
   opacity: .6;
+
 }
 
 .search__result-modal-list {
@@ -456,6 +482,10 @@
       background-color: rgba(#000000, .7);
     }
   }
+}
+
+.icon {
+  @apply dark:text-[#FAFAFA];
 }
 
 @keyframes scaleModal {

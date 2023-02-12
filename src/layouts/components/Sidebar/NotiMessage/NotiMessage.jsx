@@ -51,7 +51,7 @@ function NotiMessage() {
   
   return (
     <div className="sidebarMain__item-message-wrapper">
-      <FontAwesomeIcon icon={faPaperPlane} className="sidebarMain__item-icon" />
+      <FontAwesomeIcon icon={faPaperPlane} className="sidebarMain__item-icon icon" />
       {countUnseenMessage ? <div className="quantity-unseenMessage"><span className="">{countUnseenMessage}</span></div> : <></>}
     </div>
   );

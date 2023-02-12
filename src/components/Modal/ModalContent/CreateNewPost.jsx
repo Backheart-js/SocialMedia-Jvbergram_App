@@ -8,19 +8,22 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { v4 } from "uuid";
 import { createNewPost } from "~/services/firebaseServices";
 import { useAuthListener } from "~/hooks";
 import { RotatingLines } from "react-loader-spinner";
 import Loader from "~/components/Loader";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
-import "../Modal.scss";
 import { INPUT_IMAGE_REGEX } from "~/constants/Regex";
 import useOnClickOutside from "~/hooks/useClickOutside";
 import { useDispatch } from "react-redux";
 import { openNoti } from "~/redux/slice/notificationSlice";
-import HeroSlider from "~/components/Slider/Slider";
+import "../Modal.scss";
 
 function CreateNewPost({ closeModal }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]); //List ảnh preview
@@ -30,10 +33,13 @@ function CreateNewPost({ closeModal }) {
   const [loadingDisplay, setLoadingDisplay] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { user } = useAuthListener();
-  const dispatch = useDispatch()
-  const dropdownRef = useRef(null)
+  const dispatch = useDispatch();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const dropdownRef = useRef(null);
+  const sliderRef = useRef(null)
+  const toggleDropdownRef = useRef(null)
 
-  useOnClickOutside(dropdownRef, () => setShowDropdown(false))
+  useOnClickOutside([dropdownRef, toggleDropdownRef], () => setShowDropdown(false));
 
   const handlePreviewImage = (filesInput) => {
     const files = Object.values(filesInput); //Vì input để multi nên trả về 1 Array ảnh
@@ -53,9 +59,8 @@ function CreateNewPost({ closeModal }) {
       if (INPUT_IMAGE_REGEX.test(newImg.name)) {
         validatedFiles.push(newImg);
         setImageList((prev) => [...prev, newImg]);
-      }
-      else {
-        dispatch(openNoti({content: `File ${newImg.name} không hợp lệ`}))
+      } else {
+        dispatch(openNoti({ content: `File ${newImg.name} không hợp lệ` }));
       }
     }
     handlePreviewImage(validatedFiles);
@@ -118,8 +123,9 @@ function CreateNewPost({ closeModal }) {
       const fileURLs = await uploadFilesToStorage(files);
       await createNewPost(fileURLs, user.uid, caption);
       closeModal();
+      dispatch(openNoti({content: "Đã tạo bài viết mới"}))
     } catch (error) {
-      alert("Lỗi! Vui lòng thử lại");
+      dispatch(openNoti({content: "Lỗi! Vui lòng thử lại"}))
     } finally {
       setLoadingDisplay(false);
     }
@@ -129,7 +135,23 @@ function CreateNewPost({ closeModal }) {
     setImageList(imageList.filter((_, i) => i !== index));
     setImagePreviewLink(imagePreviewLink.filter((_, i) => i !== index));
   };
-
+  const handlePrevClick = () => {
+    if (currentSlideIndex === 0) return;
+    setCurrentSlideIndex(currentSlideIndex - 1);
+    sliderRef.current.style.transform = `translateX(-${
+      (currentSlideIndex - 1) * (100 / imagePreviewLink.length)
+    }%)`;
+  };
+  
+  const handleNextClick = () => {
+    if (currentSlideIndex === imagePreviewLink.length - 4) return;
+    setCurrentSlideIndex(currentSlideIndex + 1);
+    sliderRef.current.style.transform = `translateX(-${
+      (currentSlideIndex + 1) * (100 / imagePreviewLink.length)
+    }%)`;
+  };
+  
+  
   useEffect(() => {
     return () => {
       // Fix lỗi xóa URL trong local
@@ -150,7 +172,7 @@ function CreateNewPost({ closeModal }) {
       }`}
     >
       <div className="modal__title-wrapper">
-        <p className="text-lg font-semibold text-center">Tạo bài viết mới</p>
+        <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">Tạo bài viết mới</p>
       </div>
       <div className="modal__body-wrapper">
         <div className="modal__user-wrapper">
@@ -160,7 +182,7 @@ function CreateNewPost({ closeModal }) {
         <div className="modal__caption pr-2 pb-2">
           <textarea
             value={captionValue}
-            className="modal__caption-input"
+            className="modal__caption-input dark:text-[#FAFAFA]"
             placeholder="Viết chú thích..."
             onInput={(e) => autoGrowTextarea(e)}
             onChange={(e) => {
@@ -172,7 +194,7 @@ function CreateNewPost({ closeModal }) {
               <div className="modal__image-area--nonImg h-[300px]">
                 <svg
                   aria-label="Biểu tượng thể hiện file phương tiện, chẳng hạn như hình ảnh hoặc video"
-                  className="_ab6-"
+                  className="icon"
                   color="#262626"
                   fill="#262626"
                   height="77"
@@ -193,7 +215,7 @@ function CreateNewPost({ closeModal }) {
                     fill="currentColor"
                   ></path>
                 </svg>
-                <span className="mt-4 font-medium text-base">
+                <span className="mt-4 font-medium text-base dark:text-[#FAFAFA]">
                   Kéo thả ảnh vào đây
                 </span>
                 <div className="modal__select-wrapper mt-4">
@@ -253,29 +275,28 @@ function CreateNewPost({ closeModal }) {
                   {imagePreviewLink.length > 1 && (
                     <div className="absolute bottom-4 right-4">
                       <button
+                        ref={toggleDropdownRef}
                         className="flex justify-center items-center w-8 h-8 rounded-full text-gray-800 bg-white"
                         onClick={() => setShowDropdown((prev) => !prev)}
                       >
                         <FontAwesomeIcon icon={faClone} />
                       </button>
-                      <div 
+                      <div
                         ref={dropdownRef}
                         className={`selectImg__dropdown ${
                           showDropdown ? "flex" : "hidden"
                         }`}
                       >
-                        <HeroSlider 
-                          speed={500}
-                          slidesToShow={4}
-                          slidesToScroll={1}
+                        <div
+                          ref={sliderRef}
+                          className="slider__container"
                         >
                           {imagePreviewLink.map((imageLink, index) => (
-                            // <button
-                            //   className="modal__image-preview-sub-btn"
-                            //   onClick={() => setOrderPreview(index)}
-                            //   key={index}
-                            // >
-                            // </button>
+                            <button
+                              className="modal__image-preview-sub-btn"
+                              onClick={() => setOrderPreview(index)}
+                              key={index}
+                            >
                               <div
                                 className={`modal__image-preview-sub`}
                                 style={{ backgroundImage: `url(${imageLink})` }}
@@ -284,8 +305,38 @@ function CreateNewPost({ closeModal }) {
                                   <div className={"overlay"} />
                                 )}
                               </div>
+                            </button>
                           ))}
-                        </HeroSlider>
+                        </div>
+                        {imagePreviewLink.length > 4 && (
+                          <>
+                            <button
+                              className={`modal__slide-btn btn-prev ${
+                                currentSlideIndex === 0 ? "hidden" : "flex"
+                              }`}
+                              onClick={handlePrevClick}
+                            >
+                              <FontAwesomeIcon
+                                icon={faAngleLeft}
+                                className={""}
+                              />
+                            </button>
+                            <button
+                              className={`modal__slide-btn btn-next ${
+                                currentSlideIndex ===
+                                imagePreviewLink.length - 4
+                                  ? "hidden"
+                                  : "flex"
+                              }`}
+                              onClick={handleNextClick}
+                            >
+                              <FontAwesomeIcon
+                                icon={faAngleRight}
+                                className={""}
+                              />
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   )}
@@ -317,7 +368,6 @@ function CreateNewPost({ closeModal }) {
         width="96"
         visible
       />
-      
     </div>
   );
 }

@@ -186,24 +186,13 @@ function CommentItem({
             <Avatar avatarUrl={commentData.avatarUrl} size="small" />
           </div>
           <div className="comment__name-and-content">
-            {/* <div className="comment__name-and-content--wrapper">
-              <Link
-                to={`/${commentData.username}`}
-                className="text-sm font-semibold"
-              >
-                {commentData.username}
-              </Link>
-              <pre className="comment__content-text text-gray-700">
-                {commentData.content}
-              </pre>
-            </div> */}
             <Caption username={commentData.username} content={commentData.content} />
             <div className="comment__func-wrapper">
-              <span className="text-[13px] text-gray-500">
+              <span className="text-[13px] text-gray-500 dark:text-gray-400">
                 {formatDate(commentData.dateCreated)}
               </span>
               {commentData.likes.length > 0 && (
-                <span className="text-[13px] text-gray-500 font-semibold">
+                <span className="text-[13px] text-gray-500 dark:text-gray-400 font-semibold">
                   {commentData.like} lượt thích
                 </span>
               )}
@@ -217,7 +206,7 @@ function CommentItem({
                     {commentOfLoggedInUser ? (
                       <li className="">
                         <button
-                          className="text-highlight-dropdown text-[14px] font-semibold w-full py-2 hover:bg-main-bg"
+                          className="text-highlight-dropdown text-[14px] font-semibold w-full py-2 hover:bg-main-bg dark:hover:bg-dark-bg"
                           onClick={() => onDelete(commentData.commentId)}
                         >
                           Xóa bình luận
@@ -226,7 +215,7 @@ function CommentItem({
                     ) : (
                       <>
                         <li className="">
-                          <button className="text-highlight-dropdown text-[14px] font-semibold w-full py-2 hover:bg-main-bg">
+                          <button className="text-highlight-dropdown text-[14px] font-semibold w-full py-2 hover:bg-main-bg dark:hover:bg-dark-bg">
                             Báo cáo
                           </button>
                         </li>
@@ -234,7 +223,7 @@ function CommentItem({
                     )}
                     <li className="">
                       <button
-                        className=" text-[14px] font-semibold w-full py-2 hover:bg-main-bg"
+                        className=" text-[14px] font-semibold w-full py-2 hover:bg-main-bg dark:hover:bg-dark-bg dark:text-[#FAFAFA]"
                         onClick={() => setToggleCommentDropdown(false)}
                       >
                         Hủy
@@ -248,7 +237,7 @@ function CommentItem({
                   onClick={() => setToggleCommentDropdown((prev) => !prev)}
                 >
                   <FontAwesomeIcon
-                    className="comment__func-icon"
+                    className="comment__func-icon icon"
                     icon={faEllipsis}
                   />
                 </button>
@@ -257,7 +246,7 @@ function CommentItem({
           </div>
         </div>
         <button className="pl-2">
-          <FontAwesomeIcon className="text-xs" icon={faHeart} />
+          <FontAwesomeIcon className="text-xs icon" icon={faHeart} />
         </button>
       </div>
     </li>

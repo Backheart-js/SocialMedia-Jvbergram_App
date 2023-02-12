@@ -36,11 +36,11 @@ function CreateMessage({ closeModal }) {
       <div className="">
         <header className="createMessageModal__header-wrapper flex justify-between px-4 pb-2">
           <div className="w-10"></div>
-          <div className="">
+          <div className="dark:text-[#FAFAFA]">
             <span className="font-semibold">Tin nhắn mới</span>
           </div>
           <div className="">
-            <Button disabled={!isDisabled} className={`createMessageModal__sent-btn ${!isDisabled ? "disabled" : ""}`} btnWhite onClick={handleCreateNewMessage}>
+            <Button disabled={!isDisabled} className={`createMessageModal__sent-btn dark:bg-transparent ${!isDisabled ? "disabled" : ""}`} btnWhite onClick={handleCreateNewMessage}>
               Gửi
             </Button>
           </div>
@@ -48,7 +48,7 @@ function CreateMessage({ closeModal }) {
         <main className="createMessageModal__body-wrapper">
           <div className="createMessageModal__content-wrapper">
             <textarea
-              className="createMessageModal__content-input px-4 py-2"
+              className="createMessageModal__content-input px-4 py-2 dark:bg-transparent"
               name=""
               id=""
               placeholder="Nội dung..."
