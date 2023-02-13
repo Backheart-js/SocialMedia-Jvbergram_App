@@ -105,10 +105,11 @@ export async function getPostWithOwnerById(docId) {
   const ownerInfo = await getUser({
     userId: [postInfo.data().userId],
   });
-  const { avatarUrl, username } = ownerInfo[0];
+  const { avatarUrl, username, fullname } = ownerInfo[0];
   return {
     avatarUrl,
     username,
+    fullname,
     ...postInfo.data(),
   };
 }

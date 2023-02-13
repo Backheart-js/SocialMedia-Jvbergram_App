@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
@@ -39,6 +39,11 @@ function Account() {
     dispatch(openNoti({content: `Đã cập nhật thông tin cá nhân`}))
     setOriginalInformation(userData)
   }
+
+  useEffect(() => {
+    document.title = "Cài đặt người dùng"
+    
+  }, [])
 
   return (
     <div className="">

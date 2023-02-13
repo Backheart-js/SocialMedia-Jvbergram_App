@@ -90,8 +90,10 @@ function PostPage() {
   }
 
   useEffect(() => {
+
     const getData = async () => {
       const response = await getPostWithOwnerById(docId);
+      document.title = `${response.fullname} trên Jvbergram`; 
       let youLikedThisPost = false;
       if (response.likes.includes(currentUserId)) {
         youLikedThisPost = true;
@@ -103,7 +105,6 @@ function PostPage() {
         ...response,
         youLikedThisPost,
       });
-
       setUserCommentList(sortComments(response.comments)); //sắp xếp comment theo thời gian từ mới nhất đến cũ nhất
     };
 

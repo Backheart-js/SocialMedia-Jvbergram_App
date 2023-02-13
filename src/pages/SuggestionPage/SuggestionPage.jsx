@@ -1,9 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Suggestion from '~/components/Suggestion'
 import { UserContext } from '~/context/user'
 
 function SuggestionPage() {
   const { userId: LoggedInUserId, following: LoggedInUserFollowing } = useContext(UserContext)
+
+  useEffect(() => {
+    document.title = "Jvbergram - Khám phá"
+    
+  }, [])
+  
 
   return (
     <div className="lg:max-w-[600px] mx-auto pt-20">
