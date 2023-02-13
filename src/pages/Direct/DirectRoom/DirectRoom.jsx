@@ -78,6 +78,7 @@ function DirectRoom() {
         setDisplayMessages([]);
         setLimit(10);
         setToggleInfo(false);
+        setShowFileMedia(false);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,18 +95,18 @@ function DirectRoom() {
     <div ref={wrapperRef} className="drRoom__wrapper">
       <div className="drRoom__header">
         <Link
-          to={`/${conversationInfo.partnerInfo.username}`}
+          to={`/${conversationInfo.partnerInfo?.username}`}
           className={`h-full items-center ${toggleInfo ? "hidden" : "flex"}`}
         >
           <div className="">
             <Avatar
-              avatarUrl={conversationInfo.partnerInfo.avatarUrl}
+              avatarUrl={conversationInfo.partnerInfo?.avatarUrl}
               size={"xs"}
             />
           </div>
           <div className="ml-2">
             <p className="text-sm font-semibold dark:text-[#FAFAFA]">
-              {conversationInfo.partnerInfo.fullname}
+              {conversationInfo.partnerInfo?.fullname}
             </p>
           </div>
         </Link>
@@ -173,9 +174,9 @@ function DirectRoom() {
           <div className="py-4 flex flex-col flex-grow">
             <div className="detail__chat-wrapper">
               <UserLabel
-                username={conversationInfo.partnerInfo.username}
-                fullname={conversationInfo.partnerInfo.fullname}
-                avatarUrl={conversationInfo.partnerInfo.avatarUrl}
+                username={conversationInfo.partnerInfo?.username}
+                fullname={conversationInfo.partnerInfo?.fullname}
+                avatarUrl={conversationInfo.partnerInfo?.avatarUrl}
               />
             </div>
             <div className="detail__chat-wrapper">
@@ -262,12 +263,12 @@ function DirectRoom() {
                   image={message?.image}
                   heartIcon={message?.heartIcon}
                   loggedInUser={message.sender === loggedInUser.userId}
-                  avatarUrl={conversationInfo.partnerInfo.avatarUrl}
-                  username={conversationInfo.partnerInfo.username}
+                  avatarUrl={conversationInfo.partnerInfo?.avatarUrl}
+                  username={conversationInfo.partnerInfo?.username}
                   fullname={
                     message.sender === loggedInUser.userId
                       ? loggedInUser.fullname
-                      : conversationInfo.partnerInfo.fullname
+                      : conversationInfo.partnerInfo?.fullname
                   }
                   createdTime={conversationInfo.date}
                   key={message.messageId}

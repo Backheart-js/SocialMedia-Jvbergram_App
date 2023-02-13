@@ -62,7 +62,6 @@ function Signup() {
       const response = await firebase
         .auth()
         .createUserWithEmailAndPassword(email.toLowerCase(), password); //Tạo 1 auth mới lên firebase
-        console.log(response)
         // if (response.user) 
       const user = response.user; //Response trả về thông tin của auth vừa tạo
       await user.updateProfile({
@@ -88,7 +87,6 @@ function Signup() {
         firstTime: true
       });
       await firebase.firestore().collection("userChats").doc(user.uid).set({}); //Lỗi
-      console.log("chạy đến đây")
       await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
 
@@ -140,7 +138,7 @@ function Signup() {
       <div className="signup__logo h-[100px]">
         <img src={logo.logo_black} alt="" className="ml-10" />
       </div>
-      <div className="other-options-signup">Đăng nhập bằng FB hoặc Google</div>
+      <div className="other-options-signup">Đăng nhập bằng Facebook hoặc Google (Đang phát triển)</div>
       <div className="flex justify-between items-center w-full mt-3">
         <div className="login__line"></div>
         <div className="">Hoặc</div>
@@ -216,6 +214,7 @@ function Signup() {
           />
           {cfpasswordValid || (
             <FontAwesomeIcon
+              title="Mật khẩu không khớp"
               className="signup__input-icon signup__icon-invalid"
               icon={faCircleXmark}
             />

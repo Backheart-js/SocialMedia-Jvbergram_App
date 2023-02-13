@@ -195,7 +195,6 @@ function OtherUserFollow({ type, userIdList, loggedInUser, fullname }) {
             };
           });
         }
-        console.log(filterList);
         setuserInfoList(filterList);
       })();
     } else {

@@ -2,7 +2,6 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Avatar from "~/components/Avatar/Avatar";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import { UserContext } from "~/context/user";
@@ -10,9 +9,10 @@ import { deleteComment, getUser } from "~/services/firebaseServices";
 import formatDate from "~/utils/formatDate";
 import "./CommentDetail.scss";
 import { memo } from "react";
-import Loader from "~/components/Loader";
 import { RotatingLines } from "react-loader-spinner";
 import Caption from "~/components/Caption/Caption";
+import { openNoti } from "~/redux/slice/notificationSlice";
+import { useDispatch } from "react-redux";
 
 function CommentDetail({
   postId,
@@ -21,6 +21,7 @@ function CommentDetail({
   ownerCaption,
   commentList,
 }) {
+  const dispatch = useDispatch()
   const [countCommentDisplay, setCountCommentDisplay] = useState(10);
   const [countPrevComments, setCountPrevComments] = useState(0);
   const [commentWithUserInfo, setCommentWithUserInfo] = useState(null);
@@ -42,7 +43,7 @@ function CommentDetail({
       await deleteComment(postId, commentId);
       setCommentWithUserInfo(newCommentListAfterDelete);
     } catch (error) {
-      console.error(error);
+      dispatch(openNoti({content: `Đã có lỗi xảy ra, vui lòng thử lại`}))
     }
   };
 

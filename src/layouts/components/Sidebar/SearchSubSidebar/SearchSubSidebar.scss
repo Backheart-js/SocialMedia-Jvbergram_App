@@ -68,6 +68,7 @@
     &:hover {
         cursor: pointer;
         background-color: rgb(250, 250, 250);
+        @apply dark:bg-[#121212]
     }
 }
 // Css history

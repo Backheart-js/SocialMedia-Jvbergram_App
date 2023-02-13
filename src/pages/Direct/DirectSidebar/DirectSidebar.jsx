@@ -1,6 +1,6 @@
 import { faImage, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -9,6 +9,7 @@ import { CREATE_MESSAGE } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import conversationSlice from "~/redux/slice/conversationSlice";
 import modalSlice from "~/redux/slice/modalSlide";
+import formatDate from "~/utils/formatDate";
 import "../Direct.scss";
 
 function DirectSidebar() {
@@ -44,11 +45,16 @@ function DirectSidebar() {
         <div className="flex items-center justify-end h-full">
           <div className="w-[60px]"></div>
           <div className="flex items-center justify-center flex-grow">
-            <p className="font-medium text-base dark:text-[#FAFAFA]">{loggedInUser.username}</p>
+            <p className="font-medium text-base dark:text-[#FAFAFA]">
+              {loggedInUser.username}
+            </p>
           </div>
           <div className="w-[60px] flex justify-end">
             <button className="p-2" onClick={handleCreateMessageModal}>
-              <FontAwesomeIcon className="text-[22px] dark:text-[#FAFAFA]" icon={faPenToSquare} />
+              <FontAwesomeIcon
+                className="text-[22px] dark:text-[#FAFAFA]"
+                icon={faPenToSquare}
+              />
             </button>
           </div>
         </div>
@@ -90,44 +96,49 @@ function DirectSidebar() {
             >
               <div className="flex-shrink-0">
                 <Avatar
-                  avatarUrl={chatRoom.partnerInfo.avatarUrl}
+                  avatarUrl={chatRoom.partnerInfo?.avatarUrl}
                   size={"medium"}
                 />
               </div>
               <div className="drSidebar__name-wrapper">
                 <p className="drSidebar__name-text">
-                  {chatRoom.partnerInfo.fullname}
+                  {chatRoom.partnerInfo?.fullname}
                 </p>
                 {chatRoom.lastMessage ? (
-                  (chatRoom.lastMessage?.image &&
-                    (chatRoom.lastSender === loggedInUser.userId ? (
-                      <p className="drSidebar__name-currentMessage">
-                        Bạn:{" "}
-                        <FontAwesomeIcon
-                          className="text-base ml-1"
-                          icon={faImage}
-                        />
-                      </p>
-                    ) : (
-                      <p className="drSidebar__name-currentMessage">
-                        {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
-                      </p>
-                    ))) ||
-                  (chatRoom.lastMessage.heartIcon &&
-                    (chatRoom.lastSender === loggedInUser.userId ? (
-                      <p className="drSidebar__name-currentMessage">Bạn: ❤️</p>
-                    ) : (
-                      <p className="">
-                        ❤️
-                      </p>
-                    ))) || (
-                    <p className="drSidebar__name-currentMessage">
-                      {chatRoom.lastSender === loggedInUser.userId && (
-                        <span className="">Bạn:</span>
-                      )}{" "}
-                      {chatRoom.lastMessage}
-                    </p>
-                  )
+                  <div className="flex items-center max-w-[200px]">
+                    {(chatRoom.lastMessage?.image &&
+                      (chatRoom.lastSender === loggedInUser.userId ? (
+                        <p className="drSidebar__name-currentMessage">
+                          Bạn:{" "}
+                          <FontAwesomeIcon
+                            className="text-base ml-1"
+                            icon={faImage}
+                          />
+                        </p>
+                      ) : (
+                        <p className="drSidebar__name-currentMessage">
+                          {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
+                        </p>
+                      ))) ||
+                      (chatRoom.lastMessage.heartIcon &&
+                        (chatRoom.lastSender === loggedInUser.userId ? (
+                          <p className="drSidebar__name-currentMessage">
+                            Bạn: ❤️
+                          </p>
+                        ) : (
+                          <p className="drSidebar__name-currentMessage">❤️</p>
+                        ))) || (
+                        <span className="drSidebar__name-currentMessage">
+                          {chatRoom.lastSender === loggedInUser.userId && (
+                            <span className="">Bạn:</span>
+                          )}{" "}
+                          {chatRoom.lastMessage}
+                        </span>
+                      )}
+                    <div className="drSidebar__name-time-wrapper">
+                      <div className="drSidebar__name-time text-[13px] dark:text-gray-400 text-gray-400 w-max">{formatDate(chatRoom.date)}</div>
+                    </div>
+                  </div>
                 ) : (
                   <></>
                 )}

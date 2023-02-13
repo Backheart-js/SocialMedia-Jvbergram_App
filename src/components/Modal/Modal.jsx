@@ -37,7 +37,6 @@ function Modal({ payload }) {
   const unFollowingUser = () => {
     dispatch(setFollowing(false));
   };
-  console.log(payload)
   const closeModal = () => {
     dispatch(modalSlice.actions.closeModal());
   };

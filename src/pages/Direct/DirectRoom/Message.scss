@@ -71,6 +71,9 @@
     color: #262626;
     line-height: 120%;
     cursor: default;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .message__avatar-wrapper {

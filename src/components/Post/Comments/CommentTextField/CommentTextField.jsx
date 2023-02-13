@@ -1,11 +1,15 @@
 import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
 import Dropdown from "~/components/Dropdown/Dropdown";
 import DropdownEmoji from "~/components/Emoji/Emoji";
+import Loader from "~/components/Loader";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
+import { openNoti } from "~/redux/slice/notificationSlice";
 import { autoGrowTextarea } from "~/utils/autoGrowTextarea";
 import "../Comments.scss";
 
@@ -15,9 +19,11 @@ function CommentTextField({
   setUserCommentList,
   setAllCommentsQuantity,
 }) {
+  const dispatch = useDispatch()
   const { firebase, FieldValue } = useContext(FirebaseContext);
   const { userId, username } = useContext(UserContext);
   const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false);
+  const [loadingSubmitComment, setLoadingSubmitComment] = useState(false)
 
   const [commentValues, setCommentValues] = useState("");
 
@@ -29,6 +35,7 @@ function CommentTextField({
     if (!commentValues.trim()) {
       return;
     }
+    setLoadingSubmitComment(true)
     const comment = {
       content: commentValues.replace(/\s+$/g, ""), //Loại bỏ khoảng trắng ở cuối comment
       dateCreated: Date.now(),
@@ -39,10 +46,6 @@ function CommentTextField({
     };
     commentFieldRef.current.style.height = "22px";
     try {
-      setUserCommentList((prev) => [...prev, comment]);
-      setAllCommentsQuantity && setAllCommentsQuantity((prev) => prev + 1);
-      setCommentValues("");
-
       await firebase
         .firestore()
         .collection("posts")
@@ -50,8 +53,13 @@ function CommentTextField({
         .update({
           comments: FieldValue.arrayUnion(comment),
         });
+      setUserCommentList((prev) => [...prev, comment]);
+      setAllCommentsQuantity && setAllCommentsQuantity((prev) => prev + 1);
+      setCommentValues("");
     } catch (error) {
-      throw error;
+      dispatch(openNoti({content: `Đã có lỗi xảy ra, vui lòng thử lại`}))
+    } finally {
+      setLoadingSubmitComment(false);
     }
   };
 
@@ -104,6 +112,15 @@ function CommentTextField({
       >
         Đăng
       </button>
+      <Loader
+        type={RotatingLines}
+        display={loadingSubmitComment}
+        strokeColor="grey"
+        strokeWidth="5"
+        animationDuration="0.75"
+        width="40"
+        visible
+      />
     </form>
   );
 }

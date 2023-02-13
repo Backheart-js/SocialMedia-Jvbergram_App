@@ -76,6 +76,13 @@
       border-radius: 50%;
       background-color: $blue-primary;
     }
+
+    .drSidebar__name-time {
+      font-weight: 600;
+      color: #262626;
+
+      @apply dark:text-gray-300;
+    }
   }
 
   &:hover,
@@ -100,15 +107,36 @@
   font-weight: 400;
 }
 .drSidebar__name-currentMessage {
-  display: block;
-  display: -webkit-box;
-  font-size: 13px;
+  display: inline-block;
+  font-size: 14px;
   color: #8e8e8e;
   font-weight: 400;
   -webkit-line-clamp: 1; /* số dòng hiển thị */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.drSidebar__name-time-wrapper {
+  position: relative;
+  margin-left: 10px;
+  padding-left: 8px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #999;
+
+    @apply bg-gray-400
+  }
 }
 
 // Room

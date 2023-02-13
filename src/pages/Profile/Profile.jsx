@@ -62,7 +62,6 @@ function Profile() {
       const chatRoomSnapshot = await checkChatRoom(userLoggedIn.userId, [
         profileId,
       ]);
-      console.log(chatRoomSnapshot);
       if (!chatRoomSnapshot[0].exists) {
         //Chưa nhắn tin với người này -> Tạo chatroom mới
         const combinedId =

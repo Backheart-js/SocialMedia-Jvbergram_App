@@ -36,7 +36,6 @@ function Home() {
                   return { docId: doc.id, ...doc.data() };
               });
             }
-            console.log(newPosts)
             const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
                 let youLikedThisPost = false;
@@ -46,7 +45,6 @@ function Home() {
                 const ownerPost = await getUser({
                   userId: [photo.userId]
                 });
-                console.log(ownerPost)
                 const { avatarUrl, username } = ownerPost[0];
                 return {
                 avatarUrl,

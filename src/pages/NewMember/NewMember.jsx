@@ -103,7 +103,6 @@ function NewMember() {
     } else if (step === 2) {
       await updateNewAvatarFirestore(image);
     } else if (step === 3) {
-        console.log("here")
       await updateFirstTime(loggedInUser.userId);
       setUploadingData(false);
     //   navigate("/");

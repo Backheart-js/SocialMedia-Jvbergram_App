@@ -20,9 +20,10 @@ import {
 } from "firebase/firestore";
 import sortUserByFollower from "~/utils/sortUserByFollower";
 import { v4 } from "uuid";
+import { openNoti } from "~/redux/slice/notificationSlice";
+import { useDispatch } from "react-redux";
 
 var _ = require("lodash");
-
 const db = firebase.firestore();
 
 // GET
@@ -188,18 +189,14 @@ export async function getSuggestionsProfilesByFollowing(
 
 // CREATE
 export async function createNewPost(photos, userId, caption) {
-  try {
-    await db.collection("posts").add({
-      photos,
-      userId,
-      likes: [],
-      comments: [],
-      caption,
-      dateCreated: Date.now(),
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  await db.collection("posts").add({
+    photos,
+    userId,
+    likes: [],
+    comments: [],
+    caption,
+    dateCreated: Date.now(),
+  });
 }
 
 export async function createNewChatRoom(
@@ -282,7 +279,6 @@ export async function createNewMessage(
       await createNewConversation(newChatRoomId, newMessage); //Tạo document mới trong conversation collection
     } else {
       //Đã từng nhắn tin rồi
-      console.log(room);
       const chatRoomId = room.id;
       sentMessage(chatRoomId, content, receiverIds[index], loggedInUserId);
     }
@@ -652,7 +648,6 @@ export async function verifyAccout() {
     try {
       await firebase.auth().currentUser.sendEmailVerification();
     } catch (error) {
-      console.log(error);
     }
   };
 

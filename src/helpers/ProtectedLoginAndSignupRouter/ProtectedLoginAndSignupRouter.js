@@ -8,7 +8,6 @@ function ProtectedLoginAndSignupRouter({ user, children }) {
 
     var referrer = document.referrer;
     var previousRoute = referrer.substring(referrer.indexOf('/', referrer.indexOf('://') + 3));
-    console.log(user);
 
 
     useEffect(() => {

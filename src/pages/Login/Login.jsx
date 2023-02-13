@@ -87,8 +87,8 @@ function Login() {
             <div className="">Hoặc</div>
             <div className="login__line"></div>
           </div>
-          <div className="other-options-login flex justify-between mt-4">
-            Đăng nhập bằng Facebook hoặc Google
+          <div className="other-options-login flex justify-between mt-4 text-center font-medium">
+            Đăng nhập bằng Facebook hoặc Google (Đang phát triển)
           </div>
           {error ? (
             <p className="text-red-600 text-base text-center mt-3">{error}</p>

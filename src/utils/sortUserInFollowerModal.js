@@ -4,8 +4,6 @@ export default function quickSortUserIdList(
   userList
 ) {
   let countFollowing = 0;
-  console.log(userList);
-  console.log(loggedInUserFollow)
   let data = [...userList] //Chú ý gán mảng là tham chiếu -> không sắp xếp trực tiếp vào mảng ban đầu -> error
   data.sort((a, b) => {
     if (a.userId === loggedInUserId) return -1;

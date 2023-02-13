@@ -123,7 +123,7 @@ function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePr
       closeModal();
       dispatch(openNoti({content: "Đã tạo bài viết mới"}))
     } catch (error) {
-      dispatch(openNoti({content: "Lỗi! Vui lòng thử lại"}))
+      dispatch(openNoti({content: "Đã xảy ra lỗi! Vui lòng thử lại"}))
     } finally {
       setLoadingDisplay(false);
     }
@@ -151,10 +151,9 @@ function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePr
     }%)`;
   };
   
-  
   useEffect(() => {
     return () => {
-      // Fix lỗi xóa URL trong local
+      // xóa URL trong local
       imagePreviewLink.forEach((imageLink) => {
         URL.revokeObjectURL(imageLink);
       });
@@ -365,7 +364,7 @@ function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePr
         strokeColor="grey"
         strokeWidth="5"
         animationDuration="0.75"
-        width="96"
+        width="90"
         visible
       />
     </div>

@@ -23,7 +23,6 @@ function ResetPassword() {
       setSentVerifyEmail(true)
     } catch (error) {
       setErrorMessage("Đã xảy ra lỗi, vui lòng thử lại!")
-      console.log(error);
     }    
   
   }

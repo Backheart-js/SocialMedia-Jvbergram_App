@@ -8,7 +8,6 @@ import './MediaRoom.scss';
 
 function MediaRoom({conversation}) {
     const [chatImage, setChatImage] = useState([])
-    console.log(conversation)
     const dispatch = useDispatch();
   const handleOpenViewImage = (imageLink, fullname, time) => {
     dispatch(

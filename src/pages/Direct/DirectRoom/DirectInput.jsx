@@ -88,39 +88,43 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   };
 
   const handleSentMessage = async () => {
-    setMessageValue("");
-    inputRef.current.style.height = "34px";
     if (!messageValue.trim()) {
       //Khoảng trắng
       return;
     }
-    if (isNewMessage) {
-      const newMessage = {
-        messageId: v4(),
-        content: messageValue,
-        sender: loggedInUser.userId,
-        date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
-      };
-      const newRoomId = await createNewChatRoom(
-        loggedInUser.userId,
-        loggedInUser.username,
-        conversationInfo.partnerInfo.userId,
-        conversationInfo.partnerInfo.username,
-        messageValue
-      );
-      await createNewConversation(newRoomId, newMessage);
-    } else {
-      await sentMessage(
-        chatroomId,
-        messageValue,
-        conversationInfo.partnerInfo.userId,
-        loggedInUser.userId
-      );
+    try {
+      if (isNewMessage) {
+        const newMessage = {
+          messageId: v4(),
+          content: messageValue,
+          sender: loggedInUser.userId,
+          date: Date.now(), //Không dùng được timestamp vì firebase không cho dùng trong array
+        };
+        const newRoomId = await createNewChatRoom(
+          loggedInUser.userId,
+          loggedInUser.username,
+          conversationInfo.partnerInfo.userId,
+          conversationInfo.partnerInfo.username,
+          messageValue
+        );
+        await createNewConversation(newRoomId, newMessage);
+      } else {
+        await sentMessage(
+          chatroomId,
+          messageValue,
+          conversationInfo.partnerInfo.userId,
+          loggedInUser.userId
+        );
+      }
+      contentRef.current.firstChild.scrollIntoView({
+        block: "end",
+        behavior: "smooth",
+      });
+      setMessageValue("");
+      inputRef.current.style.height = "34px";
+    } catch (error) {
+      dispatch(openNoti("Đã xảy ra lỗi, vui lòng thử lại sau!"));
     }
-    contentRef.current.firstChild.scrollIntoView({
-      block: "end",
-      behavior: "smooth",
-    });
   };
 
   const handleSentHeartIcon = async () => {
@@ -174,11 +178,14 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
             className="flex justify-center items-center px-3 py-2"
             onClick={() => setToggleDropdownEmoji((prev) => !prev)}
           >
-            <FontAwesomeIcon icon={faFaceSmile} className="text-2xl text-[#262626] icon" />
+            <FontAwesomeIcon
+              icon={faFaceSmile}
+              className="text-2xl text-[#262626] icon"
+            />
           </button>
         </Dropdown>
       </div>
-      <div className="chatInput__textarea-wrapper">
+      <div className="chatInput__textarea-wrapper relative">
         {previewImage ? (
           <div className="w-full py-4 pl-2">
             <div className="relative w-fit">
@@ -295,7 +302,10 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
               className="flex justify-center items-center px-2 py-2"
               onClick={handleSentHeartIcon}
             >
-              <FontAwesomeIcon icon={faHeart} className={"text-2xl text-[#262626] icon"} />
+              <FontAwesomeIcon
+                icon={faHeart}
+                className={"text-2xl text-[#262626] icon"}
+              />
             </button>
           </div>
         )}

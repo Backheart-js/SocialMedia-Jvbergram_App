@@ -135,7 +135,7 @@ $leftside-width: 194px;
     border: 1px solid $border-color-light-theme;
     border-radius: 2px;
 
-    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626];
+    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-[#262626] dark:text-[#FAFAFA] dark:border-[#262626];
 }
 
 .setting__story-input {

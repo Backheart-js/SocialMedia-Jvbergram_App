@@ -20,7 +20,6 @@ function SearchInput() {
   useEffect(() => {
     const searchUser = async () => {
         const response = await searchUserByFullname(debounce)
-        console.log(response);
         setResultValue(response);
     }
 
@@ -32,7 +31,6 @@ function SearchInput() {
 
   }, [debounce]);
 
-  console.log(resultValue);
 
   return (
     <Dropdown

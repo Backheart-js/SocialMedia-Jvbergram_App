@@ -8,19 +8,21 @@ import modalSlice from "~/redux/slice/modalSlide";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import { updateUserInfo } from "~/services/firebaseServices";
 import "../Setting.scss";
+var _ = require("lodash");
 
 function Account() {
   const loggedInUser = useContext(UserContext);
-  // const [avatar, setAvatar] = useState(loggedInUser.avatarUrl);
-  const [userData, setUserData] = useState({
+  const [originalInformation, setOriginalInformation] = useState({
     avatar: loggedInUser.avatarUrl,
     fullname: loggedInUser.fullname,
     birthday: loggedInUser.birthday,
     gender: loggedInUser.gender,
     story: loggedInUser.story
   })
-
+  const [userData, setUserData] = useState(originalInformation)
   const dispatch = useDispatch();
+
+  let disabledUpdate = _.isEqual(originalInformation, userData)
 
   const openUpdateAvatarModal = () => {
     dispatch(
@@ -31,10 +33,11 @@ function Account() {
       })
     );
   };
-
+  
   const handleUpdateInfo = () => {
     updateUserInfo(loggedInUser.userId, userData); 
     dispatch(openNoti({content: `Đã cập nhật thông tin cá nhân`}))
+    setOriginalInformation(userData)
   }
 
   return (
@@ -153,7 +156,7 @@ function Account() {
         <div className="setting__leftside">
         </div>
         <div className="setting__rightside">
-          <Button className={"px-3 py-1"} btnPrimary onClick={handleUpdateInfo}>Lưu</Button>
+          <Button disabled={disabledUpdate} className={`px-3 py-1 text-[#FAFAFA] bg-blue-primary hover:bg-blue-bold ${disabledUpdate ? "opacity-50 hover:bg-blue-primary" : ""}`}  onClick={handleUpdateInfo}>Lưu</Button>
         </div>
       </div>
     </div>

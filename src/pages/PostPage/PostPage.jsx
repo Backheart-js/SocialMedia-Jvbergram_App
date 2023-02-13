@@ -38,7 +38,6 @@ function PostPage() {
   const [data, setData] = useState(null);
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
   const [userCommentList, setUserCommentList] = useState([]);
-  console.log(currentUserId)
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -46,6 +45,7 @@ function PostPage() {
     setToggleOptionDropdown(false);
   };
   const handleOpenDeletePostModal = (ownerUsername) => {
+    setToggleOptionDropdown(false);
     dispatch(
       modalSlice.actions.openModal({
         type: DELETE_POST,
@@ -62,6 +62,7 @@ function PostPage() {
     dispatch(setFollowing(true))
   };
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
+    setToggleOptionDropdown(false);
     dispatch(
       modalSlice.actions.openModal({
         type: UNFOLLOW,
@@ -78,7 +79,7 @@ function PostPage() {
       dispatch(openNoti({content: `Đã lưu đường dẫn vào bộ nhớ tạm`}))
 
     } catch (err) {
-      console.error("Failed to copy text: ", err);
+      dispatch(openNoti({content: `Đã có lỗi xảy ra, vui lòng thử lại`}))
     }
     setToggleOptionDropdown(false);
   }
