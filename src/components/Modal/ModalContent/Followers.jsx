@@ -134,16 +134,7 @@ function CurrentUserFollow({ type, userIdList }) {
         ))
       ) : (
         <div className="flex flex-col items-center justify-center h-[240px] w-full">
-          <div className="flex justify-center items-center rounded-full border-gray-800 border-[3px] w-[90px] h-[90px]">
-            <FontAwesomeIcon
-              icon={faPlus}
-              className={"text-[30px] text-gray-800"}
-            />
-            <FontAwesomeIcon
-              icon={faUser}
-              className={"text-[36px] text-gray-800"}
-            />
-          </div>
+        
           <div className="flex flex-col items-center justify-center h-[240px] w-full">
             <div className="flex justify-center items-center rounded-full border-gray-800 border-[3px] w-[90px] h-[90px]">
               <FontAwesomeIcon

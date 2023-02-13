@@ -74,7 +74,7 @@ function Home() {
   }, [])
 
   return (
-    <div className='md:pt-8 mx-auto w-[820px]'>
+    <div className='md:py-8 mx-auto w-[820px]'>
       <div className='grid grid-cols-12 gap-8'>
         <div className="md:col-span-7 col-span-12 relative">
           <div className="mt-4">

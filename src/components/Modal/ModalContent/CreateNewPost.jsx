@@ -134,6 +134,8 @@ function CreateNewPost({ closeModal }) {
   const handleRemoveImage = (index) => {
     setImageList(imageList.filter((_, i) => i !== index));
     setImagePreviewLink(imagePreviewLink.filter((_, i) => i !== index));
+    sliderRef.current.style.transform = 'translateX(0%)';
+    setCurrentSlideIndex(0)
   };
   const handlePrevClick = () => {
     if (currentSlideIndex === 0) return;

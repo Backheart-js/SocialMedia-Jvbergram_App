@@ -8,7 +8,7 @@ function Caption({ username, content }) {
         <Link className="font-semibold text-sm mr-1 inline dark:text-[#FAFAFA]" to={`/${username}`}> 
             {username}
         </Link>
-        <pre className="caption-text text-[15px] font-normal dark:text-[#FAFAFA]">
+        <pre className="caption-text text-[14px] font-normal dark:text-[#FAFAFA]">
             {
                 content ? checklink(content) : content
             }
