@@ -1,29 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "~/assets/logo";
 import { FirebaseContext } from "~/context/firebase";
-import passwordSlide from "~/redux/slice/passwordSlide";
 import loginImgs from "./images";
 import "./Login.scss";
 
 function Login() {
   const { firebase } = useContext(FirebaseContext);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const passwordRef = useRef(null)
 
   const isDisable = email === '' || password === '';
 
   const handleCheckbox = (e) => {
     if (e.target.checked) {
-      dispatch(passwordSlide.actions.addState(true))
+      passwordRef.current.setAttribute('type', 'text')
     }
     else {
-      dispatch(passwordSlide.actions.addState(false))
+      passwordRef.current.setAttribute('type', 'password')
     }
   }
 
@@ -70,6 +68,7 @@ function Login() {
             }}
           />
           <input
+            ref={passwordRef}
             value={password}
             placeholder="password"
             type="password"
@@ -80,7 +79,7 @@ function Login() {
           />
           <div className="remember-password w-full flex mt-3">
             <input type="checkbox" id="remember-checkbox" onClick={handleCheckbox}/>
-            <label className="ml-2 select-none" htmlFor="remember-checkbox">Nhớ mật khẩu</label>
+            <label className="ml-2 select-none" htmlFor="remember-checkbox">Hiện mật khẩu</label>
           </div>
           <button disabled={isDisable} className={`login__submit ${isDisable ? 'opacity-70' : 'hover:bg-[#3dbdd6] hover:cursor-pointer'}`}>Đăng nhập</button>
           <div className="flex justify-between items-center w-full mt-5">

@@ -10,6 +10,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import avatars from "~/assets/avatar";
+import logo from "~/assets/logo";
 
 const initSignup = {
   email: "",
@@ -132,7 +133,9 @@ function Signup() {
       id="signup__wrapper"
       className="flex flex-col items-center sm:w-[340px] rounded-lg bg-white px-10 pb-10 pt-4"
     >
-      <div className="signup__logo h-[100px]">Logo</div>
+      <div className="signup__logo h-[100px]">
+        <img src={logo.logo_black} alt="" className="ml-10" />
+      </div>
       <div className="other-options-signup">Đăng nhập bằng FB hoặc Google</div>
       <div className="flex justify-between items-center w-full mt-3">
         <div className="login__line"></div>

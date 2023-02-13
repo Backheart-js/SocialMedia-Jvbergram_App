@@ -38,7 +38,7 @@ function Profile() {
   const { user } = useAuthListener();
   const userLoggedIn = useContext(UserContext);
   const navigate = useNavigate();
-
+  const [notFound, setNotFound] = useState(false)
 
   const [checkDirectLoading, setCheckDirectLoading] = useState(false);
 
@@ -127,23 +127,41 @@ function Profile() {
       const [userInfo] = await getUser({
         username: [username],
       });
-      // if (userInfo.length === 0) {
-      // } check không tìm thấy người dùng
-
-      const posts = await getPostOfUser(userInfo.userId);
-      posts.sort((a, b) => b.dateCreated - a.dateCreated); //sắp xếp theo thời gian
-
-      reduxDispatch(setProfile(userInfo));
-      reduxDispatch(
-        setFollowing(userLoggedIn?.following.includes(userInfo.userId))
-      );
-      reduxDispatch(setPostsCollection(posts));
+      console.log(userInfo);
+      if (!userInfo) {
+        setNotFound(true)
+      } else {
+        const posts = await getPostOfUser(userInfo.userId);
+        posts.sort((a, b) => b.dateCreated - a.dateCreated); //sắp xếp theo thời gian
+  
+        reduxDispatch(setProfile(userInfo));
+        reduxDispatch(
+          setFollowing(userLoggedIn?.following.includes(userInfo.userId))
+        );
+        reduxDispatch(setPostsCollection(posts));
+      }
+      // check không tìm thấy người dùng
     })()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   return (
+    notFound ? 
+      (
+        <div className="pt-12 text-center">
+          <div className="">
+            <p className="font-semibold text-2xl">
+              Rất tiếc, trang này hiện không khả dụng.
+            </p>
+          </div>
+          <div className="mt-5">
+            <span className="font-medium">Liên kết bạn theo dõi có thể bị hỏng hoặc trang này có thể đã bị gỡ.</span>
+            <a href="/" className="ml-1 text-sm text-blue-primary">Quay lại Jvbergram</a>
+          </div>
+        </div>
+      )
+    :
     (!profile && !postsCollection) || (
       <div className="pt-10 mx-auto lg:w-[935px]">
         <div className="profile__top-wrapper grid grid-cols-12 lg:min-h-[200px] pb-6">
