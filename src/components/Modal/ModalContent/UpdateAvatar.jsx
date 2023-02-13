@@ -149,8 +149,8 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   }, [imagePreviewLink]);
 
   return (
-    <div className={`modal__box-wrapper py-4 w-[500px]`}>
-      <div className="modal__title-wrapper px-5 flex justify-between items-center">
+    <div className={`modal__box-wrapper dark:bg-[#262626] py-4 w-[500px]`}>
+      <div className="modal__title-wrapper dark:border-b-[#363636] px-5 flex justify-between items-center">
         <div className="w-14"></div>
         <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">
           Thêm ảnh đại diện

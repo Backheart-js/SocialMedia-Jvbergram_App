@@ -26,7 +26,7 @@ function LoginModal({closeModal}) {
       }
 
     return (
-        <div className="modal__box-wrapper py-4 w-[400px] max-h-[600px] min-h-[300px] mb-10">
+        <div className="modal__box-wrapper dark:bg-[#262626] py-4 w-[400px] max-h-[600px] min-h-[300px] mb-10">
             <div className="login__logo-wrapper flex justify-center items-center">
               <div className="w-[240px] ml-10">
                 <img src={logo.logo_black} alt="" className="" />
@@ -64,7 +64,7 @@ function LoginModal({closeModal}) {
             </a>
           </div>
         </form>
-        <div className="signup__modal-wrapper flex justify-center text-sm">
+        <div className="signup__modal-wrapper dark:border-b-[#363636] flex justify-center text-sm">
           <span className="">Bạn chưa có tài khoản ư?</span>
           <a href="/signup" className="ml-2 text-blue-600 font-semibold">
             Đăng ký

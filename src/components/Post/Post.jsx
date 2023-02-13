@@ -87,7 +87,7 @@ function Post({ data = {} }) {
   }, []);
 
   return (
-    <div className="post__container py-3 dark:bg-black">
+    <div className="post__container dark:border-[#262626] py-3 dark:bg-black">
       <div className="flex justify-between items-center px-3 mb-3">
         <div className="flex items-center">
           <UserLabel
@@ -115,12 +115,12 @@ function Post({ data = {} }) {
             <ul className="py-2">
               {data.userId === currentUserId ? (
                 <>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold">
                       Chỉnh sửa
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
                       onClick={handleOpenDeletePostModal}
@@ -128,12 +128,12 @@ function Post({ data = {} }) {
                       Xóa bài viết
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                       Thêm vào mục yêu thích
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleGoToPost}
@@ -141,7 +141,7 @@ function Post({ data = {} }) {
                       Đi tới bài viết
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleCopyUrl}
@@ -149,7 +149,7 @@ function Post({ data = {} }) {
                       Sao chép liên kết
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={() => {
@@ -162,12 +162,12 @@ function Post({ data = {} }) {
                 </>
               ) : (
                 <>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button className="post__option-dropdown-btn text-highlight-dropdown font-semibold">
                       Báo cáo
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     {/* <button
                       className="post__option-dropdown-btn text-highlight-dropdown font-semibold"
                       onClick={() =>
@@ -214,12 +214,12 @@ function Post({ data = {} }) {
                       )
                     }
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                       Thêm vào mục yêu thích
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleGoToPost}
@@ -227,7 +227,7 @@ function Post({ data = {} }) {
                       Đi tới bài viết
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={handleCopyUrl}
@@ -235,7 +235,7 @@ function Post({ data = {} }) {
                       Sao chép liên kết
                     </button>
                   </li>
-                  <li className="post__option-dropdown--item">
+                  <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                     <button
                       className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                       onClick={() => {

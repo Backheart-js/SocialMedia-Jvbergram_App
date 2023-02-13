@@ -6,8 +6,8 @@ import './Setting.scss';
 function Setting() {
 
   return (
-    <div className='setting__wrapper'>
-        <div className='setting__box dark:bg-black'>
+    <div className='setting__wrapper xl:px-[160px] lg:px-[120px] md:px-[10px] pt-[30px] pb-[50px] lg:pt-[50px] lg:pb-[80px]'>
+        <div className='setting__box dark:border-[#262626] dark:bg-black'>
             <SettingSidebar />
             <main className='settingContent__wrapper'>
                 <Outlet />

@@ -18,7 +18,6 @@ $leftside-width: 194px;
 }
 
 .setting__field-wrapper {
-    @apply flex-col md:flex-row;
 
     &+& {
         margin-top: 24px;
@@ -26,7 +25,6 @@ $leftside-width: 194px;
 }
 .setting__rightside  {
     width: calc(100% - $leftside-width);
-    @apply xl:pr-16 lg:pr-10 sm:pr-0
 }
 .setting__leftside {
     display: flex;
@@ -44,8 +42,6 @@ $leftside-width: 194px;
     background-color: $hover-color-light-theme;
     border: 1px solid $border-color-light-theme;
     border-radius: 2px;
-
-    @apply xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626];
 }
 
 .setting__story-input {
@@ -58,5 +54,4 @@ $leftside-width: 194px;
     font-size: 13px;
     font-weight: 400;
     color: #777;
-    @apply xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400;
 }

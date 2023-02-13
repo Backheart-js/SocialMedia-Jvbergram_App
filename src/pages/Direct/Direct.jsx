@@ -24,7 +24,7 @@ function Direct() {
   
   return (
     <div className='direct__wrapper'>
-      <div className="direct__box lg:max-w-[935px] dark:bg-black">
+      <div className="direct__box dark:border-[#262626] lg:max-w-[935px] dark:bg-black">
         <DirectSidebar />
         {
           chatroomList && <Outlet />

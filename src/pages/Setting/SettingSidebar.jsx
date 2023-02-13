@@ -5,8 +5,8 @@ import "./Setting.scss";
 
 function SettingSidebar() {
   return (
-    <div className='settingSidebar__wrapper'>
-        <div className="settingSidebar__header-wrapper">
+    <div className='settingSidebar__wrapper dark:border-[#262626]'>
+        <div className="settingSidebar__header-wrapper dark:border-b-[#262626]">
             <div className="settingSidebar__logo-wrapper">
                 <a href="/setting" className="sidebarSetting__logo">
                     <img src={logo.logo_black} alt="" className="w-[80%] dark:hidden" />
@@ -25,22 +25,22 @@ function SettingSidebar() {
         <div className="settingSidebar__option">
             <ul className="settingSidebar__option-list">
             <li className="settingSidebar__option-item">
-                    <NavLink to={"/setting/original"} className="settingSidebar__option-link">
+                    <NavLink to={"/setting/original"} className="settingSidebar__option-link dark:text-[#FAFAFA] dark:hover:text-[#FAFAFA] dark:hover:bg-[#121212]">
                         Cài đặt chung
                     </NavLink>
                 </li>
                 <li className="settingSidebar__option-item">
-                    <NavLink to={"/setting/account"} className="settingSidebar__option-link">
+                    <NavLink to={"/setting/account"} className="settingSidebar__option-link dark:text-[#FAFAFA] dark:hover:text-[#FAFAFA] dark:hover:bg-[#121212]">
                         Thông tin cá nhân
                     </NavLink>
                 </li>
                 <li className="settingSidebar__option-item">
-                    <NavLink to={"/setting/password"} className="settingSidebar__option-link">
+                    <NavLink to={"/setting/password"} className="settingSidebar__option-link dark:text-[#FAFAFA] dark:hover:text-[#FAFAFA] dark:hover:bg-[#121212]">
                         Mật khẩu
                     </NavLink>
                 </li>
                 <li className="settingSidebar__option-item">
-                    <NavLink to={"/setting/email"} className="settingSidebar__option-link">
+                    <NavLink to={"/setting/email"} className="settingSidebar__option-link dark:text-[#FAFAFA] dark:hover:text-[#FAFAFA] dark:hover:bg-[#121212]">
                         Email
                     </NavLink>
                 </li>

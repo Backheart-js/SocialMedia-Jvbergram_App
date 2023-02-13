@@ -5,7 +5,7 @@ import SearchInput from './SearchInput'
 function SearchSubSidebar() {
   return (
     <div className='flex flex-col'>
-        <div className="search__func-wrapper">
+        <div className="search__func-wrapper dark:border-b-[#262626]">
             <p className="text-2xl font-medium mb-8 select-none dark:text-[#FAFAFA]">Tìm kiếm</p>
             <SearchInput />
         </div>

@@ -2,8 +2,6 @@
 
 .profile__top-wrapper {
     border-bottom: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#262626];
-
 }
 
 .profile__info-wrapper+.profile__info-wrapper {
@@ -20,7 +18,6 @@
     border-bottom: 1px solid $border-color-light-theme;
     border-radius: 2px;
     overflow: hidden;
-  @apply dark:border-b-[#262626];
 
 }
 

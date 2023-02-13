@@ -31,8 +31,6 @@
   background-color: #fff;
   border-radius: 20px;
   animation: scaleModal .1s linear;
-
-  @apply dark:bg-[#262626];
 }
 
 .modal__content {
@@ -44,7 +42,6 @@
 .modal__title-wrapper {
   padding: 0 0 12px 0;
   border-bottom: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#363636];
 
 }
 
@@ -121,8 +118,6 @@
   border: 1px solid;
   border-color: $border-color-light-theme;
   border-radius: 10px;
-
-  @apply dark:border-[#363636];
 }
 
 .modal__avatar-area--wrapper {
@@ -351,14 +346,11 @@
 
 .modal__delete-item {
   border-top: 1px solid rgb(218, 221, 225);
-  @apply dark:border-t-[#363636];
 }
 
 // Create message Modal
 .createMessageModal__header-wrapper {
   border-bottom: 1px solid rgb(218, 221, 225);
-  @apply dark:border-b-[#363636];
-
 }
 
 .createMessageModal__content-input {
@@ -367,7 +359,6 @@
   font-weight: 500;
   resize: none;
   border-bottom: 1px solid rgb(218, 221, 225);
-  @apply dark:border-b-[#363636];
 
   &:focus-visible {
     outline: none;
@@ -381,8 +372,6 @@
 .createMessageModal__search-wrapper {
   display: flex;
   border-bottom: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#363636];
-
 }
 
 .createMessage__search-input {
@@ -420,8 +409,10 @@
 
   &+& {
     border-top: 1px solid $border-color-light-theme;
-  @apply dark:border-t-[#363636];
-
+  
+    .dark {
+      border-top: 1px solid #363636;
+    }
   }
 }
 
@@ -479,7 +470,6 @@
     right: 0;
     padding: 20px 40px;
     border-top: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#363636];
 
 
 }
@@ -519,10 +509,6 @@
       background-color: rgba(#000000, .7);
     }
   }
-}
-
-.icon {
-  @apply dark:text-[#FAFAFA];
 }
 
 @keyframes scaleModal {

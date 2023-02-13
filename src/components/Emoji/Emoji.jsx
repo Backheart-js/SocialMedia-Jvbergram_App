@@ -16,7 +16,7 @@ function DropdownEmoji({ setValue }) {
           <div className="grid md:grid-cols-7 grid-cols-5 gap-1">
             {emoji.icons.map((icon, index) => (
               <button
-                className="emoji-btn col-span-1"
+                className="emoji-btn col-span-1 dark:hover:bg-[#121212]"
                 key={index}
                 onClick={() => handleOnclick(icon)}
               >

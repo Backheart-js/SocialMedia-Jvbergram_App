@@ -15,5 +15,10 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('postcss-import'),
+    require('postcss-nesting'),
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ],
 }

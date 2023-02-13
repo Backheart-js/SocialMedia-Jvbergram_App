@@ -4,9 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { LOGIN } from "~/constants/modalTypes";
-import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
-import { useAuthListener } from "~/hooks";
 import modalSlice from "~/redux/slice/modalSlide";
 import { updateLikePost } from "~/services/firebaseServices";
 
@@ -78,14 +76,14 @@ function PostInteractive({
             >
               <FontAwesomeIcon
                 icon={faHeart}
-                className="postInteractive__icon icon"
+                className="postInteractive__icon dark:text-[#FAFAFA]"
               />
             </button>
           )}
           <button ref={commentBtnRef} className="postInteractive__button">
             <svg
               aria-label="Bình luận"
-              className="postInteractive__icon icon"
+              className="postInteractive__icon dark:text-[#FAFAFA]"
               color="#262626"
               fill="#262626"
               height={24}
@@ -105,7 +103,7 @@ function PostInteractive({
           <button className="postInteractive__button">
             <svg
               aria-label="Chia sẻ bài viết"
-              className="postInteractive__icon icon"
+              className="postInteractive__icon dark:text-[#FAFAFA]"
               color="#262626"
               fill="#262626"
               height={24}
@@ -137,7 +135,7 @@ function PostInteractive({
           <button className="postInteractive__button">
             <FontAwesomeIcon
               icon={faBookmark}
-              className="postInteractive__icon icon"
+              className="postInteractive__icon dark:text-[#FAFAFA]"
             />
           </button>
         </div>

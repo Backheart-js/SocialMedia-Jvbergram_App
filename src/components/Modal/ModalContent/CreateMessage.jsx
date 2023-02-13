@@ -31,9 +31,9 @@ function CreateMessage({ closeModal, content, setContent }) {
   };
 
   return (
-    <div className="modal__box-wrapper py-4 w-[400px]">
+    <div className="modal__box-wrapper py-4 w-[400px] dark:bg-[#262626]">
       <div className="">
-        <header className="createMessageModal__header-wrapper flex justify-between px-4 pb-2 dark:border-[#262626] ">
+        <header className="createMessageModal__header-wrapper  flex justify-between px-4 pb-2 dark:border-b-[#363636]">
           <div className="w-10"></div>
           <div className="dark:text-[#FAFAFA]">
             <span className="font-semibold">Tin nhắn mới</span>
@@ -47,7 +47,7 @@ function CreateMessage({ closeModal, content, setContent }) {
         <main className="createMessageModal__body-wrapper">
           <div className="createMessageModal__content-wrapper">
             <textarea
-              className="createMessageModal__content-input px-4 py-2 dark:bg-transparent dark:text-[#FAFAFA]"
+              className="createMessageModal__content-input dark:border-b-[#363636] px-4 py-2 dark:bg-transparent dark:text-[#FAFAFA]"
               name=""
               id=""
               placeholder="Nội dung..."

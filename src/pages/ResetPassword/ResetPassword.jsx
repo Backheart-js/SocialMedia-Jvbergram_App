@@ -56,7 +56,7 @@ function ResetPassword() {
           Nhập Email của bạn và chúng tôi sẽ gửi một email xác thực
         </div>
         <form className='forgotPassword__form' onSubmit={handleSubmitForm}>
-          <input value={emailValue} type="email" className="forgotPassword__input" placeholder='Email của người dùng' onChange={(e) => setEmailValue(e.target.value)}/>
+          <input value={emailValue} type="email" className="forgotPassword__input dark:border-[#262626]" placeholder='Email của người dùng' onChange={(e) => setEmailValue(e.target.value)}/>
           <Button disabled={isDisabled} className={`forgotPassword__btn ${isDisabled ? 'disabled' : ''}`} btnPrimary>
             Gửi email xác thực
           </Button>

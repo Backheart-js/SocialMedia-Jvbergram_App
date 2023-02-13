@@ -40,8 +40,8 @@ function DirectSidebar() {
   };
 
   return (
-    <div className="drSidbar__wrapper">
-      <div className="drSidebar__header-wrapper">
+    <div className="drSidbar__wrapper dark:border-r-[#262626]">
+      <div className="drSidebar__header-wrapper dark:border-b-[#262626]">
         <div className="flex items-center justify-end h-full">
           <div className="w-[60px]"></div>
           <div className="flex items-center justify-center flex-grow">
@@ -101,14 +101,14 @@ function DirectSidebar() {
                 />
               </div>
               <div className="drSidebar__name-wrapper">
-                <p className="drSidebar__name-text">
+                <p className="drSidebar__name-text dark:text-gray-300">
                   {chatRoom.partnerInfo?.fullname}
                 </p>
                 {chatRoom.lastMessage ? (
                   <div className="flex items-center max-w-[200px]">
                     {(chatRoom.lastMessage?.image &&
                       (chatRoom.lastSender === loggedInUser.userId ? (
-                        <p className="drSidebar__name-currentMessage">
+                        <p className="drSidebar__name-currentMessage dark:text-gray-300 ">
                           Bạn:{" "}
                           <FontAwesomeIcon
                             className="text-base ml-1"
@@ -116,19 +116,19 @@ function DirectSidebar() {
                           />
                         </p>
                       ) : (
-                        <p className="drSidebar__name-currentMessage">
+                        <p className="drSidebar__name-currentMessage dark:text-gray-300 ">
                           {chatRoom.partnerInfo.fullname} đã gửi 1 ảnh
                         </p>
                       ))) ||
                       (chatRoom.lastMessage.heartIcon &&
                         (chatRoom.lastSender === loggedInUser.userId ? (
-                          <p className="drSidebar__name-currentMessage">
+                          <p className="drSidebar__name-currentMessage dark:text-gray-300 ">
                             Bạn: ❤️
                           </p>
                         ) : (
-                          <p className="drSidebar__name-currentMessage">❤️</p>
+                          <p className="drSidebar__name-currentMessage dark:text-gray-300 ">❤️</p>
                         ))) || (
-                        <span className="drSidebar__name-currentMessage">
+                        <span className="drSidebar__name-currentMessage dark:text-gray-300 ">
                           {chatRoom.lastSender === loggedInUser.userId && (
                             <span className="">Bạn:</span>
                           )}{" "}

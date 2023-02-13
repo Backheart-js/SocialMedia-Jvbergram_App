@@ -5,22 +5,16 @@
   background-color: #fff;
   border: 1px solid $border-color-light-theme;
   border-radius: 2px;
-  @apply dark:border-[#262626];
-
 }
 
 .postPage__right {
   border-left: 1px solid $border-color-light-theme;
-  @apply dark:border-l-[#262626];
-
 }
 
 .postPage__owner-wrapper {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#262626];
-
 }
 
 .postPage__follow-state {
@@ -59,14 +53,10 @@
 
 .postPage__bottom {
   border-top: 1px solid $border-color-light-theme;
-  @apply dark:border-t-[#262626];
-
 }
 
 .postPage__comment-input {
   border-top: 1px solid $border-color-light-theme;
-  @apply dark:border-t-[#262626];
-
 }
 
 .postPage__owner-wrapper {
@@ -84,8 +74,6 @@
 
   &:hover {
     background-color: $hover-color-light-theme;
-    @apply dark:bg-[#121212];
-
   }
 
   & + & {
@@ -117,8 +105,4 @@
   height: 610px;
   min-height: 310px;
   object-fit: contain;
-}
-
-.icon {
-  @apply dark:text-[#FAFAFA]
 }

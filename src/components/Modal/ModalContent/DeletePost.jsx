@@ -27,7 +27,7 @@ function DeletePost({ closeModal, postId, imagesUrl, redirectToProfile }) {
     }
 
   return (
-    <div className='modal__box-wrapper flex flex-col items-center min-w-[400px] min-h-[370px] pt-5 select-none'>
+    <div className='modal__box-wrapper dark:bg-[#262626] flex flex-col items-center min-w-[400px] min-h-[370px] pt-5 select-none'>
         <div className="delete__logo-wrapper mt-2 mb-4">
             <img src={logo.delete_option_1} alt="" className="" />
         </div>
@@ -35,10 +35,10 @@ function DeletePost({ closeModal, postId, imagesUrl, redirectToProfile }) {
             Bạn có chắc muốn xóa bài viết này?
         </p>
         <ul className="mt-6 w-full">
-            <li className="modal__delete-item text-[#ED4956]">
+            <li className="modal__delete-item dark:border-t-[#363636] text-[#ED4956]">
                 <button className="py-3 w-full text-base font-bold" onClick={handleDeletePost}>Xóa</button>
             </li>
-            <li className="modal__delete-item">
+            <li className="modal__delete-item dark:border-t-[#363636]">
                 <button className="py-3 w-full text-sm font-medium dark:text-[#FAFAFA]" onClick={closeModal}>Hủy</button>
             </li>
         </ul>

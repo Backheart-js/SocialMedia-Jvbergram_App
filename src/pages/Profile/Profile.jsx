@@ -169,7 +169,7 @@ function Profile() {
   ) : (
     (!profile && !postsCollection) || (
       <div className="pt-10 mx-auto lg:w-[935px]">
-        <div className="profile__top-wrapper grid grid-cols-12 lg:min-h-[200px] pb-6">
+        <div className="profile__top-wrapper dark:border-b-[#262626] grid grid-cols-12 lg:min-h-[200px] pb-6">
           <div className="col-span-4 flex justify-center items-center">
             <Avatar avatarUrl={profile.avatarUrl} size={"big"} />
           </div>
@@ -328,7 +328,7 @@ function Profile() {
             <div className="grid grid-cols-12 gap-8">
               {postsCollection.map((post) => (
                 <button
-                  className="post__wrapper col-span-4"
+                  className="post__wrapper dark:border-b-[#262626] col-span-4"
                   key={post.docId}
                   onClick={() => navigateToPost(post.docId)}
                 >

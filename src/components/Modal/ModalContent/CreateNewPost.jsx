@@ -166,11 +166,11 @@ function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePr
 
   return (
     <div
-      className={`modal__box-wrapper py-4 px-5 ${
+      className={`modal__box-wrapper dark:bg-[#262626] py-4 px-5 ${
         imagePreviewLink.length > 0 ? "w-[550px]" : "w-[500px]"
       }`}
     >
-      <div className="modal__title-wrapper">
+      <div className="modal__title-wrapper dark:border-b-[#363636]">
         <p className="text-lg font-semibold text-center dark:text-[#FAFAFA]">Tạo bài viết mới</p>
       </div>
       <div className="modal__body-wrapper">
@@ -188,12 +188,12 @@ function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePr
               setCaptionValue(e.target.value);
             }}
           ></textarea>
-          <div className="modal__image-area--wrapper">
+          <div className="modal__image-area--wrapper dark:border-[#363636]">
             {imagePreviewLink.length === 0 ? (
               <div className="modal__image-area--nonImg h-[300px]">
                 <svg
                   aria-label="Biểu tượng thể hiện file phương tiện, chẳng hạn như hình ảnh hoặc video"
-                  className="icon"
+                  className="dark:text-[#FAFAFA]"
                   color="#262626"
                   fill="#262626"
                   height="77"

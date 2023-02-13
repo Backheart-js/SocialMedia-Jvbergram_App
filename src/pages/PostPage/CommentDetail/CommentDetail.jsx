@@ -228,7 +228,7 @@ function CommentItem({
                   onClick={() => setToggleCommentDropdown((prev) => !prev)}
                 >
                   <FontAwesomeIcon
-                    className="comment__func-icon icon"
+                    className="comment__func-icon dark:text-[#FAFAFA]"
                     icon={faEllipsis}
                   />
                 </button>
@@ -237,7 +237,7 @@ function CommentItem({
           </div>
         </div>
         <button className="pl-2">
-          <FontAwesomeIcon className="text-xs icon" icon={faHeart} />
+          <FontAwesomeIcon className="text-xs dark:text-[#FAFAFA]" icon={faHeart} />
         </button>
       </div>
     </li>

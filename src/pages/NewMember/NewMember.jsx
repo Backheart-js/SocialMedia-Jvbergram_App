@@ -186,17 +186,17 @@ function NewMember() {
                 </p>
               </header>
               <main className="mt-10 px-16">
-                <div className="setting__fullname-wrapper setting__field-wrapper flex items-start">
+                <div className="setting__fullname-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
                   <div className="setting__leftside">
                     <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">
                       Tên đầy đủ
                     </p>
                   </div>
-                  <div className="setting__rightside">
+                  <div className="setting__rightside xl:pr-16 lg:pr-10 sm:pr-0">
                     <input
                       value={userData.fullname}
                       type="text"
-                      className="setting__fullname-input setting__input"
+                      className="setting__fullname-input setting__input xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626]"
                       onChange={(e) =>
                         setUserData((prev) => {
                           return {
@@ -206,22 +206,22 @@ function NewMember() {
                         })
                       }
                     />
-                    <p className="setting__subnote">
+                    <p className="setting__subnote xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400">
                       Thông tin này sẽ xuất hiện trên trang cá nhân của bạn
                     </p>
                   </div>
                 </div>
-                <div className="setting__birthday-wrapper setting__field-wrapper flex items-start">
+                <div className="setting__birthday-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
                   <div className="setting__leftside">
                     <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">
                       Ngày sinh
                     </p>
                   </div>
-                  <div className="setting__rightside">
+                  <div className="setting__rightside xl:pr-16 lg:pr-10 sm:pr-0">
                     <input
                       value={userData.birthday}
                       type="date"
-                      className="setting__birthday-input setting__input"
+                      className="setting__birthday-input setting__input xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626]"
                       onChange={(e) =>
                         setUserData((prev) => {
                           return {
@@ -233,17 +233,17 @@ function NewMember() {
                     />
                   </div>
                 </div>
-                <div className="setting__story-wrapper setting__field-wrapper flex items-start">
+                <div className="setting__story-wrapper setting__field-wrapper  flex-col md:flex-row flex items-start">
                   <div className="setting__leftside">
                     <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">
                       Tiểu sử
                     </p>
                   </div>
-                  <div className="setting__rightside">
+                  <div className="setting__rightside xl:pr-16 lg:pr-10 sm:pr-0">
                     <textarea
                       value={userData.story}
                       type="text"
-                      className="setting__story-input setting__input"
+                      className="setting__story-input setting__input xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626]"
                       onChange={(e) =>
                         setUserData((prev) => {
                           return {
@@ -253,20 +253,20 @@ function NewMember() {
                         })
                       }
                     />
-                    <p className="setting__subnote">
+                    <p className="setting__subnote xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400">
                       {userData.story.length} / 50
                     </p>
                   </div>
                 </div>
-                <div className="setting__gender-wrapper setting__field-wrapper flex items-start">
+                <div className="setting__gender-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
                   <div className="setting__leftside">
                     <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">
                       Giới tính
                     </p>
                   </div>
-                  <div className="setting__rightside">
+                  <div className="setting__rightside xl:pr-16 lg:pr-10 sm:pr-0">
                     <select
-                      className="setting__input"
+                      className="setting__input xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626]"
                       value={userData.gender}
                       name=""
                       id=""
@@ -299,7 +299,7 @@ function NewMember() {
                       </option>
                     </select>
 
-                    <p className="setting__subnote">
+                    <p className="setting__subnote xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400">
                       Thông tin này sẽ không hiển thị trên trang cá nhân của bạn
                     </p>
                   </div>

@@ -93,7 +93,7 @@ function DirectRoom() {
     <></>
   ) : (
     <div ref={wrapperRef} className="drRoom__wrapper">
-      <div className="drRoom__header">
+      <div className="drRoom__header dark:border-b-[#262626]">
         <Link
           to={`/${conversationInfo.partnerInfo?.username}`}
           className={`h-full items-center ${toggleInfo ? "hidden" : "flex"}`}

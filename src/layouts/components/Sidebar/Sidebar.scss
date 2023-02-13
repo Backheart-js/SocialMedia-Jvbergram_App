@@ -8,25 +8,14 @@
     bottom: 0;
 }
 
-.icon {
-    @apply dark:text-[#FAFAFA];
-}
-
 .sidebar__main-wrapper {
     height: 100%;
     border-right: 1px solid $border-color-light-theme;
-  @apply dark:border-r-[#262626];
-
-
 }
 
 .sidebarMain__logo-wrapper {
     height: 75px;
     padding: 10px 16px 12px 8px;
-}
-
-.sidebarMain__logo {
-    @apply sm:hidden xl:block;
 }
 
 .sidebarMain__list-wrapper {
@@ -47,7 +36,6 @@
     &:hover {
         background-color: rgb(250, 250, 250);
         cursor: pointer;
-        @apply dark:bg-[#121212];
 
         .sidebarMain__item-icon {
             transform: scale(1.1);
@@ -91,7 +79,6 @@
     font-weight: 500;
     margin-left: 16px;
     user-select: none;
-    @apply hidden xl:block
 }
 
 
@@ -119,7 +106,6 @@
     &:hover {
         cursor: pointer;
         background-color: hwb(0 95% 4%);
-        @apply dark:bg-[#121212];
     }
 }
 

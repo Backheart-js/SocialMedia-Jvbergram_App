@@ -8,7 +8,7 @@ function Avatar({ avatarUrl, size = "small" }) {
   return !avatarUrl ? (
     <Skeleton count={1} circle className={`avatart__${size}`}/>
   ) : (
-    <div className={`avatar__wrapper avatar__${size}`}>
+    <div className={`avatar__wrapper avatar__${size} dark:border-[#262626]`}>
       <div className="pb-[100%] bg-center bg-cover bg-no-repeat w-full" style={{ backgroundImage: `url(${avatarUrl.current || avatarUrl.default})` }}></div>
     </div>
   );

@@ -41,7 +41,7 @@ function SearchInput() {
       content={
         <ul className="py-4 search__result-list">
           {resultValue.map((result, index) => (
-            <li className="search__result-item" key={index}>
+            <li className="search__result-item dark:hover:bg-[#121212]" key={index}>
               <UserLabel avatarUrl={result.avatarUrl} username={result.username} fullname={result.fullname} size={"small"}/>
             </li>
           ))}

@@ -16,7 +16,9 @@
 
     &+& {
         border-top: 1px solid $border-color-light-theme;
-        @apply dark:border-t-[#262626];
+        .dark {
+            border-top: 1px solid #262626;
+        }
         
     }
 }

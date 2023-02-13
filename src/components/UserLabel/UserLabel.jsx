@@ -23,7 +23,7 @@ function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...pro
       onClick={handleCloseModal}
       {...props}
     >
-      <div className={`avatar-${size} avatar-wrapper`}>
+      <div className={`avatar-${size} avatar-wrapper dark:border-[#262626]`}>
         <img
           src={avatarUrl.current || avatarUrl.default}
           alt=""

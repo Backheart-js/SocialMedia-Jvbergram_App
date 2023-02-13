@@ -16,8 +16,6 @@
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid $border-color-light-theme;
-  @apply dark:border-[#262626];
-
 }
 
 // Sidebar
@@ -26,8 +24,6 @@
   width: 350px;
   height: 100%;
   border-right: 1px solid $border-color-light-theme;
-  @apply dark:border-r-[#262626];
-
 }
 
 .drSidebar__header-wrapper {
@@ -36,7 +32,6 @@
   padding: 10px 20px;
   border-bottom: 1px solid $border-color-light-theme;
   user-select: none;
-  @apply dark:border-b-[#262626];
 }
 
 
@@ -56,13 +51,16 @@
 
   &.notSeen {
     .drSidebar__name-text {
-      @apply dark:text-gray-300 text-[#262626];
+      color: #262626;
       font-weight: 600;
 
+      &:dark {
+        color: #FAFAFA;
+      }
     }
 
     .drSidebar__name-currentMessage {
-      @apply dark:text-gray-300 text-[#262626];
+      color: #262626;
       font-weight: 600;
     }
 
@@ -81,7 +79,6 @@
       font-weight: 600;
       color: #262626;
 
-      @apply dark:text-gray-300;
     }
   }
 
@@ -89,8 +86,6 @@
   &.active {
     cursor: pointer;
     background-color: $hover-color-light-theme;
-    @apply dark:bg-[#121212];
-
   }
 
   & + & {
@@ -103,7 +98,7 @@
 }
 .drSidebar__name-text {
   font-size: 14px;
-  @apply dark:text-gray-300 text-[#262626];
+  color: #262626;
   font-weight: 400;
 }
 .drSidebar__name-currentMessage {
@@ -134,8 +129,7 @@
     height: 2px;
     border-radius: 50%;
     background-color: #999;
-
-    @apply bg-gray-400
+    background-color: #999;
   }
 }
 
@@ -157,7 +151,6 @@
   padding: 0 20px;
   border-bottom: 1px solid $border-color-light-theme;  
   z-index: 1;
-  @apply dark:border-b-[#262626];
 }
 
 .drRoom_content-wrapper {
@@ -175,7 +168,6 @@
   /* Track */
   &::-webkit-scrollbar-track {
     background-color: #f1f1f1;
-    @apply dark:bg-[#424242];
   }
 
   /* Handle */
@@ -187,8 +179,6 @@
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-
-    @apply dark:bg-[#333232]
   }
 
 //   .drRoom_content-box {
@@ -207,7 +197,6 @@
   padding: 6px 10px;
   border-radius: 20px;
   border: 1px solid $border-color-light-theme;
-  @apply dark:border-[#262626];
 
 }
 .chatInput__icon {
@@ -242,15 +231,11 @@
   }
 }
 
-.icon {
-  @apply dark:text-[#FAFAFA]
-}
 
 .detail__chat-wrapper {
   padding: 12px 24px;
   &+& {
     border-top: 1px solid $border-color-light-theme;
-    @apply dark:border-t-[#262626];
   }
 }
 

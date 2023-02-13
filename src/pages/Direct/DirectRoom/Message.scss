@@ -11,7 +11,6 @@
 
         .message-bubble {
             background-color: #efefef;
-            @apply dark:bg-[#262626]
         }
     }
 
@@ -20,7 +19,6 @@
 
         .message-bubble {
             border: 1px solid $border-color-light-theme;
-             @apply dark:border-[#262626];
 
         }
 
@@ -85,8 +83,4 @@
 .message__avatar-box {
     width: 100%;
     height: 100px;
-}
-
-.icon {
-    @apply dark:text-[#FAFAFA]
 }

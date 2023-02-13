@@ -6,7 +6,6 @@
   border: 1px solid $border-color-light-theme;
   border-radius: 6px;
   overflow: hidden;
-  @apply dark:border-[#262626];
 
 
   & + & {
@@ -67,7 +66,6 @@
 
   &:hover {
     background-color: $hover-color-light-theme;
-    @apply dark:bg-[#121212];
   }
 
   & + & {

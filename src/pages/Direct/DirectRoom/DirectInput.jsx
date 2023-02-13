@@ -163,7 +163,7 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
   }, [previewImage]);
 
   return (
-    <div className="chatInput__wrapper">
+    <div className="chatInput__wrapper dark:border-[#262626]">
       <div className="chatInput__icon">
         <Dropdown
           visible={toggleDropdownEmoji}
@@ -180,7 +180,7 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
           >
             <FontAwesomeIcon
               icon={faFaceSmile}
-              className="text-2xl text-[#262626] icon"
+              className="text-2xl text-[#262626] dark:text-[#FAFAFA]"
             />
           </button>
         </Dropdown>
@@ -213,7 +213,7 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
                 >
                   <FontAwesomeIcon
                     icon={faXmark}
-                    className={"text-xs text-gray-100 icon"}
+                    className={"text-xs text-gray-100 dark:text-[#FAFAFA]"}
                   />
                 </button>
               )}
@@ -304,7 +304,7 @@ function DirectInput({ isNewMessage, conversationInfo, contentRef }) {
             >
               <FontAwesomeIcon
                 icon={faHeart}
-                className={"text-2xl text-[#262626] icon"}
+                className={"text-2xl text-[#262626] dark:text-[#FAFAFA]"}
               />
             </button>
           </div>

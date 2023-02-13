@@ -17,7 +17,7 @@ function FollowersModal({ followType, userIdList, fullname }) {
   const isLoggedInUser = username === loggedInUser.username;
 
   return (
-    <div className="modal__box-wrapper py-4 w-[400px] max-h-[450px] min-h-[300px]">
+    <div className="modal__box-wrapper dark:bg-[#262626] py-4 w-[400px] max-h-[450px] min-h-[300px]">
       <div className="">
         {followType === "followers" ? (
           <>

@@ -152,7 +152,7 @@ function PostPage() {
     </div>
   ) : (
     <div className={`mx-auto lg:min-w-[800px] lg:max-w-[950px] ${user ? "pt-10" : "pt-5"}`}>
-      <div className="postPage__wrapper flex bg-white dark:bg-black">
+      <div className="postPage__wrapper dark:border-[#262626] flex bg-white dark:bg-black">
         <div className="max-w-[590px] min-w-[480px]">
           <div className="bg-black">
             <HeroSlider speed={300} infinite={false} arrow>
@@ -164,8 +164,8 @@ function PostPage() {
             </HeroSlider>
           </div>
         </div>
-        <div className="postPage__right relative flex flex-col w-[360px] h-[610px]">
-          <div className="postPage__owner-wrapper">
+        <div className="postPage__right dark:border-l-[#262626] relative flex flex-col w-[360px] h-[610px]">
+          <div className="postPage__owner-wrapper dark:border-b-[#262626]">
             <div className="flex">
               <UserLabel
                 avatarUrl={data.avatarUrl}
@@ -214,12 +214,12 @@ function PostPage() {
                 <ul className="py-2">
                   {data.userId === currentUserId ? (
                     <>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
                           Chỉnh sửa
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button
                           className="post__option-dropdown-btn text-[#ED4956] font-semibold"
                           onClick={() =>
@@ -229,17 +229,17 @@ function PostPage() {
                           Xóa bài viết
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                           Thêm vào mục yêu thích
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button
                           className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                           onClick={() => {
@@ -252,12 +252,12 @@ function PostPage() {
                     </>
                   ) : (
                     <>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn text-[#ED4956] font-semibold">
                           Báo cáo
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         {isFollowing ? (
                           <button
                             className="post__option-dropdown-btn text-[#ED4956] font-semibold"
@@ -282,17 +282,17 @@ function PostPage() {
                           </button>
                         )}
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                           Thêm vào mục yêu thích
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
-                      <li className="post__option-dropdown--item">
+                      <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button
                           className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                           onClick={() => {
@@ -308,12 +308,12 @@ function PostPage() {
               }
             >
               <button
-                className="postpage__option-button icon"
+                className="postpage__option-button dark:text-[#FAFAFA]"
                 onClick={() => {
                   setToggleOptionDropdown((prev) => !prev);
                 }}
               >
-                <FontAwesomeIcon className="icon" icon={faEllipsis} />
+                <FontAwesomeIcon className="dark:text-[#FAFAFA]" icon={faEllipsis} />
               </button>
             </Dropdown>
           </div>
@@ -326,7 +326,7 @@ function PostPage() {
               commentList={userCommentList}
             />
           </div>
-          <div className="postPage__bottom">
+          <div className="postPage__bottom dark:border-t-[#262626]">
             <div className="postPage__interactive-wrapper">
               <PostInteractive
                 commentBtnRef={commentBtn}
@@ -338,7 +338,7 @@ function PostPage() {
             </div>
             {
               user ?
-            <div className="postPage__comment-input">
+            <div className="postPage__comment-input dark:border-t-[#262626]">
               <CommentTextField
                 docId={docId}
                 commentFieldRef={commentFieldRef}
@@ -347,7 +347,7 @@ function PostPage() {
             </div>
               
               :
-              <div className="postPage__comment-input flex justify-center items-center mt-2">
+              <div className="postPage__comment-input dark:border-t-[#262626] flex justify-center items-center mt-2">
                 <button className="text-blue-primary font-semibold text-sm" onClick={openLoginModal}>Đăng nhập</button>
                 <span className="text-sm ml-1 font-medium text-gray-800">để bình luận nội dung này</span>
               </div>

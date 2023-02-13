@@ -38,7 +38,7 @@ function UnFollow({ closeModal }) {
   };
 
   return (
-    <div className="modal__box-wrapper flex flex-col items-center min-w-[400px] min-h-[200px] pt-5 select-none">
+    <div className="modal__box-wrapper dark:bg-[#262626] flex flex-col items-center min-w-[400px] min-h-[200px] pt-5 select-none">
       <Link
         to={`/${followingUserInfo.username}`}
         className="mb-5"

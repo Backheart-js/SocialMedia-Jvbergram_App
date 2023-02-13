@@ -46,7 +46,7 @@ function SearchMessage({ userSelected, setUserSelected }) {
     
   return (
     <>
-      <div className="createMessageModal__search-wrapper px-4 my-2">
+      <div className="createMessageModal__search-wrapper dark:border-b-[#363636]  px-4 my-2">
         <div className="pr-3">
           <span className="font-semibold text-sm dark:text-[#FAFAFA]">Tới:</span>
         </div>

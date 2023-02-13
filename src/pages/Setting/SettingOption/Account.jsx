@@ -47,7 +47,7 @@ function Account() {
 
   return (
     <div className="">
-      <div className="setting__avatar-wrapper setting__field-wrapper">
+      <div className="setting__avatar-wrapper setting__field-wrapper flex-col md:flex-row">
         <div className="setting__leftside setting__avatar-img-wrapper">
           <Avatar avatarUrl={userData.avatar} />
         </div>
@@ -64,7 +64,7 @@ function Account() {
           </Button>
         </div>
       </div>
-      <div className="setting__fullname-wrapper setting__field-wrapper flex items-start">
+      <div className="setting__fullname-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tên đầy đủ</p>
         </div>
@@ -72,7 +72,7 @@ function Account() {
           <input
             value={userData.fullname}
             type="text"
-            className="setting__fullname-input setting__input"
+            className="setting__fullname-input setting__input xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-[#262626] dark:text-[#FAFAFA] dark:border-[#262626]"
             onChange={(e) => setUserData(prev => {
               return {
                 ...prev,
@@ -85,7 +85,7 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__birthday-wrapper setting__field-wrapper flex items-start">
+      <div className="setting__birthday-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Ngày sinh</p>
         </div>
@@ -93,7 +93,7 @@ function Account() {
           <input
             value={userData.birthday}
             type="date"
-            className="setting__birthday-input setting__input"
+            className="setting__birthday-input setting__input xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-[#262626] dark:text-[#FAFAFA] dark:border-[#262626]"
             onChange={(e) => setUserData(prev => {
               return {
                 ...prev,
@@ -103,7 +103,7 @@ function Account() {
           />
         </div>
       </div>
-      <div className="setting__story-wrapper setting__field-wrapper flex items-start">
+      <div className="setting__story-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tiểu sử</p>
         </div>
@@ -124,13 +124,13 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__gender-wrapper setting__field-wrapper flex items-start">
+      <div className="setting__gender-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Giới tính</p>
         </div>
         <div className="setting__rightside">
           <select
-            className="setting__input"
+            className="setting__input xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-[#262626] dark:text-[#FAFAFA] dark:border-[#262626]"
             value={userData.gender}
             name=""
             id=""
@@ -157,7 +157,7 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__gender-wrapper setting__field-wrapper flex items-start">
+      <div className="setting__gender-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
         <div className="setting__leftside">
         </div>
         <div className="setting__rightside">

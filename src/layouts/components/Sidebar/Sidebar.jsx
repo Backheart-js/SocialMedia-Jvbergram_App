@@ -78,14 +78,14 @@ function Sidebar() {
 
   return (
     <aside id="sidebar" className={`z-10 dark:bg-black`}>
-      <div className="sidebar__main-wrapper xl:w-[245px] w-[80px]">
+      <div className="sidebar__main-wrapper xl:w-[245px] w-[80px] dark:border-r-[#262626]">
         <div className="flex flex-col justify-between h-full px-3 py-8">
           <div className="sidebarMain__function-wrapper">
             <div className="sidebarMain__logo-wrapper">
               {toggleSubSidebar ? (
                 <></>
               ) : (
-                <a href="/" className="sidebarMain__logo">
+                <a href="/" className="sm:hidden xl:block">
                   {/* <svg
                     aria-label="Instagram"
                     className="_ab6-"
@@ -109,7 +109,7 @@ function Sidebar() {
               )}
             </div>
             <ul className="sidebarMain__list-wrapper">
-              <a href="/" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
+              <a href="/" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <svg
                   aria-label="Trang chủ"
                   className="icon"
@@ -132,81 +132,81 @@ function Sidebar() {
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Trang chủ</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Trang chủ</span>
                 )}
               </a>
               <li
                 ref={searchRef}
                 data-type="search"
-                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
-                  className={`sidebarMain__item-icon icon ${
+                  className={`sidebarMain__item-icon dark:text-[#FAFAFA] ${
                     toggleSubSidebar ? "active" : ""
                   }`}
                 />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Tìm kiếm</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Tìm kiếm</span>
                 )}
               </li>
-              <a href="/explore/people" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
+              <a href="/explore/people" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <FontAwesomeIcon
                   icon={faCompass}
-                  className="sidebarMain__item-icon icon"
+                  className="sidebarMain__item-icon dark:text-[#FAFAFA]"
                 />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Khám phá</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
+              <NavLink to="/direct" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Tin nhắn</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Tin nhắn</span>
                 )}
               </NavLink>
               <li
               ref={notiRef}
                 data-type="noti"
-                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
                   icon={faHeart}
-                  className={`sidebarMain__item-icon icon ${
+                  className={`sidebarMain__item-icon dark:text-[#FAFAFA] ${
                     toggleSubSidebar ? "active" : ""
                   }`}
                 />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Thông báo</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Thông báo</span>
                 )}
               </li>
               <li
-                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleOpenCreateNewPostModal}
               >
                 <FontAwesomeIcon
                   icon={faSquarePlus}
-                  className="sidebarMain__item-icon icon"
+                  className="sidebarMain__item-icon dark:text-[#FAFAFA]"
                 />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Tạo</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Tạo</span>
                 )}
               </li>
               <NavLink
                 to={`/${userLoggedIn?.username}`}
-                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
               >
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar
@@ -221,7 +221,7 @@ function Sidebar() {
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Trang cá nhân</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Trang cá nhân</span>
                 )}
               </NavLink>
             </ul>
@@ -233,21 +233,21 @@ function Sidebar() {
               interactive={true}
               content={
                 <ul className="dropdown__list dark:bg-[#262626]">
-                  <Link to="/setting/account" className="dropdown__item dark:text-[#FAFAFA]">
+                  <Link to="/setting/account" className="dropdown__item dark:hover:bg-[#121212] dark:text-[#FAFAFA]">
                     <span className="">Cài đặt</span>
                     <FontAwesomeIcon icon={faGear} className="dark:text-[#FAFAFA]"/>
                   </Link>
-                  <button className="dropdown__item dark:text-[#FAFAFA]">
+                  <button className="dropdown__item dark:hover:bg-[#121212] dark:text-[#FAFAFA]">
                     <span className="">Đã lưu</span>
                     <FontAwesomeIcon icon={faBookmark} className="dark:text-[#FAFAFA]"/>
                   </button>
-                  <button className="dropdown__item dark:text-[#FAFAFA]" onClick={toggleDarkMode}>
+                  <button className="dropdown__item dark:hover:bg-[#121212] dark:text-[#FAFAFA]" onClick={toggleDarkMode}>
                     <span className="">Chuyển chế độ</span>
                     <FontAwesomeIcon icon={faMoon} className="dark:text-[#FAFAFA]"/>
                   </button>
                   <hr />
                   <button
-                    className="dropdown__item dark:text-[#FAFAFA]"
+                    className="dropdown__item dark:hover:bg-[#121212] dark:text-[#FAFAFA]"
                     onClick={() => {
                       firebase.auth().signOut();
                     }}
@@ -258,17 +258,17 @@ function Sidebar() {
               }
             >
               <div
-                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleDropdown}
               >
                 <FontAwesomeIcon
                   icon={faBars}
-                  className="sidebarMain__item-icon icon"
+                  className="sidebarMain__item-icon dark:text-[#FAFAFA]"
                 />
                 {toggleSubSidebar ? (
                   <></>
                 ) : (
-                  <span className="sidebarMain__item-text">Xem thêm</span>
+                  <span className="sidebarMain__item-text hidden xl:block">Xem thêm</span>
                 )}
               </div>
             </Dropdown>
