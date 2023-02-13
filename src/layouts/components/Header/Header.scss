@@ -8,7 +8,6 @@
     height: 60px;
     background-color: #fff;
     border-bottom: 1px solid $border-color-light-theme;
-  @apply dark:border-b-[#262626];
-
+    z-index: 50;
 
 }

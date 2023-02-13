@@ -8,7 +8,7 @@ import Dropdown from "~/components/Dropdown/Dropdown";
 import CommentTextField from "~/components/Post/Comments/CommentTextField";
 import PostInteractive from "~/components/Post/PostInteractive";
 import UserLabel from "~/components/UserLabel";
-import { DELETE_POST, UNFOLLOW } from "~/constants/modalTypes";
+import { DELETE_POST, LOGIN, UNFOLLOW } from "~/constants/modalTypes";
 import { UserContext } from "~/context/user";
 import modalSlice from "~/redux/slice/modalSlide";
 import {
@@ -23,18 +23,22 @@ import "~/components/Post/Post.scss";
 import { setFollowing } from "~/redux/slice/profileSlice";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import HeroSlider from "~/components/Slider/Slider";
+import { useAuthListener } from "~/hooks";
 
 function PostPage() {
   const { docId } = useParams();
   const { userId: currentUserId, following: currentUserFollowing } =
-    useContext(UserContext);
+    useContext(UserContext) || {
+      userId: null,
+      following: null
+    };
+  const { user } = useAuthListener();
   const isFollowing = useSelector(state => state.profile.isFollowing)
   const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
-  // const [isFollowing, setIsFollowing] = useState(false);
   const [userCommentList, setUserCommentList] = useState([]);
-
+  console.log(currentUserId)
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -77,6 +81,11 @@ function PostPage() {
       console.error("Failed to copy text: ", err);
     }
   }
+  const openLoginModal = () => {
+    dispatch(modalSlice.actions.openModal({
+      type: LOGIN
+    }))
+  }
 
   useEffect(() => {
     const getData = async () => {
@@ -87,7 +96,7 @@ function PostPage() {
       }
 
       currentUserId !== response.userId &&
-        dispatch(setFollowing(currentUserFollowing.includes(response.userId)))
+        dispatch(setFollowing(currentUserFollowing?.includes(response.userId) || false))
       setData({
         ...response,
         youLikedThisPost,
@@ -180,8 +189,12 @@ function PostPage() {
                 ) : (
                   <button
                     className="postPage__follow-state"
-                    onClick={() =>
-                      handleFollowOtherUser(currentUserId, data.userId)
+                    onClick={() => {
+                      user ? 
+                        handleFollowOtherUser(currentUserId, data.userId)
+                      :
+                      openLoginModal()
+                    }
                     }
                   >
                     <span className="notfollowing text-sm text-blue-primary hover:text-blue-bold">
@@ -215,18 +228,18 @@ function PostPage() {
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn">
+                        <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                           Thêm vào mục yêu thích
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn" onClick={handleCopyUrl}>
+                        <button className="post__option-dropdown-btn dark:text-[#FAFAFA]" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
                         <button
-                          className="post__option-dropdown-btn"
+                          className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                           onClick={() => {
                             setToggleOptionDropdown(false);
                           }}
@@ -268,18 +281,18 @@ function PostPage() {
                         )}
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn">
+                        <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                           Thêm vào mục yêu thích
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
-                        <button className="post__option-dropdown-btn" onClick={handleCopyUrl}>
+                        <button className="post__option-dropdown-btn dark:text-[#FAFAFA]" onClick={handleCopyUrl}>
                           Sao chép liên kết
                         </button>
                       </li>
                       <li className="post__option-dropdown--item">
                         <button
-                          className="post__option-dropdown-btn"
+                          className="post__option-dropdown-btn dark:text-[#FAFAFA]"
                           onClick={() => {
                             setToggleOptionDropdown(false);
                           }}
@@ -318,8 +331,11 @@ function PostPage() {
                 docId={docId}
                 likes={data.likes}
                 youLikedThisPost={data.youLikedThisPost}
+                isGuest={!user}
               ></PostInteractive>
             </div>
+            {
+              user ?
             <div className="postPage__comment-input">
               <CommentTextField
                 docId={docId}
@@ -327,6 +343,13 @@ function PostPage() {
                 setUserCommentList={setUserCommentList}
               />
             </div>
+              
+              :
+              <div className="postPage__comment-input flex justify-center">
+                <button className="text-blue-primary font-semibold text-sm" onClick={openLoginModal}>Đăng nhập</button>
+                <span className="text-sm ml-1 font-medium">Để bình luận nội dung này</span>
+              </div>
+            }
           </div>
         </div>
       </div>

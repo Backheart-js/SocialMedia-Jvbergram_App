@@ -2,8 +2,12 @@ import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faFillHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
+import { LOGIN } from "~/constants/modalTypes";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
+import { useAuthListener } from "~/hooks";
+import modalSlice from "~/redux/slice/modalSlide";
 import { updateLikePost } from "~/services/firebaseServices";
 
 import "./PostInteractive.scss";
@@ -13,23 +17,35 @@ function PostInteractive({
   docId,
   likes,
   youLikedThisPost,
+  isGuest
 }) {
-  const { userId } = useContext(UserContext);
-
+  const dispatch = useDispatch()
+  const { userId } = useContext(UserContext) || {userId: null};
   const [toggleLike, setToggleLike] = useState(youLikedThisPost);
   const [likesQuantity, setLikesQuantity] = useState(likes.length);
 
   
 
   const handleToggleLiked = async () => {
-    try {
-      setToggleLike((prev) => !prev);
-      setLikesQuantity((likes) => (!toggleLike ? likes + 1 : likes - 1));
-      await updateLikePost(docId, userId, toggleLike);
-    } catch (error) {
-      throw error;
+    if (isGuest) {
+      openLoginModal()
+    }
+    else {
+      try {
+        setToggleLike((prev) => !prev);
+        setLikesQuantity((likes) => (!toggleLike ? likes + 1 : likes - 1));
+        await updateLikePost(docId, userId, toggleLike);
+      } catch (error) {
+        throw error;
+      }
     }
   };
+
+  const openLoginModal = () => {
+    dispatch(modalSlice.actions.openModal({
+      type: LOGIN
+    }))
+  }
 
   return (
     <>

@@ -138,7 +138,7 @@ function CommentDetail({
           {commentWithUserInfo.map((comment) => (
             <CommentItem
               commentData={comment}
-              commentOfLoggedInUser={comment.userId === userLoggedIn.userId}
+              commentOfLoggedInUser={comment.userId === userLoggedIn?.userId}
               onDelete={handleDeleteComment}
               key={comment.commentId}
             />

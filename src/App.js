@@ -107,9 +107,9 @@ function App() {
             <Route
               path="p/:docId"
               element={
-                <ProtectedUserRouter user={user}>
-                  <PostPage />
-                </ProtectedUserRouter>
+                // <ProtectedUserRouter user={user}>
+                <PostPage />
+                // </ProtectedUserRouter>
               }
             />
             <Route

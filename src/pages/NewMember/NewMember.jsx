@@ -13,6 +13,7 @@ import avatars from "~/assets/avatar";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
 import Suggestion from "~/components/Suggestion";
+import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import {
@@ -23,9 +24,9 @@ import {
 import "./NewMember.scss";
 
 function NewMember() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { firebase } = useContext(FirebaseContext);
   const loggedInUser = useContext(UserContext);
+  const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const [previewImageLink, setpreviewImageLink] = useState(null);
   const [image, setImage] = useState(null);
@@ -131,13 +132,15 @@ function NewMember() {
     <div className="bg-[#fafafa] min-h-screen">
       <div className="newMem__box pb-4">
         <div
-          className={`newMen__top pb-3 px-4 pt-4 flex ${
-            step > 1 ? "justify-between" : "justify-end"
-          }`}
+          className={`newMen__top pb-3 px-4 pt-4 flex justify-between`}
         >
-          {step > 1 && (
+          {step > 1 ? (
             <Button className={"px-3 py-1"} onClick={handleBackStep}>
               Quay lại
+            </Button>
+          ) : (
+            <Button className={"px-3 py-1"} onClick={() => firebase.auth().signOut()}>
+              Đăng xuất
             </Button>
           )}
           <div className="flex items-center">
