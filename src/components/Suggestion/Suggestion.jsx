@@ -9,7 +9,6 @@ import SuggestionProfile from "./SuggestionProfile";
 
 function Suggestion({ userId, following = [], min }) {
   const [profiles, setProfiles] = useState(null);
-  console.log("gợi ý")
   useEffect(() => {
     const getSuggestions = async () => {
       const responses = await getSuggestionsProfilesByFollowing(userId, following, min ? 5 : 20);

@@ -5,7 +5,7 @@ import NotiSubSidebar from './NotiSubSidebar';
 
 function SubSidebar({ subRef, type }) {
   return (
-    <aside ref={subRef} id="subSidebar" className='bg-white dark:bg-black'>
+    <aside ref={subRef} id="subSidebar" className='bg-white dark:bg-black dark:border-x-[#262626] border-x-[1px] border-solid'>
         {
           type === 'search' ? 
           <>

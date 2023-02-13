@@ -11,8 +11,6 @@ import { useAuthListener } from "~/hooks";
 import modalSlice from "~/redux/slice/modalSlide";
 import {
   checkChatRoom,
-  createNewChatRoom,
-  createNewConversation,
   getPostOfUser,
   getUser,
   updateCurrentUserFolling,
@@ -38,7 +36,7 @@ function Profile() {
   const { user } = useAuthListener();
   const userLoggedIn = useContext(UserContext);
   const navigate = useNavigate();
-  const [notFound, setNotFound] = useState(false)
+  const [notFound, setNotFound] = useState(false);
 
   const [checkDirectLoading, setCheckDirectLoading] = useState(false);
 
@@ -67,20 +65,22 @@ function Profile() {
       console.log(chatRoomSnapshot);
       if (!chatRoomSnapshot[0].exists) {
         //Chưa nhắn tin với người này -> Tạo chatroom mới
-        const combinedId = userLoggedIn.userId > profileId ? userLoggedIn.userId.concat(profileId)
-        : profileId.concat(userLoggedIn.userId);
+        const combinedId =
+          userLoggedIn.userId > profileId
+            ? userLoggedIn.userId.concat(profileId)
+            : profileId.concat(userLoggedIn.userId);
         const newRoom = {
           chatroomId: combinedId,
           lastMessage: "",
           date: Date.now(),
           partnerId: profileId,
           username: profileUsername,
-          seen: {status: true, time: Date.now()},
+          seen: { status: true, time: Date.now() },
           lastSender: userLoggedIn.userId,
           partnerInfo: profile,
-          virtualRoom: true
-        }
-        reduxDispatch(chatRoomListSlice.actions.createNewRoom(newRoom))
+          virtualRoom: true,
+        };
+        reduxDispatch(chatRoomListSlice.actions.createNewRoom(newRoom));
         setCheckDirectLoading(false);
         navigate(`/direct/${combinedId}`);
       } else {
@@ -94,24 +94,30 @@ function Profile() {
     if (user) {
       navigate(`/p/${postId}`);
     } else {
-      openLoginModal()
+      openLoginModal();
     }
-  }
+  };
 
   const openLoginModal = () => {
-    reduxDispatch(modalSlice.actions.openModal({
-      type: LOGIN
-    }))
-  }
+    reduxDispatch(
+      modalSlice.actions.openModal({
+        type: LOGIN,
+      })
+    );
+  };
 
   const openFollowModal = (followType, userIdList, fullname) => {
-    reduxDispatch(modalSlice.actions.openModal({
-      type: FOLLOW_LIST,
-      followType,
-      userIdList,
-      fullname
-    }));
-  }
+    user
+      ? reduxDispatch(
+          modalSlice.actions.openModal({
+            type: FOLLOW_LIST,
+            followType,
+            userIdList,
+            fullname,
+          })
+        )
+      : openLoginModal();
+  };
 
   useEffect(() => {
     document.title = "Trang cá nhân";
@@ -120,20 +126,19 @@ function Profile() {
       reduxDispatch(resetProfile());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     (async function () {
       const [userInfo] = await getUser({
         username: [username],
       });
-      console.log(userInfo);
       if (!userInfo) {
-        setNotFound(true)
+        setNotFound(true);
       } else {
         const posts = await getPostOfUser(userInfo.userId);
         posts.sort((a, b) => b.dateCreated - a.dateCreated); //sắp xếp theo thời gian
-  
+
         reduxDispatch(setProfile(userInfo));
         reduxDispatch(
           setFollowing(userLoggedIn?.following.includes(userInfo.userId))
@@ -141,27 +146,28 @@ function Profile() {
         reduxDispatch(setPostsCollection(posts));
       }
       // check không tìm thấy người dùng
-    })()
+    })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
-  return (
-    notFound ? 
-      (
-        <div className="pt-12 text-center">
-          <div className="">
-            <p className="font-semibold text-2xl">
-              Rất tiếc, trang này hiện không khả dụng.
-            </p>
-          </div>
-          <div className="mt-5">
-            <span className="font-medium">Liên kết bạn theo dõi có thể bị hỏng hoặc trang này có thể đã bị gỡ.</span>
-            <a href="/" className="ml-1 text-sm text-blue-primary">Quay lại Jvbergram</a>
-          </div>
-        </div>
-      )
-    :
+  return notFound ? (
+    <div className="pt-12 text-center">
+      <div className="">
+        <p className="font-semibold text-2xl">
+          Rất tiếc, trang này hiện không khả dụng.
+        </p>
+      </div>
+      <div className="mt-5">
+        <span className="font-medium">
+          Liên kết bạn theo dõi có thể bị hỏng hoặc trang này có thể đã bị gỡ.
+        </span>
+        <a href="/" className="ml-1 text-sm text-blue-primary">
+          Quay lại Jvbergram
+        </a>
+      </div>
+    </div>
+  ) : (
     (!profile && !postsCollection) || (
       <div className="pt-10 mx-auto lg:w-[935px]">
         <div className="profile__top-wrapper grid grid-cols-12 lg:min-h-[200px] pb-6">
@@ -176,7 +182,10 @@ function Profile() {
                 </span>
               </div>
               {user?.uid === profile.userId ? (
-                <Link to={"/setting/account"} className="flex items-center justify-center mx-6 h-8 w-52 rounded-lg bg-gray-100 hover:bg-gray-200">
+                <Link
+                  to={"/setting/account"}
+                  className="flex items-center justify-center mx-6 h-8 w-52 rounded-lg bg-gray-100 hover:bg-gray-200"
+                >
                   <span className="text-sm font-semibold">
                     Chỉnh sửa trang cá nhân
                   </span>
@@ -197,11 +206,14 @@ function Profile() {
               ) : (
                 <button
                   className="flex items-center justify-center ml-8 h-8 w-24 rounded-lg bg-[#0095f6] hover:bg-[#118ab2]"
-                  onClick={() =>{
-                    user ?
-                    handleFollowOtherUser(userLoggedIn.userId, profile.userId) : openLoginModal()
-                  }
-                  }
+                  onClick={() => {
+                    user
+                      ? handleFollowOtherUser(
+                          userLoggedIn.userId,
+                          profile.userId
+                        )
+                      : openLoginModal();
+                  }}
                 >
                   <span className="text-sm font-semibold text-white">
                     Theo dõi
@@ -244,18 +256,20 @@ function Profile() {
                 <button
                   className="relative flex items-center justify-center h-8 ml-2 w-24 rounded-lg bg-gray-100 hover:bg-gray-200"
                   onClick={() =>
-                    user ? navigateToDirect(profile.username, profile.userId) : openLoginModal()
+                    user
+                      ? navigateToDirect(profile.username, profile.userId)
+                      : openLoginModal()
                   }
                 >
                   {checkDirectLoading ? (
-                    <Loader 
-                    type={RotatingLines}
-                    display
-                    strokeColor="grey"
-                    strokeWidth="5"
-                    animationDuration="0.75"
-                    width="20"
-                    visible={true}
+                    <Loader
+                      type={RotatingLines}
+                      display
+                      strokeColor="grey"
+                      strokeWidth="5"
+                      animationDuration="0.75"
+                      width="20"
+                      visible={true}
                     />
                   ) : (
                     <span className="text-sm font-semibold">Nhắn tin</span>
@@ -270,18 +284,34 @@ function Profile() {
                 </span>
               </div>
               <div className="profile__info-2">
-                <button className="w-full text-sm font-medium dark:text-[#FAFAFA]" onClick={()=>openFollowModal("followers", profile.followers)}>
+                <button
+                  className="w-full text-sm font-medium dark:text-[#FAFAFA]"
+                  onClick={() =>
+                    openFollowModal("followers", profile.followers)
+                  }
+                >
                   {profile.followers.length} người theo dõi
                 </button>
               </div>
               <div className="profile__info-2">
-                <button className="w-full text-sm font-medium dark:text-[#FAFAFA]" onClick={()=>openFollowModal("following", profile.following, profile.fullname)}>
+                <button
+                  className="w-full text-sm font-medium dark:text-[#FAFAFA]"
+                  onClick={() =>
+                    openFollowModal(
+                      "following",
+                      profile.following,
+                      profile.fullname
+                    )
+                  }
+                >
                   Đang theo dõi {profile.following.length} người dùng
                 </button>
               </div>
             </div>
             <div className="profile__info-wrapper">
-              <p className="text-sm font-semibold dark:text-[#FAFAFA]">{profile.fullname}</p>
+              <p className="text-sm font-semibold dark:text-[#FAFAFA]">
+                {profile.fullname}
+              </p>
               <pre className="text-sm font-normal dark:text-gray-300">
                 {profile.story}
               </pre>
@@ -291,12 +321,18 @@ function Profile() {
         <div className="profile__bottom-wrapper mt-6">
           {postsCollection.length === 0 ? (
             <div className="flex justify-center items-center">
-              <span className="dark:text-[#FAFAFA]">Hiện chưa có bài viết nào</span>
+              <span className="dark:text-[#FAFAFA]">
+                Hiện chưa có bài viết nào
+              </span>
             </div>
           ) : (
             <div className="grid grid-cols-12 gap-8">
               {postsCollection.map((post) => (
-                <button className="post__wrapper col-span-4" key={post.docId} onClick={() =>navigateToPost(post.docId)}>
+                <button
+                  className="post__wrapper col-span-4"
+                  key={post.docId}
+                  onClick={() => navigateToPost(post.docId)}
+                >
                   <div className="post__wrapper-link">
                     <div
                       className="bg-center bg-cover bg-no-repeat pb-[100%]"

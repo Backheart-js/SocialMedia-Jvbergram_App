@@ -109,7 +109,7 @@ function Sidebar() {
               )}
             </div>
             <ul className="sidebarMain__list-wrapper">
-              <a href="/" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
+              <a href="/" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <svg
                   aria-label="Trang chủ"
                   className="icon"
@@ -138,7 +138,7 @@ function Sidebar() {
               <li
                 ref={searchRef}
                 data-type="search"
-                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
@@ -153,7 +153,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Tìm kiếm</span>
                 )}
               </li>
-              <a href="/explore/people" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
+              <a href="/explore/people" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <FontAwesomeIcon
                   icon={faCompass}
                   className="sidebarMain__item-icon icon"
@@ -164,7 +164,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct" className="sidebarMain__item-wrapper dark:text-[#FAFAFA]">
+              <NavLink to="/direct" className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>
@@ -175,7 +175,7 @@ function Sidebar() {
               <li
               ref={notiRef}
                 data-type="noti"
-                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
@@ -191,7 +191,7 @@ function Sidebar() {
                 )}
               </li>
               <li
-                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleOpenCreateNewPostModal}
               >
                 <FontAwesomeIcon
@@ -206,7 +206,7 @@ function Sidebar() {
               </li>
               <NavLink
                 to={`/${userLoggedIn?.username}`}
-                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
               >
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar
@@ -258,7 +258,7 @@ function Sidebar() {
               }
             >
               <div
-                className="sidebarMain__item-wrapper dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleDropdown}
               >
                 <FontAwesomeIcon

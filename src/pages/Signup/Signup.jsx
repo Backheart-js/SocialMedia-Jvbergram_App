@@ -62,6 +62,8 @@ function Signup() {
       const response = await firebase
         .auth()
         .createUserWithEmailAndPassword(email.toLowerCase(), password); //Tạo 1 auth mới lên firebase
+        console.log(response)
+        // if (response.user) 
       const user = response.user; //Response trả về thông tin của auth vừa tạo
       await user.updateProfile({
         displayName: info.username,
@@ -85,6 +87,8 @@ function Signup() {
         following: ["SCx4yqNoa6OxMWcYTVYvkFsodNF2"],
         firstTime: true
       });
+      await firebase.firestore().collection("userChats").doc(user.uid).set({}); //Lỗi
+      console.log("chạy đến đây")
       await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
 

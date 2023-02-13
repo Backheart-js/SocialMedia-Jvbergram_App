@@ -121,16 +121,6 @@ function CommentDetail({
         <div className="comment__avatar">
           <Avatar avatarUrl={avatarUrl} size="small" />
         </div>
-        {/* <div className="comment__name-and-content">
-          <div className="comment__name-and-content--wrapper">
-            <Link to={`/${username}`} className="text-sm font-semibold">
-              {username}
-            </Link>
-            <pre className="comment__content-text text-gray-700">
-              {ownerCaption}
-            </pre>
-          </div>
-        </div> */}
         <div className="ml-3"><Caption username={username} content={ownerCaption} /></div>
       </div>
       {commentWithUserInfo && (
@@ -157,7 +147,7 @@ function CommentDetail({
               </li>
             ) : (
               <button
-                className="font-semibold text-[13px] text-gray-800"
+                className="font-semibold text-[13px] text-gray-800 dark:text-gray-300"
                 onClick={handleSeemoreComment}
               >
                 Xem thêm bình luận

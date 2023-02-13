@@ -4,14 +4,23 @@ import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./UserLabel.scss";
+import { useDispatch } from "react-redux";
+import modalSlice from "~/redux/slice/modalSlide";
 
 function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...props }) {
+  const dispatch = useDispatch()
+
+  const handleCloseModal = () => {
+    dispatch(modalSlice.actions.closeModal());
+  }
+
   return !avatarUrl || !username ? (
     <Skeleton count={1} height={56} />
   ) : (
     <Link
       to={`/${username}`}
       className={`flex items-center userComp-${size} w-fit`}
+      onClick={handleCloseModal}
       {...props}
     >
       <div className={`avatar-${size} avatar-wrapper`}>

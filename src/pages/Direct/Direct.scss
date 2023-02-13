@@ -124,6 +124,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  min-height: 60px;
   height: 60px;
   padding: 0 20px;
   border-bottom: 1px solid $border-color-light-theme;  
@@ -215,4 +216,21 @@
 
 .icon {
   @apply dark:text-[#FAFAFA]
+}
+
+.detail__chat-wrapper {
+  padding: 12px 24px;
+  &+& {
+    border-top: 1px solid $border-color-light-theme;
+    @apply dark:border-t-[#262626];
+  }
+}
+
+.detail__chat-option-btn {
+  width: 100%;
+  padding: 4px 0;
+
+  &+& {
+    margin-top: 20px;
+  }
 }

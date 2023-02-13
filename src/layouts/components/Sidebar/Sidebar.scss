@@ -36,8 +36,8 @@
 .sidebarMain__item-wrapper {
     display: flex;
     align-items: center;
-    height: 48px;
-    padding: 12px 8px 12px 16px;
+    height: 52px;
+    padding: 12px 16px 12px 16px;
     border-radius: 30px;
 
     &+.sidebarMain__item-wrapper {
@@ -139,7 +139,6 @@
     width: 397px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-  @apply dark:border-x-[#262626];
     box-shadow: rgba(100, 100, 111, 0.2) 10px 7px 15px -6px;
 }
 

@@ -29,6 +29,7 @@ import useOnClickOutside from "~/hooks/useClickOutside";
 function Modal({ payload }) {
   const [imagePreviewLink, setImagePreviewLink] = useState([]);
   const [captionValue, setCaptionValue] = useState("");
+  const [messageContent, setMessageContent] = useState("")
   const dispatch = useDispatch();
 
   const modalRef = useRef()
@@ -36,24 +37,46 @@ function Modal({ payload }) {
   const unFollowingUser = () => {
     dispatch(setFollowing(false));
   };
-
+  console.log(payload)
   const closeModal = () => {
     dispatch(modalSlice.actions.closeModal());
   };
 
-  useOnClickOutside([modalRef], closeModal)
-
-  const handleCloseModalWithCondition = () => {
-    if (imagePreviewLink.length > 0 || captionValue.length > 0) {
-      if (window.confirm("Bạn có chắc muốn rời đi không?")) {
-        closeModal();
+  useOnClickOutside([modalRef], () => {
+    if (payload.type === CREATE_POST) {
+      if (imagePreviewLink.length > 0 || captionValue.length > 0) {
+        if (window.confirm('Nếu rời đi bạn sẽ mất những gì vừa chỉnh sửa')) {
+          closeModal();
+        }
       } else {
-        return;
+        closeModal();
+      }
+    } else if (payload.type === CREATE_MESSAGE) {
+      if (messageContent.length > 0) {
+        if(window.confirm("Nếu rời đi bạn sẽ mất những gì vừa chỉnh sửa")) {
+          closeModal();
+        }
+      } else {
+        closeModal();
       }
     } else {
       closeModal();
     }
+
+  })
+
+  const handleCloseModalWithCondition = () => {
+    // if (imagePreviewLink.length > 0 || captionValue.length > 0) {
+    //   if (window.confirm("Bạn có chắc muốn rời đi không?")) {
+    //     closeModal();
+    //   } else {
+    //     return;
+    //   }
+    // } else {
+    //   closeModal();
+    // }
   };
+
   const handleClickEsc = (e) => {
     if (e.code === "Escape") {
       closeModal();
@@ -78,7 +101,7 @@ function Modal({ payload }) {
       />
       <div ref={modalRef} className="modal__content">
         {(payload.type === CREATE_POST && (
-          <CreateNewPost closeModal={closeModal} />
+          <CreateNewPost closeModal={closeModal} imagePreviewLink={imagePreviewLink} captionValue={captionValue} setImagePreviewLink={setImagePreviewLink} setCaptionValue={setCaptionValue} />
         )) ||
           (payload.type === DELETE_POST && (
             <DeletePost
@@ -104,7 +127,7 @@ function Modal({ payload }) {
             />
           )) ||
           (payload.type === CREATE_MESSAGE && (
-            <CreateMessage closeModal={closeModal} />
+            <CreateMessage closeModal={closeModal} content={messageContent} setContent={setMessageContent}/>
           )) ||
           (payload.type === FOLLOW_LIST && (
             <FollowersModal

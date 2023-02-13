@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import { UserContext } from "~/context/user";
+import modalSlice from "~/redux/slice/modalSlide";
 import {
   updateCurrentUserFolling,
   updateFollower,
@@ -36,6 +38,7 @@ function SuggestionProfile({
     await updateFollower(profileId, currentUserId, true);
     setDeleted(true);
   };
+
 
   return (
     <div

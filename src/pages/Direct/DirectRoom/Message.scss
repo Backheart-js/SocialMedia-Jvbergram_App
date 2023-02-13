@@ -83,3 +83,7 @@
     width: 100%;
     height: 100px;
 }
+
+.icon {
+    @apply dark:text-[#FAFAFA]
+}

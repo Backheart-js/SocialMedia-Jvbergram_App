@@ -7,12 +7,11 @@ import { createNewMessage } from "~/services/firebaseServices";
 import SearchMessage from "../components/SearchMessage";
 import "../Modal.scss";
 
-function CreateMessage({ closeModal }) {
+function CreateMessage({ closeModal, content, setContent }) {
   const dispatch = useDispatch()
 
   const loggedInUser = useContext(UserContext);
   const [userSelected, setUserSelected] = useState([]);
-  const [content, setContent] = useState("");
 
   const isDisabled = content && userSelected.length > 0
 

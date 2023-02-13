@@ -25,11 +25,9 @@ import { useDispatch } from "react-redux";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import "../Modal.scss";
 
-function CreateNewPost({ closeModal }) {
-  const [imagePreviewLink, setImagePreviewLink] = useState([]); //List ảnh preview
+function CreateNewPost({ closeModal,  imagePreviewLink, captionValue, setImagePreviewLink, setCaptionValue }) {
   const [imageList, setImageList] = useState([]); //List ảnh đẩy lên Storage
   const [orderPreview, setOrderPreview] = useState(-1);
-  const [captionValue, setCaptionValue] = useState("");
   const [loadingDisplay, setLoadingDisplay] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const { user } = useAuthListener();

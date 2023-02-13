@@ -80,6 +80,7 @@ function PostPage() {
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
+    setToggleOptionDropdown(false);
   }
   const openLoginModal = () => {
     dispatch(modalSlice.actions.openModal({
@@ -101,7 +102,6 @@ function PostPage() {
         ...response,
         youLikedThisPost,
       });
-      console.log(sortComments(response.comments))
 
       setUserCommentList(sortComments(response.comments)); //sắp xếp comment theo thời gian từ mới nhất đến cũ nhất
     };
@@ -149,7 +149,7 @@ function PostPage() {
       </div>
     </div>
   ) : (
-    <div className="pt-10 mx-auto lg:min-w-[800px] lg:max-w-[950px]">
+    <div className={`mx-auto lg:min-w-[800px] lg:max-w-[950px] ${user ? "pt-10" : "pt-5"}`}>
       <div className="postPage__wrapper flex bg-white dark:bg-black">
         <div className="max-w-[590px] min-w-[480px]">
           <div className="bg-black">
@@ -345,9 +345,9 @@ function PostPage() {
             </div>
               
               :
-              <div className="postPage__comment-input flex justify-center">
+              <div className="postPage__comment-input flex justify-center items-center mt-2">
                 <button className="text-blue-primary font-semibold text-sm" onClick={openLoginModal}>Đăng nhập</button>
-                <span className="text-sm ml-1 font-medium">Để bình luận nội dung này</span>
+                <span className="text-sm ml-1 font-medium text-gray-800">để bình luận nội dung này</span>
               </div>
             }
           </div>
