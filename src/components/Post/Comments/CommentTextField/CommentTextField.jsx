@@ -19,11 +19,11 @@ function CommentTextField({
   setUserCommentList,
   setAllCommentsQuantity,
 }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { firebase, FieldValue } = useContext(FirebaseContext);
   const { userId, username } = useContext(UserContext);
   const [toggleDropdownEmoji, setToggleDropdownEmoji] = useState(false);
-  const [loadingSubmitComment, setLoadingSubmitComment] = useState(false)
+  const [loadingSubmitComment, setLoadingSubmitComment] = useState(false);
 
   const [commentValues, setCommentValues] = useState("");
 
@@ -35,7 +35,7 @@ function CommentTextField({
     if (!commentValues.trim()) {
       return;
     }
-    setLoadingSubmitComment(true)
+    setLoadingSubmitComment(true);
     const comment = {
       content: commentValues.replace(/\s+$/g, ""), //Loại bỏ khoảng trắng ở cuối comment
       dateCreated: Date.now(),
@@ -57,7 +57,7 @@ function CommentTextField({
       setAllCommentsQuantity && setAllCommentsQuantity((prev) => prev + 1);
       setCommentValues("");
     } catch (error) {
-      dispatch(openNoti({content: `Đã có lỗi xảy ra, vui lòng thử lại`}))
+      dispatch(openNoti({ content: `Đã có lỗi xảy ra, vui lòng thử lại` }));
     } finally {
       setLoadingSubmitComment(false);
     }
@@ -112,15 +112,19 @@ function CommentTextField({
       >
         Đăng
       </button>
-      <Loader
-        type={RotatingLines}
-        display={loadingSubmitComment}
-        strokeColor="grey"
-        strokeWidth="5"
-        animationDuration="0.75"
-        width="40"
-        visible
-      />
+      {
+        loadingSubmitComment &&
+        <div className="absolute h-[210px] w-full flex justify-center items-center">
+          <RotatingLines
+            display
+            strokeColor="gray"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="30"
+            visible
+          />
+        </div>
+      }
     </form>
   );
 }

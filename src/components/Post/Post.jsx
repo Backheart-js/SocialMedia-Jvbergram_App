@@ -19,17 +19,21 @@ import formatDate from "~/utils/formatDate";
 import HeroSlider from "../Slider/Slider";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import Caption from "../Caption/Caption";
-import { updateCurrentUserFolling, updateFollower } from "~/services/firebaseServices";
+import { updateCurrentUserFolling, updateFollower, updateLikePost } from "~/services/firebaseServices";
+import LayoutDropHeart from "../LayoutDropHeart/LayoutDropHeart";
 
 function Post({ data = {} }) {
   const navigate = useNavigate();
   const { userId: currentUserId, following: currentUserFollowing } = useContext(UserContext);
   const dispatch = useDispatch();
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
+  const [isFolling, setisFolling] = useState(currentUserFollowing.includes(data.userId))
+  const [toggleLike, setToggleLike] = useState(data.youLikedThisPost);
+  const [likesQuantity, setLikesQuantity] = useState(data.likes.length);
+  const [showLikeIcon, setShowLikeIcon] = useState(false)
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
-  const [isFolling, setisFolling] = useState(currentUserFollowing.includes(data.userId))
-
+  const imageRef = useRef(null)
 
   const handleCloseDropdown = () => {
     setToggleOptionDropdown(false);
@@ -261,7 +265,14 @@ function Post({ data = {} }) {
         </Dropdown>
       </div>
 
-      <div className="bg-black">
+      <div ref={imageRef} className="bg-black relative" onDoubleClick={() => {
+        setShowLikeIcon(true);
+        if (!toggleLike) {
+          updateLikePost(data.docId, currentUserId, false);
+          setToggleLike(true);
+          setLikesQuantity(prev => prev+1)
+        }
+      }}>
         <HeroSlider speed={300} infinite={false} arrow>
           {data.photos.map((photo, i) => (
             <div className="post__photo-bg" key={i}>
@@ -269,14 +280,18 @@ function Post({ data = {} }) {
             </div>
           ))}
         </HeroSlider>
+        
+        <LayoutDropHeart isShow={showLikeIcon} setShow={setShowLikeIcon} />
       </div>
 
       <div className="mt-3 px-3">
         <PostInteractive
           commentBtnRef={commentBtn}
           docId={data.docId}
-          likes={data.likes}
-          youLikedThisPost={data.youLikedThisPost}
+          isLike={toggleLike}
+          setLike={setToggleLike}
+          likesQuantity={likesQuantity}
+          setLikesQuantity={setLikesQuantity}
           comments={data.comments}
         ></PostInteractive>
         <div className="mt-2"><Caption username={data.username} content={data.caption} /></div>

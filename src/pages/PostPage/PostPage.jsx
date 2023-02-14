@@ -15,6 +15,7 @@ import {
   getPostWithOwnerById,
   updateCurrentUserFolling,
   updateFollower,
+  updateLikePost,
 } from "~/services/firebaseServices";
 import sortComments from "~/utils/sortComment";
 import CommentDetail from "./CommentDetail/CommentDetail";
@@ -24,6 +25,8 @@ import { setFollowing } from "~/redux/slice/profileSlice";
 import { openNoti } from "~/redux/slice/notificationSlice";
 import HeroSlider from "~/components/Slider/Slider";
 import { useAuthListener } from "~/hooks";
+import LayoutDropHeart from "~/components/LayoutDropHeart/LayoutDropHeart";
+import formatDate from "~/utils/formatDate";
 
 function PostPage() {
   const { docId } = useParams();
@@ -38,6 +41,9 @@ function PostPage() {
   const [data, setData] = useState(null);
   const [toggleOptionDropdown, setToggleOptionDropdown] = useState(false);
   const [userCommentList, setUserCommentList] = useState([]);
+  const [toggleLike, setToggleLike] = useState(false);
+  const [showLikeIcon, setShowLikeIcon] = useState(false)
+  const [likesQuantity, setLikesQuantity] = useState(0);
   const commentFieldRef = useRef(null);
   const commentBtn = useRef(null);
 
@@ -57,19 +63,29 @@ function PostPage() {
   };
 
   const handleFollowOtherUser = async (currentUserId, profileId) => {
-    await updateCurrentUserFolling(currentUserId, profileId, false);
-    await updateFollower(currentUserId, profileId, false);
-    dispatch(setFollowing(true))
+    setToggleOptionDropdown(false);
+
+    if (user) {
+      await updateCurrentUserFolling(currentUserId, profileId, false);
+      await updateFollower(currentUserId, profileId, false);
+      dispatch(setFollowing(true))
+    } else {
+      openLoginModal();
+    }
   };
   const handleUnFollowOtherUser = (currentUserId, profileInfo) => {
     setToggleOptionDropdown(false);
-    dispatch(
-      modalSlice.actions.openModal({
-        type: UNFOLLOW,
-        currentUserId,
-        followingUserInfo: profileInfo,
-      })
-    );
+    if (user) {
+      dispatch(
+        modalSlice.actions.openModal({
+          type: UNFOLLOW,
+          currentUserId,
+          followingUserInfo: profileInfo,
+        })
+      );
+    } else {
+      openLoginModal();
+    }
   };
 
   const handleCopyUrl = async () => {
@@ -98,6 +114,8 @@ function PostPage() {
       if (response.likes.includes(currentUserId)) {
         youLikedThisPost = true;
       }
+      setToggleLike(youLikedThisPost)
+      setLikesQuantity(response.likes.length)
 
       currentUserId !== response.userId &&
         dispatch(setFollowing(currentUserFollowing?.includes(response.userId) || false))
@@ -151,10 +169,19 @@ function PostPage() {
       </div>
     </div>
   ) : (
-    <div className={`mx-auto lg:min-w-[800px] lg:max-w-[950px] ${user ? "pt-10" : "pt-5"}`}>
+    <div className={`flex justify-center items-center mx-auto lg:min-w-[800px] lg:max-w-[950px] ${user ? "pt-10" : "pt-5"}`}>
       <div className="postPage__wrapper dark:border-[#262626] flex bg-white dark:bg-black">
         <div className="max-w-[590px] min-w-[480px]">
-          <div className="bg-black">
+          <div className="bg-black relative" onDoubleClick={() => {
+            if (user) {
+              setShowLikeIcon(true);
+              if (!toggleLike) {
+                updateLikePost(docId, currentUserId, false);
+                setToggleLike(true);
+                setLikesQuantity(prev => prev+1)
+              }
+            }
+      }}>
             <HeroSlider speed={300} infinite={false} arrow>
               {data.photos.map((photo, i) => (
                 <div className="postpage__photo-bg" key={i}>
@@ -162,6 +189,8 @@ function PostPage() {
                 </div>
               ))}
             </HeroSlider>
+
+            <LayoutDropHeart isShow={showLikeIcon} setShow={setShowLikeIcon} />
           </div>
         </div>
         <div className="postPage__right dark:border-l-[#262626] relative flex flex-col w-[360px] h-[610px]">
@@ -331,10 +360,15 @@ function PostPage() {
               <PostInteractive
                 commentBtnRef={commentBtn}
                 docId={docId}
-                likes={data.likes}
-                youLikedThisPost={data.youLikedThisPost}
+                isLike={toggleLike}
+                setLike={setToggleLike}
+                likesQuantity={likesQuantity}
+                setLikesQuantity={setLikesQuantity}
                 isGuest={!user}
               ></PostInteractive>
+              <div className="mt-2 text-[13px] text-gray-600 dark:text-gray-300">
+                {formatDate(data.dateCreated)} ago
+              </div>
             </div>
             {
               user ?

@@ -6,38 +6,28 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import {
-  doc,
-  deleteDoc,
-  updateDoc,
-  deleteField,
-  getDocs,
-  collection,
-  query,
-  limit,
-  startAt,
-  orderBy,
-} from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, deleteField } from "firebase/firestore";
 import sortUserByFollower from "~/utils/sortUserByFollower";
 import { v4 } from "uuid";
-import { openNoti } from "~/redux/slice/notificationSlice";
-import { useDispatch } from "react-redux";
-
 var _ = require("lodash");
+
 const db = firebase.firestore();
 
 // GET
-export async function getRandomPost() {
-  const totalDocs = await getDocs(collection(db, "posts"));
-  const randomOffset = Math.floor(Math.random() * totalDocs.size);
-  const q = query(collection(db, "posts"), orderBy('dateCreated'), startAt(randomOffset), limit(10));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => {
-    return {...doc.data(), docId: doc.id}
-  });
+export async function getRandomPost(currentUserId, following) {
+  console.log([...following, currentUserId])
+  return db
+    .collection("posts")
+    .where("userId", "not-in", [...following, currentUserId])
+    .get()
+    .then((snapshot) => {
+      const docsArray = snapshot.docs;
+      const randomDocs = _.sampleSize(docsArray, 10);
+      return randomDocs.map((doc) => {
+        return { ...doc.data(), docId: doc.id };
+      });
+    });
 }
-
-
 
 export async function checkUserNameExist(username) {
   //Check tên user đã có trong firestore chưa
@@ -151,17 +141,21 @@ export async function getSuggestionsProfilesByFollowing(
 
   if (profiles.length < limit) {
     //Nếu số người được gợi ý ít thì sẽ gợi ý thêm những users có nhiều lượt follow nhất
-    const getAllUser =
-      following.length > 0
-        ? await userRef
-            .where("userId", "not-in", following)
-            .get()
-            .then((snapshot) => snapshot.docs.map((doc) => doc.data()))
-        : await userRef
+    const getAllUser = await userRef
             .get()
             .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+
+    let userNotInFollowing = [];
+    for (const user of getAllUser) {
+      if (following.includes(user.userId)) {
+        continue;
+      } else {
+        userNotInFollowing.push(user);
+      }
+    }
+
     //limit*2 tránh trường hợp trùng với tất cả người dùng đã lấy trước đó / +1 trùng người dùng hiện tại
-    const popularUsers = sortUserByFollower(getAllUser).slice(0, limit * 2 - 1);
+    const popularUsers = sortUserByFollower(userNotInFollowing).slice(0, limit * 2 - 1);
 
     for (const popularUser of popularUsers) {
       let isExist = false;
@@ -348,14 +342,14 @@ export async function updateAvatar(loggedInUserId, newAvatarUrl) {
 
 export async function updateDefaultAvatar(loggedInUserId) {
   return db
-  .collection("users")
-  .where("userId", "==", loggedInUserId)
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach((doc) => {
-      doc.ref.update({ "avatarUrl.current": "" });
+    .collection("users")
+    .where("userId", "==", loggedInUserId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        doc.ref.update({ "avatarUrl.current": "" });
+      });
     });
-  });
 }
 
 export async function reuseAvatar(loggedInUserId, avatarUrl) {
@@ -597,15 +591,17 @@ export async function updateUserInfo(loggedInUserId, newData) {
 }
 
 export async function updateFirstTime(userId) {
-  return db.collection('users').where("userId", "==", userId)
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach((doc) => {
-      doc.ref.update({
-        firstTime: false,
+  return db
+    .collection("users")
+    .where("userId", "==", userId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        doc.ref.update({
+          firstTime: false,
+        });
       });
     });
-  });
 }
 
 // DELETE
@@ -648,8 +644,7 @@ export async function verifyAccout() {
   const sentVerificationEmail = async function () {
     try {
       await firebase.auth().currentUser.sendEmailVerification();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   sentVerificationEmail();

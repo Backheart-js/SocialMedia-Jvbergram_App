@@ -74,9 +74,6 @@ function Signup() {
         .createUserWithEmailAndPassword(email.toLowerCase(), password); //Tạo 1 auth mới lên firebase
       // if (response.user)
       const user = response.user; //Response trả về thông tin của auth vừa tạo
-      await user.updateProfile({
-        displayName: info.username,
-      });
       await firebase
         .firestore()
         .collection("users")
@@ -99,7 +96,7 @@ function Signup() {
           following: ["SCx4yqNoa6OxMWcYTVYvkFsodNF2"],
           firstTime: true,
         });
-      await firebase.firestore().collection("userChats").doc(user.uid).set({}); //Lỗi
+      await firebase.firestore().collection("userChats").doc(user.uid).set({});
       await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
     } catch (err) {
@@ -219,7 +216,7 @@ function Signup() {
               className="signup__input bg-gray-200"
               onChange={(e) => dispatch(setData(SET_PASSWORD, e.target.value))}
             />
-            <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[80px] h-[35px] justify-end pr-2">
+            <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[40px] h-[35px] justify-end pr-2">
               {state.password.length > 0 && (
                 <div>
                   <FontAwesomeIcon
@@ -236,14 +233,6 @@ function Signup() {
                   icon={faCircleQuestion}
                 />
               )}
-              {/* {passwordValid || state.password.length === 0 || (
-                <div className="w-[30px] h-[36px] flex items-center justify-end">
-                  <FontAwesomeIcon
-                    className="signup__input-icon signup__icon-invalid"
-                    icon={faCircleXmark}
-                  />
-                </div>
-              )} */}
             </div>
           </div>
           {
@@ -268,7 +257,7 @@ function Signup() {
               }}
               onBlur={() => setCfpasswordValid(cfpassword === state.password)}
             />
-            <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[80px] h-[35px] justify-end pr-2">
+            <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[40px] h-[35px] justify-end pr-2">
               {cfpassword.length > 0 && (
                 <FontAwesomeIcon
                   icon={faEye}

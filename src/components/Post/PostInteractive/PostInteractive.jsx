@@ -13,14 +13,14 @@ import "./PostInteractive.scss";
 function PostInteractive({
   commentBtnRef,
   docId,
-  likes,
-  youLikedThisPost,
+  isLike,
+  setLike,
+  likesQuantity,
+  setLikesQuantity,
   isGuest
 }) {
   const dispatch = useDispatch()
   const { userId } = useContext(UserContext) || {userId: null};
-  const [toggleLike, setToggleLike] = useState(youLikedThisPost);
-  const [likesQuantity, setLikesQuantity] = useState(likes.length);
 
   
 
@@ -30,9 +30,9 @@ function PostInteractive({
     }
     else {
       try {
-        setToggleLike((prev) => !prev);
-        setLikesQuantity((likes) => (!toggleLike ? likes + 1 : likes - 1));
-        await updateLikePost(docId, userId, toggleLike);
+        setLike((prev) => !prev);
+        setLikesQuantity((likes) => (!isLike ? likes + 1 : likes - 1));
+        await updateLikePost(docId, userId, isLike);
       } catch (error) {
         throw error;
       }
@@ -49,7 +49,7 @@ function PostInteractive({
     <>
       <div className="postInteractive__icon-wrapper flex justify-between">
         <div className="postInteractive__icon-mainFunc">
-          {toggleLike ? (
+          {isLike ? (
             <button
               className="postInteractive__button"
               onClick={handleToggleLiked}

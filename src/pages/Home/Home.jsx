@@ -6,6 +6,7 @@ import UserLabel from "~/components/UserLabel";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import { getRandomPost, getUser } from "~/services/firebaseServices";
+import _ from 'lodash';
 
 import "./Home.scss";
 
@@ -24,6 +25,7 @@ function Home() {
   useEffect(() => {
     let unsubscribe;
     const getTimeline = async () => {
+      let randomPost = await getRandomPost(userLoggedIn.userId, userLoggedIn.following);
       unsubscribe = firebase
         .firestore()
         .collection("posts")
@@ -34,14 +36,20 @@ function Home() {
         ) //Lấy posts của mình và following
         .onSnapshot(async (snapshot) => {
           //Snapshot sẽ kiểm tra trạng thái trong firestore nếu có thay đổi
-          let newPosts;
-          if (snapshot.empty === true) {
-            newPosts = await getRandomPost();
-          } else {
-            newPosts = snapshot.docs.map((doc) => {
-              return { docId: doc.id, ...doc.data() };
-            });
-          }
+          
+          const postFromFollowingUser = snapshot.docs.map((doc) => {
+            return { docId: doc.id, ...doc.data() };
+          });
+
+          // const mergedMap = new Map([...randomPost, ...postFromFollowingUser].map(obj => [obj.docId, obj]));
+          // const newPosts = [...mergedMap.values()];
+          const newPosts = [...randomPost, ...postFromFollowingUser]
+
+          console.log('postFromFollowingUser: ', postFromFollowingUser);
+          console.log('randomPost: ', randomPost);
+
+          console.log("New posts: ", newPosts);
+
           const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
               let youLikedThisPost = false;
