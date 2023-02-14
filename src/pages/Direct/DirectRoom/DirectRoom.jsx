@@ -63,7 +63,7 @@ function DirectRoom() {
             const data = snapshot.data()?.messages;
             conversationInfo?.virtualRoom ||
               (await updateSeenMessage(snapshot.id, loggedInUser.userId));
-            data.reverse();
+              data && data.reverse();
 
             setAllConversation(data ? data : []);
             setLoadDataFirstTime(true);
