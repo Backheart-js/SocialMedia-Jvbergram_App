@@ -93,7 +93,11 @@ $leftside-width: 194px;
 
 // Content
 .settingContent__wrapper {
-    width: calc(100% - 230px);
+    // width: calc(100% - 230px);
+    width: 100%;
+    // display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .setting__field-wrapper {
@@ -143,7 +147,19 @@ $leftside-width: 194px;
 }
 .setting__leftside {
     display: flex;
-    justify-content: flex-end;
-    width: $leftside-width;
-    padding: 0 32px;
+    width: 150px;
+    padding: 0 12px 0 24px;
+}
+
+@media (min-width: 768px) { 
+    .settingContent__wrapper {
+        width: calc(100% - 230px);
+        display: block;
+    }
+    .setting__leftside {
+        display: flex;
+        justify-content: flex-end;
+        width: $leftside-width;
+        padding: 0 32px;
+    }
 }

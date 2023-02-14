@@ -46,8 +46,8 @@ function Account() {
   }, [])
 
   return (
-    <div className="">
-      <div className="setting__avatar-wrapper setting__field-wrapper flex-col md:flex-row">
+    <div className="w-full flex flex-col items-start md:block">
+      <div className="setting__avatar-wrapper w-[350px] md:w-[unset] setting__field-wrapper md:flex-row">
         <div className="setting__leftside setting__avatar-img-wrapper">
           <Avatar avatarUrl={userData.avatar} />
         </div>
@@ -64,7 +64,7 @@ function Account() {
           </Button>
         </div>
       </div>
-      <div className="setting__fullname-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
+      <div className="setting__fullname-wrapper setting__field-wrapper  md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tên đầy đủ</p>
         </div>
@@ -85,7 +85,7 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__birthday-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
+      <div className="setting__birthday-wrapper setting__field-wrapper  md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Ngày sinh</p>
         </div>
@@ -103,7 +103,7 @@ function Account() {
           />
         </div>
       </div>
-      <div className="setting__story-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
+      <div className="setting__story-wrapper setting__field-wrapper  md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Tiểu sử</p>
         </div>
@@ -124,7 +124,7 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__gender-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
+      <div className="setting__gender-wrapper setting__field-wrapper  md:flex-row flex items-start">
         <div className="setting__leftside">
           <p className="font-medium text-gray-800 dark:text-gray-100 md:mt-1">Giới tính</p>
         </div>
@@ -157,7 +157,7 @@ function Account() {
           </p>
         </div>
       </div>
-      <div className="setting__gender-wrapper setting__field-wrapper flex-col md:flex-row flex items-start">
+      <div className="setting__gender-wrapper setting__field-wrapper  md:flex-row flex items-start">
         <div className="setting__leftside">
         </div>
         <div className="setting__rightside">

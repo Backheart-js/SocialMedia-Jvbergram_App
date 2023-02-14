@@ -37,7 +37,7 @@ function SearchInput() {
       visible={showResult && resultValue.length > 0 && searchValue.length > 0}
       onClickOutside={() => setShowResult(false)}
       interactive
-      className={"result-width"}
+      className={"md:w-[397px] w-[250px]"}
       content={
         <ul className="py-4 search__result-list">
           {resultValue.map((result, index) => (

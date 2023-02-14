@@ -45,8 +45,8 @@ function Login() {
   }, []);
 
   return (
-    <div className="flex lg:w-[850px] lg:h-[600px] bg-white rounded-lg overflow-hidden">
-      <div className="login__bg-wrapper">
+    <div className="flex lg:w-[850px] lg:h-[600px] h-[560px] bg-white rounded-lg overflow-hidden">
+      <div className="login__bg-wrapper hidden md:block">
         <img
           src={loginImgs.bg}
           alt="Login thumnail"

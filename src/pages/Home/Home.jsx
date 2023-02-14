@@ -72,9 +72,9 @@ function Home() {
   }, [])
 
   return (
-    <div className='md:py-8 mx-auto w-[820px]'>
-      <div className='grid grid-cols-12 gap-8'>
-        <div className="md:col-span-7 col-span-12 relative">
+    <div className='md:py-8 mx-auto lg:w-[820px] w-[470px]'>
+      <div className='grid grid-cols-12 gap-0 lg:gap-8'>
+        <div className="lg:col-span-7 col-span-12 relative">
           <div className="mt-4">
             <Timeline posts={posts} />
           </div>
@@ -82,7 +82,7 @@ function Home() {
             showUpdateButton && <Button className={'reloadTimeLine-btn'} onClick={handleReload}>Bài viết mới</Button>
           }
         </div>
-        <div className="col-span-5 md:block hidden">
+        <div className="col-span-5 lg:block hidden">
           <div className="my-4 flex justify-between">
             <UserLabel avatarUrl={userLoggedIn?.avatarUrl} username={userLoggedIn?.username} fullname={userLoggedIn?.fullname} />
             <Button className={"text-[13px] py-2 pl-2 text-blue-primary hover:text-blue-bold"} onClick={() => firebase.auth().signOut()}>Đăng xuất</Button>

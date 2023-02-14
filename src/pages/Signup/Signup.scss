@@ -38,9 +38,6 @@
   }
 
   .signup__input-icon {
-    position: absolute;
-    right: 12px;
-    bottom: 25%;
     font-size: 22px;
   }
 
@@ -62,4 +59,13 @@
   font-weight: 500;
   font-size: 14px;
   text-align: center;
+}
+
+.showPass-btn {
+  // position: absolute;
+  // color: #666;
+  // font-size: 16px;
+  //   right: 42px;
+  //   top: 50%;
+  //   transform: translateY(-50%);
 }

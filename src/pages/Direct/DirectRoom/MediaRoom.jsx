@@ -34,9 +34,9 @@ function MediaRoom({conversation}) {
   return chatImage.length === 0 ?
     <div className="flex flex-col items-center justify-center mx-10 h-full">
         <div className="">
-            <FontAwesomeIcon icon={faImages} className={"text-6xl text-[#333] dark:text-[#FAFAFA]"} />
+            <FontAwesomeIcon icon={faImages} className={"text-6xl text-gray-700 dark:text-[#FAFAFA]"} />
         </div>
-        <div className='mt-4'><p className=' font-semibold text-[#333] dark:text-[#FAFAFA]'>Chưa có ảnh nào trong đoạn hội thoại</p></div>
+        <div className='mt-4'><p className=' font-semibold text-gray-600 dark:text-[#FAFAFA]'>Chưa có ảnh nào trong đoạn hội thoại</p></div>
     </div>
   :
   <div className='grid grid-cols-4 gap-1 my-2 overflow-auto'>

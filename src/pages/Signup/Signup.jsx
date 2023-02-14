@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleQuestion,
   faCircleXmark,
+  faEye,
 } from "@fortawesome/free-regular-svg-icons";
 import avatars from "~/assets/avatar";
 import logo from "~/assets/logo";
@@ -41,6 +42,7 @@ const reducer = (state, action) => {
 function Signup() {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+  const cfPasswordRef = useRef(null)
 
   const [state, dispatch] = useReducer(reducer, initSignup);
   const [error, setError] = useState("");
@@ -48,6 +50,8 @@ function Signup() {
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
   const [cfpasswordValid, setCfpasswordValid] = useState(true);
+  const [showPassword, setShowPassword] = useState(false)
+  const [showCfPassword, setShowCfPassword] = useState(false)
 
   const navigate = useNavigate();
   const isDisable =
@@ -95,6 +99,27 @@ function Signup() {
     }
   };
 
+  const handleShowPw = () => {
+    setShowPassword(prev => !prev)
+    if (showPassword) {
+      console.log("show")
+      passwordInputRef.current.setAttribute('type', 'password');
+    }
+    else {
+      console.log("hide")
+      passwordInputRef.current.setAttribute('type', 'text');
+    }
+  }
+  const handleShowCfPw = () => {
+    setShowCfPassword(prev => !prev)
+    if (showCfPassword) {
+      cfPasswordRef.current.setAttribute('type', 'password');
+    }
+    else {
+      cfPasswordRef.current.setAttribute('type', 'text');
+    }
+  }
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -133,7 +158,7 @@ function Signup() {
   return (
     <div
       id="signup__wrapper"
-      className="flex flex-col items-center sm:w-[340px] rounded-lg bg-white px-10 pb-10 pt-4"
+      className="flex flex-col items-center w-[340px] rounded-lg bg-white px-10 pb-10 pt-4"
     >
       <div className="signup__logo h-[100px]">
         <img src={logo.logo_black} alt="" className="ml-10" />
@@ -188,37 +213,61 @@ function Signup() {
             placeholder="Mật khẩu"
             className="signup__input bg-gray-200"
             onChange={(e) => dispatch(setData(SET_PASSWORD, e.target.value))}
+            onFocus={() => setPasswordValid(true)}
           />
-          {state.password.length === 0 && (
-            <FontAwesomeIcon
-              title="Độ dài mật khẩu từ 8 - 24 kí tự, chứa ít nhất 1 số và 1 chữ cái"
-              className="signup__input-icon signup__icon-info"
-              icon={faCircleQuestion}
-            />
-          )}
-          {passwordValid || state.password.length === 0 || (
-            <FontAwesomeIcon
-              className="signup__input-icon signup__icon-invalid"
-              icon={faCircleXmark}
-            />
-          )}
+          <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[80px] h-[35px] justify-end pr-2">
+          {
+              state.password.length > 0 &&
+              <div><FontAwesomeIcon icon={faEye} className={"showPass-btn"} onClick={handleShowPw}/></div>
+            }
+            {state.password.length === 0 && (
+              <FontAwesomeIcon
+                title="Độ dài mật khẩu từ 8 - 24 kí tự, chứa ít nhất 1 số và 1 chữ cái"
+                className="signup__input-icon signup__icon-info"
+                icon={faCircleQuestion}
+              />
+            )}
+            {passwordValid || state.password.length === 0 || (
+              <div className="w-[30px] h-[36px] flex items-center justify-end">
+                <FontAwesomeIcon
+                  className="signup__input-icon signup__icon-invalid"
+                  icon={faCircleXmark}
+                />
+              </div>
+            )}
+            
+          </div>
         </div>
         <div className="signup__input-wrapper">
           <input
+            ref={cfPasswordRef}
             value={cfpassword}
             type="password"
             placeholder="Nhập lại mật khẩu"
             className="signup__input bg-gray-200"
-            onChange={(e) => setCfpassword(e.target.value)}
+            onChange={(e) => {
+              setCfpasswordValid(true)
+              setCfpassword(e.target.value)
+            }}
+            onFocus={() => setCfpasswordValid(true)}
             onBlur={() => setCfpasswordValid(cfpassword === state.password)}
           />
-          {cfpasswordValid || (
-            <FontAwesomeIcon
-              title="Mật khẩu không khớp"
-              className="signup__input-icon signup__icon-invalid"
-              icon={faCircleXmark}
-            />
-          )}
+          <div className="absolute top-[50%] right-0 translate-y-[-50%] flex items-center w-[80px] h-[35px] justify-end pr-2">
+          {
+              cfpassword.length > 0 &&
+              <FontAwesomeIcon icon={faEye} className={"showPass-btn"} onClick={handleShowCfPw}/>
+            }
+            {cfpasswordValid || (
+              <div className="w-[30px] h-[36px] flex items-center justify-end">
+                <FontAwesomeIcon
+                  title="Mật khẩu không khớp"
+                  className="signup__input-icon signup__icon-invalid"
+                  icon={faCircleXmark}
+                />
+              </div>
+            )}
+            
+          </div>
         </div>
         {error ? (
           <p className="text-sm text-red-600 text-center mt-3">{error}</p>

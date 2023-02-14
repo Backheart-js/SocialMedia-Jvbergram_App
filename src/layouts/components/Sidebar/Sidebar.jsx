@@ -77,11 +77,11 @@ function Sidebar() {
   }
 
   return (
-    <aside id="sidebar" className={`z-10 dark:bg-black`}>
-      <div className="sidebar__main-wrapper xl:w-[245px] w-[80px] dark:border-r-[#262626]">
-        <div className="flex flex-col justify-between h-full px-3 py-8">
-          <div className="sidebarMain__function-wrapper">
-            <div className="sidebarMain__logo-wrapper">
+    <aside id="sidebar" className={`z-10 dark:bg-black bg-white md:inset-y-0 md:left-0 md:right-[unset] inset-x-0 bottom-0`}>
+      <div className="sidebar__main-wrapper xl:w-[245px] md:w-[80px] w-full dark:border-r-[#262626]">
+        <div className="flex md:flex-col items-center md:items-start justify-between h-full px-5 md:px-3 md:py-8">
+          <div className="sidebarMain__function-wrapper flex flex-grow md:flex-grow-[unset] md:block">
+            <div className="sidebarMain__logo-wrapper md:block hidden">
               {toggleSubSidebar ? (
                 <></>
               ) : (
@@ -108,11 +108,11 @@ function Sidebar() {
                 </a>
               )}
             </div>
-            <ul className="sidebarMain__list-wrapper">
-              <a href="/" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
+            <ul className="sidebarMain__list-wrapper flex md:block justify-between md:justify-[unset] w-full md:w-unset">
+              <a href="/" className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <svg
                   aria-label="Trang chủ"
-                  className="icon"
+                  className="dark:text-[#FAFAFA]"
                   color="#262626"
                   fill="#262626"
                   height={24}
@@ -138,7 +138,7 @@ function Sidebar() {
               <li
                 ref={searchRef}
                 data-type="search"
-                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper hidden md:flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
@@ -153,7 +153,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text hidden xl:block">Tìm kiếm</span>
                 )}
               </li>
-              <a href="/explore/people" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
+              <a href="/explore/people" className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <FontAwesomeIcon
                   icon={faCompass}
                   className="sidebarMain__item-icon dark:text-[#FAFAFA]"
@@ -164,7 +164,7 @@ function Sidebar() {
                   <span className="sidebarMain__item-text hidden xl:block">Khám phá</span>
                 )}
               </a>
-              <NavLink to="/direct" className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
+              <NavLink to="/direct" className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]">
                 <NotiMessage />
                 {toggleSubSidebar ? (
                   <></>
@@ -175,7 +175,7 @@ function Sidebar() {
               <li
               ref={notiRef}
                 data-type="noti"
-                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper hidden md:flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleSubSidebar}
               >
                 <FontAwesomeIcon
@@ -191,7 +191,7 @@ function Sidebar() {
                 )}
               </li>
               <li
-                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleOpenCreateNewPostModal}
               >
                 <FontAwesomeIcon
@@ -206,7 +206,7 @@ function Sidebar() {
               </li>
               <NavLink
                 to={`/${userLoggedIn?.username}`}
-                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
               >
                 <div className="sidebarMain__avatar-wrapper sidebarMain__item-icon">
                   <Avatar
@@ -226,7 +226,7 @@ function Sidebar() {
               </NavLink>
             </ul>
           </div>
-          <div className="sidebarMain__more-options">
+          <div className="ml-6 sm:ml-10 md:ml-0 md:w-full w-[unset]">
             <Dropdown
               visible={toggleDropdown}
               onClickOutside={handleClickoutsideDropdown}
@@ -258,7 +258,7 @@ function Sidebar() {
               }
             >
               <div
-                className="sidebarMain__item-wrapper dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
+                className="sidebarMain__item-wrapper flex dark:hover:bg-[#121212] justify-center xl:justify-start dark:text-[#FAFAFA]"
                 onClick={handleToggleDropdown}
               >
                 <FontAwesomeIcon

@@ -5,7 +5,7 @@ import "./Setting.scss";
 
 function SettingSidebar() {
   return (
-    <div className='settingSidebar__wrapper dark:border-[#262626]'>
+    <div className='settingSidebar__wrapper hidden md:block dark:border-[#262626]'>
         <div className="settingSidebar__header-wrapper dark:border-b-[#262626]">
             <div className="settingSidebar__logo-wrapper">
                 <a href="/setting" className="sidebarSetting__logo">

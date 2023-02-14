@@ -9,9 +9,7 @@
 }
 
 .profile__info-2 {
-    &+& {
-        margin-left: 32px;
-    }
+    
 }
 
 .post__wrapper {
@@ -41,6 +39,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+    }
+}
+
+@media (min-width: 768px) { 
+    .profile__info-2 {
+        &+& {
+            margin-left: 32px;
         }
     }
 }
