@@ -24,6 +24,7 @@ function NotiMessage() {
         .onSnapshot(async (snapshot) => {
           const roomData = Object.entries(snapshot.data());
           const promises = roomData.map(async (data) => {
+            console.log(data)
             const partnerInfo = await getUser({
               //return an array contain user information
               userId: [data[1].partnerId],

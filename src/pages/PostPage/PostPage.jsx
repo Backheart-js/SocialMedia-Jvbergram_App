@@ -311,11 +311,14 @@ function PostPage() {
                           </button>
                         )}
                       </li>
+                      {
+                        user && 
                       <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]">
                           Thêm vào mục yêu thích
                         </button>
                       </li>
+                      }
                       <li className="post__option-dropdown--item dark:hover:bg-[#121212]">
                         <button className="post__option-dropdown-btn dark:text-[#FAFAFA]" onClick={handleCopyUrl}>
                           Sao chép liên kết

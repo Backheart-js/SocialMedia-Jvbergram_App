@@ -111,13 +111,20 @@ function Account() {
           <textarea
             value={userData.story}
             type="text"
-            className="setting__story-input setting__input"
-            onChange={(e) => setUserData(prev => {
-              return {
-                ...prev,
-                story: e.target.value
+            className="setting__story-input setting__input dark:bg-[#262626] dark:text-[#FAFAFA] dark:border-[#262626]"
+            maxLength={50}
+            onChange={(e) => 
+              {
+                if (userData.story.length <= 50) {
+                  setUserData(prev => {
+                    return {
+                      ...prev,
+                      story: e.target.value
+                    }
+                  })
+                }
               }
-            })}
+              }
           />
           <p className="setting__subnote">
             {userData.story.length} / 50

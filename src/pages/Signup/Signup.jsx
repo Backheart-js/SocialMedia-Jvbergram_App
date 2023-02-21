@@ -97,7 +97,7 @@ function Signup() {
           firstTime: true,
         });
       await firebase.firestore().collection("userChats").doc(user.uid).set({});
-      await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
+      // await updateFollower(user.uid, "SCx4yqNoa6OxMWcYTVYvkFsodNF2", false);
       navigate("/notify"); //Move on đến trang thông báo xác thực email
     } catch (err) {
       setError("Email đã được sử dụng, vui lòng sử dụng email khác!");

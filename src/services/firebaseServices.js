@@ -15,7 +15,6 @@ const db = firebase.firestore();
 
 // GET
 export async function getRandomPost(currentUserId, following) {
-  console.log([...following, currentUserId])
   return db
     .collection("posts")
     .where("userId", "not-in", [...following, currentUserId])
@@ -584,7 +583,7 @@ export async function updateUserInfo(loggedInUserId, newData) {
           fullname: newData.fullname,
           birthday: newData.birthday,
           gender: newData.gender,
-          story: newData.story,
+          story: newData.story.trim(),
         });
       });
     });

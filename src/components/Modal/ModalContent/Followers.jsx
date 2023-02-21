@@ -23,7 +23,7 @@ function FollowersModal({ followType, userIdList, fullname }) {
           <>
             <header className="createMessageModal__header-wrapper flex justify-center px-4 pb-2">
               <div className="">
-                <span className="font-semibold">Người theo dõi</span>
+                <span className="font-semibold dark:text-[#FAFAFA]">Người theo dõi</span>
               </div>
             </header>
             <main className="followModal__main py-4 px-4">
@@ -46,7 +46,7 @@ function FollowersModal({ followType, userIdList, fullname }) {
           <>
             <header className="createMessageModal__header-wrapper flex justify-center px-4 pb-2">
               <div className="">
-                <span className="font-semibold">Đang theo dõi</span>
+                <span className="font-semibold dark:text-[#FAFAFA]">Đang theo dõi</span>
               </div>
             </header>
             <main className="followModal__main py-4 px-4">
@@ -123,7 +123,7 @@ function CurrentUserFollow({ type, userIdList }) {
                 className={"text-[36px] text-gray-800"}
               />
             </div>
-            <p className="text-sm font-medium text-center text-gray-700 w-[80%] mt-4">
+            <p className="text-sm font-medium text-center text-gray-700 dark:text-[#FAFAFA] w-[80%] mt-4">
               Bạn sẽ thấy tất cả những người theo dõi mình ở đây
             </p>
           </div>
@@ -136,17 +136,17 @@ function CurrentUserFollow({ type, userIdList }) {
         <div className="flex flex-col items-center justify-center h-[240px] w-full">
         
           <div className="flex flex-col items-center justify-center h-[240px] w-full">
-            <div className="flex justify-center items-center rounded-full border-gray-800 border-[3px] w-[90px] h-[90px]">
+            <div className="flex justify-center items-center rounded-full border-gray-800 dark:border-gray-200 border-[3px] w-[90px] h-[90px]">
               <FontAwesomeIcon
                 icon={faPlus}
-                className={"text-[30px] text-gray-800"}
+                className={"text-[30px] text-gray-800 dark:text-gray-200"}
               />
               <FontAwesomeIcon
                 icon={faUser}
-                className={"text-[36px] text-gray-800"}
+                className={"text-[36px] text-gray-800 dark:text-gray-200"}
               />
             </div>
-            <p className="text-sm font-medium text-center text-gray-700 w-[80%] mt-4">
+            <p className="text-sm font-medium text-center text-gray-700 dark:text-[#FAFAFA] w-[80%] mt-4">
               Bạn chưa theo dõi ai
             </p>
           </div>
@@ -239,23 +239,23 @@ function OtherUserFollow({ type, userIdList, loggedInUser, fullname }) {
               className={"text-[36px] text-gray-800"}
             />
           </div>
-          <p className="text-sm font-medium text-center text-gray-700 w-[80%] mt-4">
+          <p className="text-sm font-medium text-center text-gray-700 dark:text-[#FAFAFA] w-[80%] mt-4">
             {fullname} hiện chưa có người theo dõi
           </p>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center h-[240px] w-full">
-          <div className="flex justify-center items-center rounded-full border-gray-800 border-[3px] w-[90px] h-[90px]">
+          <div className="flex justify-center items-center rounded-full border-gray-800 dark:border-[#FAFAFA] border-[3px] w-[90px] h-[90px]">
             <FontAwesomeIcon
               icon={faPlus}
-              className={"text-[30px] text-gray-800"}
+              className={"text-[30px] text-gray-800 dark:text-[#FAFAFA]"}
             />
             <FontAwesomeIcon
               icon={faUser}
-              className={"text-[36px] text-gray-800"}
+              className={"text-[36px] text-gray-800 dark:text-[#FAFAFA]"}
             />
           </div>
-          <p className="text-sm font-medium text-center text-gray-700 w-[80%] mt-4">
+          <p className="text-sm font-medium text-center text-gray-700 dark:text-[#FAFAFA] w-[80%] mt-4">
             {fullname} chưa theo dõi ai
           </p>
         </div>

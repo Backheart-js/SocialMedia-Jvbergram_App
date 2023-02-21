@@ -18,6 +18,9 @@ import {
   updateDefaultAvatar,
 } from "~/services/firebaseServices";
 import "../Modal.scss";
+import { INPUT_IMAGE_REGEX } from "~/constants/Regex";
+import { useDispatch } from "react-redux";
+import { openNoti } from "~/redux/slice/notificationSlice";
 
 function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imagePreviewLink, setImagePreviewLink] = useState(null);
@@ -25,13 +28,18 @@ function UpdateAvatar({ closeModal, currentUserId, avatarUrl }) {
   const [imageFromStore, setImageFromStore] = useState(null);
   const [sourceImg, setSourceImg] = useState(null);
   const [loadingDisplay, setLoadingDisplay] = useState(false);
+  const dispatch = useDispatch()
 
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
-    setImagePreviewLink(URL.createObjectURL(file));
-    setImage(file);
-    setImageFromStore(null);
-    setSourceImg("local");
+    if (INPUT_IMAGE_REGEX.test(file.name)) {
+      setImagePreviewLink(URL.createObjectURL(file));
+      setImage(file);
+      setImageFromStore(null);
+      setSourceImg("local");
+    } else {
+      dispatch(openNoti({ content: `File ${file.name} không hợp lệ` }));
+    }
   };
 
   const handleChoseImgFromStore = (imgUrl, index) => {

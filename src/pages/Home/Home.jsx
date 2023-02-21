@@ -45,11 +45,6 @@ function Home() {
           // const newPosts = [...mergedMap.values()];
           const newPosts = [...randomPost, ...postFromFollowingUser]
 
-          console.log('postFromFollowingUser: ', postFromFollowingUser);
-          console.log('randomPost: ', randomPost);
-
-          console.log("New posts: ", newPosts);
-
           const photosWithUserInfo = await Promise.all(
             newPosts.map(async (photo) => {
               let youLikedThisPost = false;

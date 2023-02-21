@@ -82,7 +82,7 @@ function CommentTextField({
         >
           <FontAwesomeIcon
             icon={faFaceSmile}
-            className="text-2xl text-[#262626] icon"
+            className="text-2xl text-[#262626] dark:text-[#FAFAFA]"
           />
         </button>
       </Dropdown>

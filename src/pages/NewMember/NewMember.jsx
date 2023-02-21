@@ -13,6 +13,7 @@ import avatars from "~/assets/avatar";
 import Avatar from "~/components/Avatar/Avatar";
 import Button from "~/components/Button";
 import Suggestion from "~/components/Suggestion";
+import { INPUT_IMAGE_REGEX } from "~/constants/Regex";
 import { FirebaseContext } from "~/context/firebase";
 import { UserContext } from "~/context/user";
 import { openNoti } from "~/redux/slice/notificationSlice";
@@ -118,8 +119,13 @@ function NewMember() {
 
   const handleChangeImage = (e) => {
     const [file] = e.target.files;
-    setpreviewImageLink(URL.createObjectURL(file));
-    setImage(file);
+    if (INPUT_IMAGE_REGEX.test(file.name)) {
+      setpreviewImageLink(URL.createObjectURL(file));
+      setImage(file);
+    } else {
+      dispatch(openNoti({ content: `File ${file.name} không hợp lệ` }));
+    }
+
     e.target.value = null;
   };
   const handleClearImage = () => {
@@ -243,14 +249,18 @@ function NewMember() {
                     <textarea
                       value={userData.story}
                       type="text"
+                      maxLength={50}
                       className="setting__story-input setting__input xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] xl:min-w-[250px] lg:min-w-[260px] sm:min-w-[280px] min-w-[200px] dark:bg-transparent dark:text-[#FAFAFA] dark:border-[#262626]"
-                      onChange={(e) =>
-                        setUserData((prev) => {
-                          return {
-                            ...prev,
-                            story: e.target.value,
-                          };
-                        })
+                      onChange={(e) => {
+                        if (userData.story.length <= 50) {
+                          setUserData((prev) => {
+                            return {
+                              ...prev,
+                              story: e.target.value,
+                            };
+                          })
+                        }
+                      }
                       }
                     />
                     <p className="setting__subnote xl:max-w-[250px] lg:max-w-[260px] sm:max-w-[280px] max-w-[200px] dark:text-gray-400">

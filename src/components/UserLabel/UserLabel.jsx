@@ -24,11 +24,13 @@ function UserLabel({ avatarUrl, username, fullname = "", size = "medium", ...pro
       {...props}
     >
       <div className={`avatar-${size} avatar-wrapper dark:border-[#262626]`}>
-        <img
+        {/* <img
           src={avatarUrl.current || avatarUrl.default}
           alt=""
           className="avatar-img"
-        />
+        /> */}
+        <div className="pb-[100%] bg-center bg-cover bg-no-repeat w-full" style={{ backgroundImage: `url(${avatarUrl.current || avatarUrl.default})` }}></div>
+
       </div>
       <div className="flex flex-col justify-center">
         <span className="text-[14px] font-semibold dark:text-[#FAFAFA]">{username}</span>
